@@ -12,7 +12,6 @@ public class Kenken {
         size = 0;
         cages = new ArrayList<KenkenCage>();
         operations = new HashSet<TypeOperation>();
-
     }
 
     Kenken(int size, HashSet<TypeOperation> operations, TypeDificult dificult){

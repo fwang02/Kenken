@@ -21,7 +21,7 @@ public class KenkenCell {
         return posY;
     }
 
-    public int getValue() {
+    public int getValor() {
         return valor;
     }
 

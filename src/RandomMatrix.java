@@ -1,6 +1,5 @@
 import java.util.*;
 import java.io.*;
-import java.lang.Math;
 
 public class RandomMatrix {
 
@@ -13,33 +12,27 @@ public class RandomMatrix {
 	}
 
 	boolean check(int num, int row, int col) {
-		if (num == 0) return false;
-
 		for (int i = 0; i < size; ++i) {
 			if (num == matrix[i][col]) return false;
 		}
 		for (int j = 0; j < size; ++j) {
 			if (num == matrix[row][j]) return false;
 		}
-
 		return true;
 	}
 
-	void initializeMatrix() {
-		for(int i = 0; i < size; ++i) {
-			for(int j = 0; j < size; ++j) {
-				matrix[i][j] = 0;
-			}
-		}
-	}
-
 	void fillMatrix () {
+		Vector<Boolean> used = new Vector<>();
+		for(int k = 0; k <= size; ++k) used.add(k, false);
 		int tmp = 0;
-		initializeMatrix();
 		for (int i=0; i<size; i++) {
+			for(int k = 0; k <= size; ++k) used.set(k, false);
 			for (int j = 0; j < size; j++) {
+				tmp = new Random().nextInt(size)+1;
+				while(used.get(tmp)) {tmp = new Random().nextInt(size)+1;}
+				used.set(tmp, true);
 				while(!check(tmp, i, j)) {
-					tmp = (int)(Math.random()*(size+1));
+					tmp = new Random().nextInt(size)+1;
 				}
 				matrix[i][j] = tmp;
 			}

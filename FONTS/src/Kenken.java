@@ -39,17 +39,15 @@ public class Kenken {
         }
     }
 
-    public boolean isValid() {
+    /*public boolean isValid() {
 
-    }
+    }*/
 
-    public boolean rowCheck() {
+//    public boolean rowCheck() {
+//
+//    }
 
-    }
-
-    public boolean columnCheck() {
-
-    }
-
-    public boolean
+//    public boolean columnCheck() {
+//
+//    }
 }

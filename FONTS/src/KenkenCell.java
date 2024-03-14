@@ -1,4 +1,4 @@
-package src;
+package FONTS.src;
 
 public class KenkenCell {
     private int posX;
@@ -21,7 +21,7 @@ public class KenkenCell {
         return posY;
     }
 
-    public int getValor() {
+    public int getValue() {
         return valor;
     }
 

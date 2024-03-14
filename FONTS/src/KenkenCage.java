@@ -1,25 +1,26 @@
 package FONTS.src;
-
 import java.util.ArrayList;
-
-import static java.lang.Math.abs;
+import java.lang.Math;
 
 public class KenkenCage {
     private final ArrayList<KenkenCell> cells;
     private final TypeOperation operation;
     private final int result;
+    private boolean allLocked;
 
 
     KenkenCage() {
         cells = new ArrayList<KenkenCell>();
         operation = null;
         result = 0;
+        allLocked;
     }
 
     KenkenCage(TypeOperation operation, int result) {
         cells = new ArrayList<KenkenCell>();
         this.operation = operation;
         this.result = result;
+
     }
 
     public boolean isCageValid() {
@@ -34,7 +35,7 @@ public class KenkenCage {
             }
             if(res > result || (count == cells.size() && res != result)) return false;
         } else if (operation == TypeOperation.SUB) {
-            if(abs(cells.get(0).getValue() - cells.get(1).getValue());
+            return Math.abs(cells.get(0).getValue() - cells.get(1).getValue()) == result || !allLocked;
 
         }
         return true;

@@ -1,4 +1,4 @@
-package src;
+package FONTS.src;
 
 public class KenkenCell {
     private int posX;
@@ -27,5 +27,9 @@ public class KenkenCell {
 
     public boolean isLocked() {
         return locked;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
     }
 }

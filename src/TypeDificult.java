@@ -1,8 +1,8 @@
 package src;
 
 public enum TypeDificult {
-    FACIL,
-    MEDIO,
-    DIFICIL,
-    EXPERTO
+    EASY,
+    MEDIUM,
+    HARD,
+    EXPERT
 }

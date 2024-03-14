@@ -1,15 +1,15 @@
-package src;
+package FONTS.src;
 
 public class KenkenCell {
     private int posX;
     private int posY;
-    private int valor;
+    private int value;
     private boolean locked;
 
     KenkenCell(int posX,int posY,int valor, boolean locked) {
         this.posX = posX;
         this.posY = posY;
-        this.valor = valor;
+        this.value = valor;
         this.locked = locked;
     }
 
@@ -21,11 +21,15 @@ public class KenkenCell {
         return posY;
     }
 
-    public int getValor() {
-        return valor;
+    public int getValue() {
+        return value;
     }
 
     public boolean isLocked() {
         return locked;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
     }
 }

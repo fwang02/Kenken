@@ -21,21 +21,28 @@ public class RandomMatrix {
 		return true;
 	}
 
-	void fillMatrix () {
-		Vector<Boolean> used = new Vector<>();
-		for(int k = 0; k <= size; ++k) used.add(k, false);
-		int tmp = 0;
-		for (int i=0; i<size; i++) {
-			for(int k = 0; k <= size; ++k) used.set(k, false);
-			for (int j = 0; j < size; j++) {
-				tmp = new Random().nextInt(size)+1;
-				while(used.get(tmp)) {tmp = new Random().nextInt(size)+1;}
-				used.set(tmp, true);
-				while(!check(tmp, i, j)) {
-					tmp = new Random().nextInt(size)+1;
+	/*Backtracking hecho por javi. Si podeis probarlo para ver si funciona
+	Lo adaptare luego para que utlize las clases y no una matriz por defecto*/
+
+	void fillMatrix(int i, int j) {
+		if (i == size) {end = true;}
+		else if (j == size) {fillMatrix(i+1, 0);}
+		else if (matrix[i][j] != 0) {fillMatrix(i, j+1);}
+		else {
+			Boolean[] tried = new Boolean[size+1];
+			for(int t = 0; t <= size; ++t) tried[t] = false;
+
+			int tmp = new Random().nextInt(size)+1;
+
+			for(int u = 0;u < size && !end; ++u) {
+				while(tried[tmp]) {tmp = new Random().nextInt(size)+1;}
+				tried[tmp] = true;
+				if(check(tmp, i, j)) {
+					matrix[i][j] = tmp;
+					fillMatrix(i, j+1);
 				}
-				matrix[i][j] = tmp;
 			}
+			if (!end) matrix[i][j] = 0;  //vaciamos la casilla si no sirve y se ha llenado
 		}
 	}
 

@@ -1,4 +1,5 @@
 package FONTS.src;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -36,19 +37,12 @@ public class Kenken {
         this.name = name;
     }
 
-
-    public int getWidth() {
+    public int getSize() {
         return size;
     }
-
-
-    public int getHeight() {
-        return size;
-    }
-
 
     public KenkenCell getCell(int i, int j) {
-        return cells.get(i*getWidth()+j);
+        return cells.get(i*getSize()+j);
     }
 
     
@@ -64,14 +58,14 @@ public class Kenken {
     }
 
     public boolean rowCheck(int row, int val) {
-        for(int col = 0; col < getWidth(); ++col) {
+        for(int col = 0; col < getSize(); ++col) {
             if(getCell(row, col).getValue() == val) return false;
         }
         return true;
     }
 
     public boolean colCheck(int col, int val) {
-        for(int row = 0; row < getHeight(); ++row) {
+        for(int row = 0; row < getSize(); ++row) {
             if(getCell(row, col).getValue() == val) return false;
         }
         return true;

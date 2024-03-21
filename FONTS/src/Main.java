@@ -1,5 +1,8 @@
 package FONTS.src;
+import java.io.*;
+import java.lang.System;
+
 public class Main {
-    //Kenken = new Kenken();
+    System.out.println("Selecciona una dificultad.");
 
 }

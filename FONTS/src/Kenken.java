@@ -44,6 +44,9 @@ public class Kenken {
     public KenkenCell getCell(int i, int j) {
         return cells.get(i*getSize()+j);
     }
+    public KenkenCell getCell(Pos p) {
+        return cells.get(p.posX*getSize()+p.posY);
+    }
 
     
     private void iniCells() {

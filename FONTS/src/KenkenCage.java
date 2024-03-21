@@ -3,68 +3,68 @@ import java.util.ArrayList;
 import static java.lang.Math.abs;
 import static java.lang.Math.pow;
 
+class Pos {
+    int posX;
+    int posY;
+}
+
 public class KenkenCage {
-    private final ArrayList<KenkenCell> cells;
+    private final ArrayList<Pos> cells;
     private final TypeOperation operation;
     private final int result;
     private boolean allLocked;
-
+    private Kenken k;
 
     KenkenCage() {
         cells = new ArrayList<>();
         operation = null;
+        k = null;
         result = 0;
         allLocked = false;
     }
 
-    KenkenCage(TypeOperation operation, int result) {
+    KenkenCage(Kenken k, TypeOperation operation, int result) {
+        this.k = k;
         cells = new ArrayList<>();
         this.operation = operation;
         this.result = result;
         allLocked = false;
     }
 
-    //Constructora para creado por fichero
-    KenkenCage(TypeOperation operation, int result, ArrayList<KenkenCell> cells) {
-        this.cells = cells;
-        this.operation = operation;
-        this.result = result;
-        allLocked = false;
-    }
 
     public boolean isCageValid() {
         if(operation == TypeOperation.ADD) {
             int sum = 0;
-            for (KenkenCell cell : cells) {
-                if (cell.isLocked()) {
-                    sum += cell.getValue();
+            for (Pos pos_cell : cells) {
+                if (k.getCell(pos_cell).isLocked()) {
+                    sum += k.getCell(pos_cell).getValue();
                 }
             }
             if(allLocked) return result == sum;
             else return result > sum;
         } else if (operation == TypeOperation.SUB) {
-            if(allLocked) return abs(cells.get(0).getValue() - cells.get(1).getValue()) == result;
+            if(allLocked) return abs(k.getCell(cells.get(0)).getValue() - k.getCell(cells.get(1)).getValue()) == result;
         } else if (operation == TypeOperation.MULT) {
             int mult = 1;
-            for (KenkenCell cell : cells) {
-                if(cell.isLocked()) {
-                    mult = mult * cell.getValue();
+            for (Pos pos_cell : cells) {
+                if(k.getCell(pos_cell).isLocked()) {
+                    mult = mult * k.getCell(pos_cell).getValue();
                 }
             }
             if(allLocked) return result == mult;
             else return result > mult;
         } else if (operation == TypeOperation.DIV) {
             if(allLocked) {
-                if(cells.get(0).getValue() > cells.get(1).getValue()) return cells.get(0).getValue() / cells.get(1).getValue() == result;
-                else return cells.get(1).getValue() / cells.get(0).getValue() == result;
+                if(k.getCell(cells.get(0)).getValue() > k.getCell(cells.get(1)).getValue()) return k.getCell(cells.get(0)).getValue() / k.getCell(cells.get(1)).getValue() == result;
+                else return k.getCell(cells.get(1)).getValue() / k.getCell(cells.get(0)).getValue() == result;
             }
         } else if (operation == TypeOperation.MOD) {
             if(allLocked) {
-                return cells.get(0).getValue() % cells.get(1).getValue() == result || cells.get(1).getValue() % cells.get(0).getValue() == result;
+                return k.getCell(cells.get(0)).getValue() % k.getCell(cells.get(1)).getValue() == result || k.getCell(cells.get(1)).getValue() % k.getCell(cells.get(0)).getValue() == result;
             }
         } else if (operation == TypeOperation.POW) {
             if(allLocked) {
-                return pow(cells.get(0).getValue(),cells.get(1).getValue()) == result || pow(cells.get(1).getValue(),cells.get(0).getValue()) == result;
+                return pow(k.getCell(cells.get(0)).getValue(),k.getCell(cells.get(1)).getValue()) == result || pow(k.getCell(cells.get(1)).getValue(),k.getCell(cells.get(0)).getValue()) == result;
             }
         }
         return true;
@@ -82,7 +82,4 @@ public class KenkenCage {
         return operation;
     }
 
-    public ArrayList<KenkenCell> getCells() {
-        return cells;
-    }
 }

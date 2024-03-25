@@ -1,5 +1,3 @@
-package FONTS.src;
-
 import java.util.HashSet;
 import java.util.Scanner;
 
@@ -17,9 +15,11 @@ public class Main {
         System.out.println("2. Medio");
         System.out.println("3. Difícil");
         System.out.println("4. Experto");
+
         int num_dif = scanner.nextInt();
         scanner.nextLine();
         TypeDificult dif;
+
         switch(num_dif) {
             case 1:
                 dif = TypeDificult.EASY;
@@ -36,8 +36,8 @@ public class Main {
             default:
                 throw new IllegalArgumentException("El valor debería ser entre 1 y 4.");
         }
-        System.out.println("Dificultad: "+dif.name()+"\n");
 
+        System.out.println("Dificultad: "+ dif +"\n");
         System.out.println("Selecciona las operaciones.");
         System.out.println("+-----------+------------+");
         System.out.println("| 1. ADD  + | 2. SUB   - |");
@@ -79,8 +79,12 @@ public class Main {
 
         System.out.println("Has seleccionado las siguientes operaciones:");
         for(TypeOperation operation : operations) {
-            System.out.println(operation.name());
+            System.out.println(operation);
         }
+
+
+
+
 
 
 

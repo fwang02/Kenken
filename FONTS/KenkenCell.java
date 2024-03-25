@@ -1,5 +1,3 @@
-package FONTS.src;
-
 public class KenkenCell {
     private int posX;
     private int posY;

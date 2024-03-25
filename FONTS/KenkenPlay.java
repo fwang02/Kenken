@@ -1,5 +1,3 @@
-package FONTS.src;
-
 import java.util.*;
 import java.io.*;
 

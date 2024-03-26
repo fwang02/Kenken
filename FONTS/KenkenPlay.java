@@ -3,8 +3,12 @@ import java.io.*;
 
 public class KenkenPlay  {
 
-	private Kenken k;	
+	private Kenken k;
 	private boolean end = false;
+
+	KenkenPlay(Kenken k) {
+		this.k = k;
+	}
 
 	private boolean check(int tmp, int row, int col) {
 		if(!k.rowCheck(row, tmp)) return false;
@@ -41,7 +45,7 @@ public class KenkenPlay  {
 			for (int j = 0; j < k.getSize(); ++j) {
 				System.out.print(k.getCell(i,j).getValue() + " ");
 			}
-			System.out.println("");
+			System.out.print("\n");
 		}
 	}
 }

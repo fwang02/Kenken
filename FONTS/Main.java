@@ -1,9 +1,30 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Scanner;
 
 public class Main {
-
-    public static TypeDificult chooseDifficulty(Scanner sc)
+    private static TypeOperation getOperation(int num)
+    {
+        switch (num) {
+            case 1:
+                return TypeOperation.ADD;
+            case 2:
+                return TypeOperation.SUB;
+            case 3:
+                return TypeOperation.MULT;
+            case 4:
+                return TypeOperation.DIV;
+            case 5:
+                return TypeOperation.MOD;
+            case 6:
+                return TypeOperation.POW;
+            default:
+                throw new IllegalArgumentException("Carácter no válido encontrado en la cadena: " + num);
+        }
+    }
+    private static TypeDificult chooseDifficulty(Scanner sc)
     {
         System.out.println("Selecciona una dificultad.");
         System.out.println("1. Fácil");
@@ -34,20 +55,20 @@ public class Main {
         return dif;
     }
 
-    public static int chooseSize(Scanner sc)
+    private static int chooseSize(Scanner sc)
     {
-        System.out.println("Selecciona el tamaño.");
+        System.out.println("Selecciona el tamaño del tablero (3-9).");
         int size = sc.nextInt();
         if(size < 3 || size > 9) throw new IllegalArgumentException("El tamaño debería ser 3-9.");
         else System.out.println("El tamaño es: "+size+"\n");
         return size;
     }
-    public static HashSet<TypeOperation> chooseOps(Scanner sc)
+    private static HashSet<TypeOperation> chooseOps(Scanner sc)
     {
         System.out.println("Selecciona las operaciones.");
         System.out.println("+-----------+------------+");
         System.out.println("| 1. ADD  + | 2. SUB   - |");
-        System.out.println("| 3. MULT * | 4. DIV   / |");
+        System.out.println("| 3. MULT * | 4. DIV   : |");
         System.out.println("| 5. MOD  % | 6. POW   ^ |");
         System.out.println("+-----------+------------+");
         System.out.println("Poner los números consecutivamente.");
@@ -57,30 +78,8 @@ public class Main {
         String op = sc.nextLine();
 
         for (int i = 0; i < op.length(); ++i) {
-            char c = op.charAt(i); // Obtener el carácter en la posición i
-
-            switch (c) {
-                case '1':
-                    operations.add(TypeOperation.ADD);
-                    break;
-                case '2':
-                    operations.add(TypeOperation.SUB);
-                    break;
-                case '3':
-                    operations.add(TypeOperation.MULT);
-                    break;
-                case '4':
-                    operations.add(TypeOperation.DIV);
-                    break;
-                case '5':
-                    operations.add(TypeOperation.MOD);
-                    break;
-                case '6':
-                    operations.add(TypeOperation.POW);
-                    break;
-                default:
-                    throw new IllegalArgumentException("Carácter no válido encontrado en la cadena: " + c);
-            }
+            int num = Character.getNumericValue(op.charAt(i)); // Obtener el carácter en la posición i
+            operations.add(getOperation(num));
         }
         if(operations.isEmpty()) throw new NullPointerException("La lista de operaciones no puede ser nula.");
 
@@ -88,9 +87,50 @@ public class Main {
         for(TypeOperation operation : operations) {
             System.out.println(operation);
         }
+        System.out.print('\n');
         return operations;
     }
-    public static void main(String[] args) {
+
+    private static void readFile(String fileName) throws FileNotFoundException {
+        Scanner scanner = new Scanner(new File(fileName));
+        int size = scanner.nextInt();
+        int numCage = scanner.nextInt();
+        System.out.print(size);
+        System.out.print(' ');
+        System.out.println(numCage);
+        scanner.nextLine();
+        KenkenCage[] cages = new KenkenCage[numCage];
+        while (scanner.hasNextLine()) {
+            int count = 0;
+            int result;
+            int cageSize;
+            TypeOperation op;
+            ArrayList<Pos> pos = new ArrayList<>();
+            while (scanner.hasNextInt()) {
+                if (count == 0) {
+                    op = getOperation(scanner.nextInt());
+                    System.out.print(op.toString() + " ");
+                } else if (count == 1) {
+                    result = scanner.nextInt();
+                    System.out.print(result + " ");
+                } else if (count == 2) {
+                    cageSize = scanner.nextInt();
+                    System.out.print(cageSize + " ");
+                } else {
+                    int posX = scanner.nextInt();
+                    int posY = scanner.nextInt();
+                    pos.add(new Pos(posX-1,posY-1));
+                    System.out.print(posX+" "+posY);
+                }
+                ++count;
+                System.out.print(" count:"+count+'\n');
+            }
+            scanner.nextLine();
+        }
+    }
+
+    public static void main(String[] args) throws FileNotFoundException {
+        /*
         Scanner scanner = new Scanner(System.in);
         int size = chooseSize(scanner);
         TypeDificult dif = chooseDifficulty(scanner);
@@ -101,10 +141,8 @@ public class Main {
 
         kenkenPlay.fillKenken(0,0);
         kenkenPlay.printKenken();
-
-
-
-
+        */
+        readFile("./DATA/input.txt");
 
     }
 

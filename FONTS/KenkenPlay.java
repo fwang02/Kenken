@@ -19,7 +19,7 @@ public class KenkenPlay  {
 	public void fillKenken(int i, int j) {
 		if (i == k.getSize()) {end = true;}
 		else if (j == k.getSize()) {fillKenken(i+1, 0);}
-		else if (k.getCell(i,j).getValue() != 0) {fillKenken(i, j+1);}
+		else if (k.getCell(i,j).getValue() != -1) {fillKenken(i, j+1);}
 		else {
 			Boolean[] tried = new Boolean[k.getSize()+1];
 			for(int t = 0; t <= k.getSize(); ++t) tried[t] = false;
@@ -34,7 +34,7 @@ public class KenkenPlay  {
 					fillKenken(i, j+1);
 				}
 			}
-			if (!end) {k.getCell(i,j).setValue(0);}
+			if (!end) {k.getCell(i,j).setValue(-1);}
 		}
 	}
 

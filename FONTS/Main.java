@@ -94,13 +94,62 @@ public class Main {
     private static void readFile(String fileName) throws FileNotFoundException {
         Scanner scanner = new Scanner(new File(fileName));
         int size = scanner.nextInt();
+        if(size > 9 || size < 3) throw new IllegalArgumentException("Tamaño incorrecto");
         int numCage = scanner.nextInt();
+        //for test
         System.out.print(size);
         System.out.print(' ');
         System.out.println(numCage);
         scanner.nextLine();
         KenkenCage[] cages = new KenkenCage[numCage];
-        while (scanner.hasNextLine()) {
+        int count = 0;
+        while(scanner.hasNextLine()) {
+            String line = scanner.nextLine();
+            String[] numStr = line.split("\\s+");
+
+            TypeOperation op = Main.getOperation(Integer.parseInt(numStr[0]));
+            int result = Integer.parseInt(numStr[1]);
+            int numCells = Integer.parseInt(numStr[2]);
+
+            Pos[] posCells = new Pos[numCells];
+            for (int i = 0; i < numCells; i++) {
+                int posX = Integer.parseInt(numStr[2*i+3]);
+                int posY = Integer.parseInt(numStr[2*i+4]);
+                posCells[i] = new Pos(posX,posY);
+            }
+            //test
+            for(Pos p : posCells) {
+                System.out.print(p.posX+" ");
+                System.out.print(p.posY+"  ");
+            }
+            System.out.print('\n');
+            cages[count] = new KenkenCage(op,result,posCells);
+            ++count;
+        }
+
+    }
+
+    public static void main(String[] args) throws FileNotFoundException {
+        /*
+        Scanner scanner = new Scanner(System.in);
+        int size = chooseSize(scanner);
+        TypeDificult dif = chooseDifficulty(scanner);
+        HashSet<TypeOperation> operations = chooseOps(scanner);
+
+        Kenken kenken = new Kenken(size,operations,dif);
+        KenkenPlay kenkenPlay = new KenkenPlay(kenken);
+
+        kenkenPlay.fillKenken(0,0);
+        kenkenPlay.printKenken();
+        */
+        Main.readFile("./DATA/input.txt");
+
+    }
+
+
+}
+
+/*while (scanner.hasNextLine()) {
             int count = 0;
             int result;
             int cageSize;
@@ -126,25 +175,4 @@ public class Main {
                 System.out.print(" count:"+count+'\n');
             }
             scanner.nextLine();
-        }
-    }
-
-    public static void main(String[] args) throws FileNotFoundException {
-        /*
-        Scanner scanner = new Scanner(System.in);
-        int size = chooseSize(scanner);
-        TypeDificult dif = chooseDifficulty(scanner);
-        HashSet<TypeOperation> operations = chooseOps(scanner);
-
-        Kenken kenken = new Kenken(size,operations,dif);
-        KenkenPlay kenkenPlay = new KenkenPlay(kenken);
-
-        kenkenPlay.fillKenken(0,0);
-        kenkenPlay.printKenken();
-        */
-        readFile("./DATA/input.txt");
-
-    }
-
-
-}
+        }*/

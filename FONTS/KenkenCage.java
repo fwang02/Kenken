@@ -13,14 +13,16 @@ class Pos {
 }
 
 public class KenkenCage {
-    private final ArrayList<Pos> cells;
+    private final Pos[] posCells;
+    private final int size;
     private final TypeOperation operation;
     private final int result;
     private boolean allLocked;
     private Kenken k;
 
     KenkenCage() {
-        cells = new ArrayList<>();
+        posCells = null;
+        size = 0;
         operation = null;
         k = null;
         result = 0;
@@ -29,17 +31,31 @@ public class KenkenCage {
 
     KenkenCage(Kenken k, TypeOperation operation, int result) {
         this.k = k;
-        cells = new ArrayList<>();
+        posCells = null;
+        size = 0;
         this.operation = operation;
         this.result = result;
         allLocked = false;
     }
 
+    KenkenCage(TypeOperation operation, int result, Pos[] posCells) {
+        this.operation = operation;
+        this.result = result;
+        this.posCells = posCells;
+        size = posCells.length;
+        allLocked = false;
+        k = null;
+    }
+
+
+
 
     public boolean isCageValid() {
+        assert posCells != null;
+        assert k != null;
         if(operation == TypeOperation.ADD) {
             int sum = 0;
-            for (Pos pos_cell : cells) {
+            for (Pos pos_cell : posCells) {
                 if (k.getCell(pos_cell).isLocked()) {
                     sum += k.getCell(pos_cell).getValue();
                 }
@@ -47,10 +63,10 @@ public class KenkenCage {
             if(allLocked) return result == sum;
             else return result > sum;
         } else if (operation == TypeOperation.SUB) {
-            if(allLocked) return abs(k.getCell(cells.get(0)).getValue() - k.getCell(cells.get(1)).getValue()) == result;
+            if(allLocked) return abs(k.getCell(posCells[0]).getValue() - k.getCell(posCells[1]).getValue()) == result;
         } else if (operation == TypeOperation.MULT) {
             int mult = 1;
-            for (Pos pos_cell : cells) {
+            for (Pos pos_cell : posCells) {
                 if(k.getCell(pos_cell).isLocked()) {
                     mult = mult * k.getCell(pos_cell).getValue();
                 }
@@ -59,16 +75,16 @@ public class KenkenCage {
             else return result > mult;
         } else if (operation == TypeOperation.DIV) {
             if(allLocked) {
-                if(k.getCell(cells.get(0)).getValue() > k.getCell(cells.get(1)).getValue()) return k.getCell(cells.get(0)).getValue() / k.getCell(cells.get(1)).getValue() == result;
-                else return k.getCell(cells.get(1)).getValue() / k.getCell(cells.get(0)).getValue() == result;
+                if(k.getCell(posCells[0]).getValue() > k.getCell(posCells[1]).getValue()) return k.getCell(posCells[0]).getValue() / k.getCell(posCells[1]).getValue() == result;
+                else return k.getCell(posCells[1]).getValue() / k.getCell(posCells[0]).getValue() == result;
             }
         } else if (operation == TypeOperation.MOD) {
             if(allLocked) {
-                return k.getCell(cells.get(0)).getValue() % k.getCell(cells.get(1)).getValue() == result || k.getCell(cells.get(1)).getValue() % k.getCell(cells.get(0)).getValue() == result;
+                return k.getCell(posCells[0]).getValue() % k.getCell(posCells[1]).getValue() == result || k.getCell(posCells[1]).getValue() % k.getCell(posCells[0]).getValue() == result;
             }
         } else if (operation == TypeOperation.POW) {
             if(allLocked) {
-                return pow(k.getCell(cells.get(0)).getValue(),k.getCell(cells.get(1)).getValue()) == result || pow(k.getCell(cells.get(1)).getValue(),k.getCell(cells.get(0)).getValue()) == result;
+                return pow(k.getCell(posCells[0]).getValue(),k.getCell(posCells[1]).getValue()) == result || pow(k.getCell(posCells[1]).getValue(),k.getCell(posCells[0]).getValue()) == result;
             }
         }
         return true;

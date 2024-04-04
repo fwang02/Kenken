@@ -90,6 +90,8 @@ public class KenkenCage {
         return true;
     }
 
+
+
     public int getCageSize() {      //@javi, la he añadido para poder consultar el tamaño de la cage
         return size;
     }

@@ -1,6 +1,7 @@
 import java.util.*;
 import java.io.*;
 
+
 public class KenkenPlay  {
 
 	private Kenken k;
@@ -10,16 +11,17 @@ public class KenkenPlay  {
 	private int Y[] = {1,0,-1,0};
 	
 
-
 	KenkenPlay(Kenken k) {
 		this.k = k;
 	}
+
 
 	private boolean check(int tmp, int row, int col) {
 		if(!k.rowCheck(row, tmp)) return false;
 		else if(!k.colCheck(col, tmp)) return false;
 		else return true;
 	}
+
 
 	public void fillKenken(int i, int j) {
 		if (i == k.getSize()) {end = true;}
@@ -44,14 +46,15 @@ public class KenkenPlay  {
 		}
 	}
 
+
 	public void dificultCells() {
 		indiv_cells = 0;
 		switch(k.getDificult()) {
 			case EASY:
-				indiv_cells = (int)(k.getSize() * k.getSize() * 0.5);
+				indiv_cells = (int)(k.getSize() * k.getSize() * 0.4);
 				break;
 			case MEDIUM:
-				indiv_cells = (int)(k.getSize() * k.getSize() * 0.3);
+				indiv_cells = (int)(k.getSize() * k.getSize() * 0.2);
 				break;
 			case HARD:
 				indiv_cells = (int)(k.getSize() * k.getSize() * 0.1);
@@ -74,9 +77,44 @@ public class KenkenPlay  {
 		}
 	}
 
-	
+
 	public void fillCages() {
 
+		ArrayList<KenkenCell> cageCells;
+		double prob_to_stop = 0.0;
+
+		for(int i = 0; i < k.getSize(); ++i) {
+			for(int j = 0; j < k.getSize(); ++j) {
+				if(!k.AlreadyInCage(i, j)) {
+					k.getCell(i,j).setLocked();
+					cageCells = new ArrayList<KenkenCell>();
+					KenkenCell aux = k.getCell(i,j);
+					cageCells.add(aux);
+
+					while((prob_to_stop < new Random().nextDouble()) && cageCells.size() < 4) {
+
+						int m = new Random().nextInt(4);
+						int x = cageCells.get(cageCells.size()-1).getPosX() + X[m];  
+						int y = cageCells.get(cageCells.size()-1).getPosY() + Y[m];
+
+						if(x < k.getSize() && x >= 0 && y < k.getSize() && y >= 0 && !k.AlreadyInCage(x, y)) {
+							k.getCell(x,y).setLocked();
+							aux = k.getCell(x, y);
+							cageCells.add(aux);
+						}
+						prob_to_stop += 0.001;
+					}
+
+					int s = cageCells.size();
+					Pos[] cageCellsPos = new Pos[s];
+					for(int ii = 0; ii < s; ++ii) {
+						cageCellsPos[ii] = new Pos(cageCells.get(ii).getPosX(), cageCells.get(ii).getPosY());
+					}
+
+					k.addCage(TypeOperation.ADD, 0, cageCellsPos);
+				}
+			}
+		}
 	}
 	
 
@@ -89,17 +127,21 @@ public class KenkenPlay  {
 			System.out.print("\n");
 		}
 
+
 		System.out.print("\n");
 		System.out.print("###################################\n");
 		System.out.print("\n");
 
+
 		ArrayList<KenkenCage> print_cages = new ArrayList<KenkenCage>();
 		print_cages = k.getCages();
 		for(int i = 0; i < print_cages.size(); ++i) {
+			System.out.print("Cage: ");
 			for(int j = 0; j < print_cages.get(i).getCageSize(); ++j) {
 				System.out.print(print_cages.get(i).getPos(j).posX + " ");
-				System.out.println(print_cages.get(i).getPos(j).posY);
+				System.out.print(print_cages.get(i).getPos(j).posY + " // ");
 			}
+			System.out.print("\n");
 		}
 
 	}

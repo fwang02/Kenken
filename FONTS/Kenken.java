@@ -3,13 +3,13 @@ import java.util.HashSet;
 
 public class Kenken {
     private final int size;
-    private final HashSet<TypeOperation> operations;
-    private final ArrayList<KenkenCage> cages;
-    private ArrayList<KenkenCell> cells;
-    private final TypeDificult dificult;
     private String name;
-
-
+    private final TypeDificult dificult;
+    private final HashSet<TypeOperation> operations;
+    private ArrayList<KenkenCage> cages;
+    private ArrayList<KenkenCell> cells;
+    
+    
     Kenken(){
         this.dificult = TypeDificult.MEDIUM;
         size = 0;
@@ -35,6 +35,10 @@ public class Kenken {
         this.name = name;
     }
 
+    public TypeDificult getDificult() {
+        return dificult;
+    }
+
     public int getSize() {
         return size;
     }
@@ -42,20 +46,9 @@ public class Kenken {
     public KenkenCell getCell(int i, int j) {
         return cells.get(i*getSize()+j);
     }
+
     public KenkenCell getCell(Pos p) {
         return cells.get(p.posX*getSize()+p.posY);
-    }
-
-    
-    private void iniCells() {
-        cells = new ArrayList<KenkenCell>();
-        KenkenCell tmp = null;
-        for(int i = 0; i < size; ++i) {
-            for(int j = 0; j < size; ++j) {
-                tmp = new KenkenCell(i,j,-1, false);
-                cells.add(tmp);
-            }
-        }
     }
 
     public boolean rowCheck(int row, int val) {
@@ -72,7 +65,34 @@ public class Kenken {
         return true;
     }
 
-    /*public boolean isValid() {
+    public boolean AlreadyInCage(int x, int y) {
+        if(this.getCell(x, y).isLocked()) return true;
+        else return false;
+    }
 
-    }*/
+
+    public void addCage(TypeOperation operation, int result, Pos[] posCells) {
+        KenkenCage tmp = new KenkenCage(operation, result, posCells);
+        cages.add(tmp);
+    }
+    
+    private void iniCells() {
+        cells = new ArrayList<KenkenCell>();
+        KenkenCell tmp = null;
+        for(int i = 0; i < size; ++i) {
+            for(int j = 0; j < size; ++j) {
+                tmp = new KenkenCell(i,j,-1, false);
+                cells.add(tmp);
+            }
+        }
+    }
+
+
+
+    // FUNCTIONS FOR TESTING / DEVELOPING. NOT NECESARY IN FINAL VERSION //
+
+    public ArrayList<KenkenCage> getCages() {
+        return cages;
+    }
+
 }

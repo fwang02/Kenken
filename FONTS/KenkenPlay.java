@@ -5,6 +5,11 @@ public class KenkenPlay  {
 
 	private Kenken k;
 	private boolean end = false;
+	private int indiv_cells;
+	private int X[] = {0,1,0,-1};
+	private int Y[] = {1,0,-1,0};
+	
+
 
 	KenkenPlay(Kenken k) {
 		this.k = k;
@@ -34,10 +39,49 @@ public class KenkenPlay  {
 					fillKenken(i, j+1);
 				}
 			}
+
 			if (!end) {k.getCell(i,j).setValue(-1);}
 		}
 	}
 
+	public void dificultCells() {
+		indiv_cells = 0;
+		System.out.println("Estoy aqui");
+		switch(k.getDificult()) {
+			case EASY:
+				indiv_cells = (int)(k.getSize() * k.getSize() * 0.5);
+				break;
+			case MEDIUM:
+				indiv_cells = (int)(k.getSize() * k.getSize() * 0.3);
+				break;
+			case HARD:
+				indiv_cells = (int)(k.getSize() * k.getSize() * 0.1);
+				break;
+			case EXPERT:
+				indiv_cells = 0;
+				break;
+		}
+		System.out.println(indiv_cells);
+		for(int c = 0; c < indiv_cells; ++c) {
+			int tmp_x = new Random().nextInt(k.getSize());
+			int tmp_y = new Random().nextInt(k.getSize());
+
+			while(k.AlreadyInCage(tmp_x, tmp_y)) {
+				tmp_x = new Random().nextInt(k.getSize());
+				tmp_y = new Random().nextInt(k.getSize());
+			}
+			Pos[] tmp_p = {new Pos(tmp_x, tmp_y)};
+			k.getCell(tmp_x, tmp_y).setLocked();
+			System.out.print(tmp_x + "\n");
+			k.addCage(TypeOperation.ADD, k.getCell(tmp_x, tmp_y).getValue(), tmp_p);
+		}
+	}
+
+	/*
+	public void fillCages() {
+
+	}
+	*/
 
 	public void printKenken () {
 		System.out.println("Kenken");
@@ -47,5 +91,26 @@ public class KenkenPlay  {
 			}
 			System.out.print("\n");
 		}
+
+		System.out.print("\n");
+		System.out.print("###################################\n");
+		System.out.print("\n");
+
+		ArrayList<KenkenCage> print_cages = new ArrayList<KenkenCage>();
+		print_cages = k.getCages();
+		for(int i = 0; i < print_cages.size(); ++i) {
+			for(int j = 0; j < print_cages.get(i).getCageSize(); ++j) {
+				System.out.print(print_cages.get(i).getPos(j).posX);
+				System.out.print(print_cages.get(i).getPos(j).posY + "\n");
+			}
+		}
+
+	}
+
+	public void generateKenken() {
+		fillKenken(0,0);
+		dificultCells();
+		//fillCages();
+		printKenken();
 	}
 }

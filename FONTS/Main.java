@@ -130,7 +130,6 @@ public class Main {
     }
 
     public static void main(String[] args) throws FileNotFoundException {
-        /*
         Scanner scanner = new Scanner(System.in);
         int size = chooseSize(scanner);
         TypeDificult dif = chooseDifficulty(scanner);
@@ -139,11 +138,10 @@ public class Main {
         Kenken kenken = new Kenken(size,operations,dif);
         KenkenPlay kenkenPlay = new KenkenPlay(kenken);
 
-        kenkenPlay.fillKenken(0,0);
-        kenkenPlay.printKenken();
-        */
+        kenkenPlay.generateKenken();
+        /*
         Main.readFile("./DATA/input.txt");
-
+        */
     }
 
 

@@ -46,7 +46,6 @@ public class KenkenPlay  {
 
 	public void dificultCells() {
 		indiv_cells = 0;
-		System.out.println("Estoy aqui");
 		switch(k.getDificult()) {
 			case EASY:
 				indiv_cells = (int)(k.getSize() * k.getSize() * 0.5);
@@ -61,7 +60,6 @@ public class KenkenPlay  {
 				indiv_cells = 0;
 				break;
 		}
-		System.out.println(indiv_cells);
 		for(int c = 0; c < indiv_cells; ++c) {
 			int tmp_x = new Random().nextInt(k.getSize());
 			int tmp_y = new Random().nextInt(k.getSize());
@@ -72,16 +70,15 @@ public class KenkenPlay  {
 			}
 			Pos[] tmp_p = {new Pos(tmp_x, tmp_y)};
 			k.getCell(tmp_x, tmp_y).setLocked();
-			System.out.print(tmp_x + "\n");
 			k.addCage(TypeOperation.ADD, k.getCell(tmp_x, tmp_y).getValue(), tmp_p);
 		}
 	}
 
-	/*
+	
 	public void fillCages() {
 
 	}
-	*/
+	
 
 	public void printKenken () {
 		System.out.println("Kenken");
@@ -100,8 +97,8 @@ public class KenkenPlay  {
 		print_cages = k.getCages();
 		for(int i = 0; i < print_cages.size(); ++i) {
 			for(int j = 0; j < print_cages.get(i).getCageSize(); ++j) {
-				System.out.print(print_cages.get(i).getPos(j).posX);
-				System.out.print(print_cages.get(i).getPos(j).posY + "\n");
+				System.out.print(print_cages.get(i).getPos(j).posX + " ");
+				System.out.println(print_cages.get(i).getPos(j).posY);
 			}
 		}
 
@@ -110,7 +107,7 @@ public class KenkenPlay  {
 	public void generateKenken() {
 		fillKenken(0,0);
 		dificultCells();
-		//fillCages();
+		fillCages();
 		printKenken();
 	}
 }

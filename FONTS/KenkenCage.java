@@ -19,9 +19,9 @@ public class KenkenCage {
     private int result;
     private boolean allLocked;
     private Kenken k;
-
     private boolean locked;     //@javi, hola feiyang. he añadido esto pq no se si podia utilizar otra. Es basicamente para: como primero creo las regiones de casillas individuales
                                 //y despues las regiones totales, para no volver a asignarles un resultado y operacion ya que ya lo tienen.
+                                //VIGILA PQ LA CREACIÓN DE CASILLAS DEPENDEN DE ESTE BOOL
 
     KenkenCage() {
         posCells = null;
@@ -30,7 +30,6 @@ public class KenkenCage {
         k = null;
         result = 0;
         allLocked = false;
-
         locked = false;
     }
 
@@ -41,7 +40,6 @@ public class KenkenCage {
         this.operation = operation;
         this.result = result;
         allLocked = false;
-
         locked = false;
     }
 
@@ -52,7 +50,6 @@ public class KenkenCage {
         size = posCells.length;
         allLocked = false;
         k = null;
-
         locked = false;
     }
 

@@ -11,6 +11,7 @@ public class KenkenCell {
         valor = -1;
         locked = false;
     }
+    
     KenkenCell(int posX,int posY,int valor, boolean locked) {
         this.posX = posX;
         this.posY = posY;

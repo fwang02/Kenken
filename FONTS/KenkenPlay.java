@@ -8,8 +8,8 @@ public class KenkenPlay  {
 	private boolean end;
 	private int X[] = {0,1,0,-1};
 	private int Y[] = {1,0,-1,0};
-	ArrayList<TypeOperation> two_cell_operator;
-	ArrayList<TypeOperation> more_cell_operator;
+	private ArrayList<TypeOperation> two_cell_operator;
+	private ArrayList<TypeOperation> more_cell_operator;
 
 
 	KenkenPlay(Kenken k) {
@@ -27,7 +27,7 @@ public class KenkenPlay  {
 	}
 
 
-	public void fillKenken(int i, int j) {
+	private void fillKenken(int i, int j) {
 		if (i == k.getSize()) {end = true;}
 		else if (j == k.getSize()) {fillKenken(i+1, 0);}
 		else if (k.getCell(i,j).getValue() != -1) {fillKenken(i, j+1);}
@@ -51,7 +51,7 @@ public class KenkenPlay  {
 	}
 
 
-	public void filldificultCells() {
+	private void filldificultCells() {
 		int indiv_cells = 0;
 		switch(k.getDificult()) {
 			case EASY:
@@ -82,7 +82,7 @@ public class KenkenPlay  {
 	}
 
 
-	public void fillCages() {
+	private void fillCages() {
 
 		ArrayList<KenkenCell> cageCells;
 		double prob_to_stop_4 = 0.0;
@@ -123,7 +123,7 @@ public class KenkenPlay  {
 		}
 	}
 
-	public void check_operations(HashSet<TypeOperation> current) {
+	private void check_operations(HashSet<TypeOperation> current) {
 		if(current.contains(TypeOperation.ADD)) {more_cell_operator.add(TypeOperation.ADD);}
 		if(current.contains(TypeOperation.MULT)) {more_cell_operator.add(TypeOperation.MULT);}
 		if(current.contains(TypeOperation.SUB))	{two_cell_operator.add(TypeOperation.SUB);}
@@ -133,7 +133,7 @@ public class KenkenPlay  {
 	}
 
 
-	public void fillCagesResult() {
+	private void fillCagesResult() {
 		check_operations(k.getOperations());
 		int v1 ,v2, v3, v4 = 0;
 		for(int i = 0; i < k.getCages().size(); ++i) {
@@ -241,9 +241,9 @@ public class KenkenPlay  {
 	}
 	
 
-	public void printKenken () {
+	private void printKenken () {
 
-		// THIS FUNCTION IS FOR TESTING AND SEE RESULTS //
+		// THIS FUNCTION IS FOR TESTING AND SEEING RESULTS //
 
 		System.out.println("Kenken");
 		for (int i = 0; i < k.getSize(); ++i) {

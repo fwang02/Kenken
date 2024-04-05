@@ -5,14 +5,18 @@ import java.io.*;
 public class KenkenPlay  {
 
 	private Kenken k;
-	private boolean end = false;
-	private int indiv_cells;
+	private boolean end;
 	private int X[] = {0,1,0,-1};
 	private int Y[] = {1,0,-1,0};
-	
+	ArrayList<TypeOperation> two_cell_operator;
+	ArrayList<TypeOperation> more_cell_operator;
+
 
 	KenkenPlay(Kenken k) {
 		this.k = k;
+		this.end = false;
+		two_cell_operator = new ArrayList<TypeOperation>();
+		more_cell_operator = new ArrayList<TypeOperation>();
 	}
 
 
@@ -47,17 +51,17 @@ public class KenkenPlay  {
 	}
 
 
-	public void dificultCells() {
-		indiv_cells = 0;
+	public void filldificultCells() {
+		int indiv_cells = 0;
 		switch(k.getDificult()) {
 			case EASY:
-				indiv_cells = (int)(k.getSize() * k.getSize() * 0.4);
+				indiv_cells = (int)(k.getSize() * k.getSize() * 0.45);
 				break;
 			case MEDIUM:
-				indiv_cells = (int)(k.getSize() * k.getSize() * 0.2);
+				indiv_cells = (int)(k.getSize() * k.getSize() * 0.25);
 				break;
 			case HARD:
-				indiv_cells = (int)(k.getSize() * k.getSize() * 0.1);
+				indiv_cells = (int)(k.getSize() * k.getSize() * 0.15);
 				break;
 			case EXPERT:
 				indiv_cells = 0;
@@ -73,7 +77,7 @@ public class KenkenPlay  {
 			}
 			Pos[] tmp_p = {new Pos(tmp_x, tmp_y)};
 			k.getCell(tmp_x, tmp_y).setLocked();
-			k.addCage(TypeOperation.ADD, k.getCell(tmp_x, tmp_y).getValue(), tmp_p);
+			k.addLockedCage(TypeOperation.ADD, k.getCell(tmp_x, tmp_y).getValue(), tmp_p);
 		}
 	}
 
@@ -81,7 +85,8 @@ public class KenkenPlay  {
 	public void fillCages() {
 
 		ArrayList<KenkenCell> cageCells;
-		double prob_to_stop = 0.0;
+		double prob_to_stop_4 = 0.0;
+		double prob_to_stop_2 = 0.0;
 
 		for(int i = 0; i < k.getSize(); ++i) {
 			for(int j = 0; j < k.getSize(); ++j) {
@@ -91,7 +96,7 @@ public class KenkenPlay  {
 					KenkenCell aux = k.getCell(i,j);
 					cageCells.add(aux);
 
-					while((prob_to_stop < new Random().nextDouble()) && cageCells.size() < 4) {
+					while(((prob_to_stop_2 < new Random().nextDouble()) && cageCells.size() < 2) || ((prob_to_stop_4 < new Random().nextDouble()) && cageCells.size() < 4)) {
 
 						int m = new Random().nextInt(4);
 						int x = cageCells.get(cageCells.size()-1).getPosX() + X[m];  
@@ -102,7 +107,8 @@ public class KenkenPlay  {
 							aux = k.getCell(x, y);
 							cageCells.add(aux);
 						}
-						prob_to_stop += 0.001;
+						prob_to_stop_4 += 0.01;
+						prob_to_stop_2 += 0.001;
 					}
 
 					int s = cageCells.size();
@@ -116,9 +122,129 @@ public class KenkenPlay  {
 			}
 		}
 	}
+
+	public void check_operations(HashSet<TypeOperation> current) {
+		if(current.contains(TypeOperation.ADD)) {more_cell_operator.add(TypeOperation.ADD);}
+		if(current.contains(TypeOperation.MULT)) {more_cell_operator.add(TypeOperation.MULT);}
+		if(current.contains(TypeOperation.SUB))	{two_cell_operator.add(TypeOperation.SUB);}
+		if(current.contains(TypeOperation.DIV)) {two_cell_operator.add(TypeOperation.DIV);}
+		if(current.contains(TypeOperation.POW)) {two_cell_operator.add(TypeOperation.POW);}
+		if(current.contains(TypeOperation.MOD)) {two_cell_operator.add(TypeOperation.MOD);}
+	}
+
+
+	public void fillCagesResult() {
+		check_operations(k.getOperations());
+		int v1 ,v2, v3, v4 = 0;
+		for(int i = 0; i < k.getCages().size(); ++i) {
+			if(!k.getCages().get(i).isLocked()) {
+				switch(k.getCages().get(i).getCageSize()) {
+					case 1:
+						k.getCages().get(i).setOperation(TypeOperation.ADD);
+						int result_add = k.getCell(k.getCages().get(i).getPos(0)).getValue();
+						k.getCages().get(i).setResult(result_add);
+						break;
+					case 2:
+						int pos_2 = new Random().nextInt(two_cell_operator.size());
+						TypeOperation operator = two_cell_operator.get(pos_2);
+						v1 = k.getCell(k.getCages().get(i).getPos(0)).getValue();
+						v2 = k.getCell(k.getCages().get(i).getPos(1)).getValue();
+						switch(operator) {
+							case SUB:
+								k.getCages().get(i).setOperation(TypeOperation.SUB);
+								int result_sub = Math.abs(v1 - v2);
+								k.getCages().get(i).setResult(result_sub);
+								break;
+
+							case DIV:
+								k.getCages().get(i).setOperation(TypeOperation.DIV);
+								int result1_div = v1/v2;
+								int result2_div = v2/v1;
+								if(result1_div >= 1 && (v1%v2)==0) {
+									k.getCages().get(i).setResult(result1_div);
+								}
+								else {
+									k.getCages().get(i).setResult(result2_div);
+								}
+								break;
+
+							case POW:
+								k.getCages().get(i).setOperation(TypeOperation.POW);
+								int result_pow = (int)Math.pow(v1, v2);
+								k.getCages().get(i).setResult(result_pow);
+								break;
+
+							case MOD:
+								k.getCages().get(i).setOperation(TypeOperation.MOD);
+								int result1_mod = v1%v2;
+								int result2_mod = v2%v1;
+								if(result1_mod != 0) {
+									k.getCages().get(i).setResult(result1_mod);
+								}
+								else {
+									k.getCages().get(i).setResult(result2_mod);
+								}
+								break;
+							default:
+								break;
+						}
+						break; 
+					case 3:
+						int pos_3 = new Random().nextInt(more_cell_operator.size());
+						TypeOperation operator_3 = more_cell_operator.get(pos_3);
+						v1 = k.getCell(k.getCages().get(i).getPos(0)).getValue();
+						v2 = k.getCell(k.getCages().get(i).getPos(1)).getValue();
+						v3 = k.getCell(k.getCages().get(i).getPos(2)).getValue();
+						switch(operator_3) {
+							case ADD:
+								k.getCages().get(i).setOperation(TypeOperation.ADD);
+								int result_add_3 = v1+v2+v3;
+								k.getCages().get(i).setResult(result_add_3);
+								break;
+
+							case MULT:
+								k.getCages().get(i).setOperation(TypeOperation.MULT);
+								int result_mult_3 = v1*v2*v3;
+								k.getCages().get(i).setResult(result_mult_3);
+								break;
+						}
+						break;
+					case 4:
+						int pos_4 = new Random().nextInt(more_cell_operator.size());
+						TypeOperation operator_4 = more_cell_operator.get(pos_4);
+						v1 = k.getCell(k.getCages().get(i).getPos(0)).getValue();
+						v2 = k.getCell(k.getCages().get(i).getPos(1)).getValue();
+						v3 = k.getCell(k.getCages().get(i).getPos(2)).getValue();
+						v4 = k.getCell(k.getCages().get(i).getPos(3)).getValue();
+						switch(operator_4) {
+							case ADD:
+								k.getCages().get(i).setOperation(TypeOperation.ADD);
+								int result_add_4 = v1+v2+v3+v4;
+								k.getCages().get(i).setResult(result_add_4);
+								break;
+
+							case MULT:
+								k.getCages().get(i).setOperation(TypeOperation.MULT);
+								int result_mult_4 = v1*v2*v3*v4;
+								k.getCages().get(i).setResult(result_mult_4);
+								break;
+							default:
+								break;
+						}
+						break;		
+					default:
+						break;
+				}
+			}
+		}
+
+	}
 	
 
 	public void printKenken () {
+
+		// THIS FUNCTION IS FOR TESTING AND SEE RESULTS //
+
 		System.out.println("Kenken");
 		for (int i = 0; i < k.getSize(); ++i) {
 			for (int j = 0; j < k.getSize(); ++j) {
@@ -127,20 +253,22 @@ public class KenkenPlay  {
 			System.out.print("\n");
 		}
 
-
 		System.out.print("\n");
-		System.out.print("###################################\n");
+		System.out.print("<--## CAGE LIST ##-->\n");
 		System.out.print("\n");
 
-
+	
 		ArrayList<KenkenCage> print_cages = new ArrayList<KenkenCage>();
 		print_cages = k.getCages();
 		for(int i = 0; i < print_cages.size(); ++i) {
-			System.out.print("Cage: ");
+			System.out.print("Cage " + i + "--> ");
+			System.out.print("Size: " + print_cages.get(i).getCageSize() + " // ");
 			for(int j = 0; j < print_cages.get(i).getCageSize(); ++j) {
 				System.out.print(print_cages.get(i).getPos(j).posX + " ");
 				System.out.print(print_cages.get(i).getPos(j).posY + " // ");
 			}
+			System.out.print(print_cages.get(i).getOperation() + " // ");
+			System.out.print(print_cages.get(i).getResult() + " // ");
 			System.out.print("\n");
 		}
 
@@ -148,8 +276,9 @@ public class KenkenPlay  {
 
 	public void generateKenken() {
 		fillKenken(0,0);
-		dificultCells();
+		filldificultCells();
 		fillCages();
+		fillCagesResult();
 		printKenken();
 	}
 }

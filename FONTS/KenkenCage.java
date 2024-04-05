@@ -15,10 +15,13 @@ class Pos {
 public class KenkenCage {
     private final Pos[] posCells;
     private final int size;
-    private final TypeOperation operation;
-    private final int result;
+    private TypeOperation operation;
+    private int result;
     private boolean allLocked;
     private Kenken k;
+
+    private boolean locked;     //@javi, hola feiyang. he añadido esto pq no se si podia utilizar otra. Es basicamente para: como primero creo las regiones de casillas individuales
+                                //y despues las regiones totales, para no volver a asignarles un resultado y operacion ya que ya lo tienen.
 
     KenkenCage() {
         posCells = null;
@@ -27,6 +30,8 @@ public class KenkenCage {
         k = null;
         result = 0;
         allLocked = false;
+
+        locked = false;
     }
 
     KenkenCage(Kenken k, TypeOperation operation, int result) {
@@ -36,6 +41,8 @@ public class KenkenCage {
         this.operation = operation;
         this.result = result;
         allLocked = false;
+
+        locked = false;
     }
 
     KenkenCage(TypeOperation operation, int result, Pos[] posCells) {
@@ -45,6 +52,8 @@ public class KenkenCage {
         size = posCells.length;
         allLocked = false;
         k = null;
+
+        locked = false;
     }
 
 
@@ -100,12 +109,32 @@ public class KenkenCage {
         return posCells[x];
     }
 
+    public void setResult(int x) {
+        result = x;
+    }
+
     public int getResult() {
         return result;
     }
 
+    public void setLocked() {   
+        locked = true;
+    }
+
+    public void setUnlocked() {
+        locked = false;
+    }
+
+    public boolean isLocked() {
+        return locked;
+    }
+
     public boolean isAllLocked() {
         return allLocked;
+    }
+
+    public void setOperation(TypeOperation operator) {
+        operation = operator;
     }
 
     public TypeOperation getOperation() {

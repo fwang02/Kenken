@@ -35,12 +35,16 @@ public class Kenken {
         this.name = name;
     }
 
+    public int getSize() {
+        return size;
+    }
+
     public TypeDificult getDificult() {
         return dificult;
     }
 
-    public int getSize() {
-        return size;
+    public HashSet<TypeOperation> getOperations() {
+        return operations;
     }
 
     public KenkenCell getCell(int i, int j) {
@@ -65,17 +69,27 @@ public class Kenken {
         return true;
     }
 
+    public ArrayList<KenkenCage> getCages() {
+        return cages;
+    }
+
+    public void addCage(TypeOperation operation, int result, Pos[] posCells) {
+        KenkenCage tmp = new KenkenCage(operation, result, posCells);
+        cages.add(tmp);
+    }
+
+    public void addLockedCage(TypeOperation operation, int result, Pos[] posCells) {
+        KenkenCage tmp = new KenkenCage(operation, result, posCells);
+        tmp.setLocked();
+        cages.add(tmp);
+    }
+
     public boolean AlreadyInCage(int x, int y) {
         if(this.getCell(x, y).isLocked()) return true;
         else return false;
     }
 
 
-    public void addCage(TypeOperation operation, int result, Pos[] posCells) {
-        KenkenCage tmp = new KenkenCage(operation, result, posCells);
-        cages.add(tmp);
-    }
-    
     private void iniCells() {
         cells = new ArrayList<KenkenCell>();
         KenkenCell tmp = null;
@@ -85,14 +99,6 @@ public class Kenken {
                 cells.add(tmp);
             }
         }
-    }
-
-
-
-    // FUNCTIONS FOR TESTING / DEVELOPING. NOT NECESARY IN FINAL VERSION //
-
-    public ArrayList<KenkenCage> getCages() {
-        return cages;
     }
 
 }

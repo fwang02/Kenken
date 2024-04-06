@@ -1,10 +1,12 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Scanner;
 
 public class Main {
+    private static final UserDB udb = UserDB.getInstance();
+    private static final Scanner sc = new Scanner(System.in);
+    private static User currentUser;
     private static TypeOperation getOperation(int num)
     {
         switch (num) {
@@ -24,7 +26,7 @@ public class Main {
                 throw new IllegalArgumentException("Carácter no válido encontrado en la cadena: " + num);
         }
     }
-    private static TypeDificult chooseDifficulty(Scanner sc)
+    private static TypeDificult chooseDifficulty()
     {
         System.out.println("Selecciona una dificultad.");
         System.out.println("1. Fácil");
@@ -55,7 +57,7 @@ public class Main {
         return dif;
     }
 
-    private static int chooseSize(Scanner sc)
+    private static int chooseSize()
     {
         System.out.println("Selecciona el tamaño del tablero (3-9).");
         int size = sc.nextInt();
@@ -63,7 +65,7 @@ public class Main {
         else System.out.println("El tamaño es: "+size+"\n");
         return size;
     }
-    private static HashSet<TypeOperation> chooseOps(Scanner sc)
+    private static HashSet<TypeOperation> chooseOps()
     {
         System.out.println("Selecciona las operaciones.");
         System.out.println("+-----------+------------+");
@@ -123,54 +125,78 @@ public class Main {
                 System.out.print(p.posY+"  ");
             }
             System.out.print('\n');
+
             cages[count] = new KenkenCage(op,result,posCells);
             ++count;
         }
+        Kenken kenken = new Kenken();
 
     }
 
-    public static void main(String[] args) throws FileNotFoundException {
-        Scanner scanner = new Scanner(System.in);
-        int size = chooseSize(scanner);
-        TypeDificult dif = chooseDifficulty(scanner);
-        HashSet<TypeOperation> operations = chooseOps(scanner);
+    private static void login() {
+        boolean loggedIn = false;
+        String username;
+        String password;
+        while(!loggedIn) {
+            System.out.println("Escribe el username:");
+            username = sc.nextLine();
+            System.out.println("Escribe la contraseña:");
+            password = sc.nextLine();
+            currentUser = udb.loginUser(username,password);
+            if(currentUser != null) loggedIn = true;
+        }
+        System.out.println("Welcome back! "+currentUser.getUsername());
+    }
+
+    private static void register() {
+        boolean registered = false;
+        String username;
+        String password;
+        while(! registered) {
+            System.out.println("Escribe un username nuevo:");
+            username = sc.nextLine();
+            if(!udb.isUserExist(username)) {
+                System.out.println("Configura la contraseña:");
+                password = sc.nextLine();
+                udb.addUser(username,password);
+                registered = true;
+            } else {
+                System.out.println("El username ya existe");
+            }
+        }
+    }
+
+    private static void loginRegister() {
+        System.out.println("Bienvenido a KenKen!");
+        System.out.println("1. Iniciar sesión");
+        System.out.println("2. Registrar");
+
+        int option = sc.nextInt();
+        sc.nextLine();
+
+        if(option == 1) login();
+        else if (option == 2) register();
+    }
+
+    public static void main(String[] args) {
+        udb.printUsers();
+        loginRegister();
+
+
+
+        /*
+        int size = chooseSize();
+        TypeDificult dif = chooseDifficulty();
+        HashSet<TypeOperation> operations = chooseOps();
 
         Kenken kenken = new Kenken(size,operations,dif);
         KenkenPlay kenkenPlay = new KenkenPlay(kenken);
 
         kenkenPlay.generateKenken();
-        /*
+
         Main.readFile("./DATA/input.txt");
         */
     }
 
 
 }
-
-/*while (scanner.hasNextLine()) {
-            int count = 0;
-            int result;
-            int cageSize;
-            TypeOperation op;
-            ArrayList<Pos> pos = new ArrayList<>();
-            while (scanner.hasNextInt()) {
-                if (count == 0) {
-                    op = getOperation(scanner.nextInt());
-                    System.out.print(op.toString() + " ");
-                } else if (count == 1) {
-                    result = scanner.nextInt();
-                    System.out.print(result + " ");
-                } else if (count == 2) {
-                    cageSize = scanner.nextInt();
-                    System.out.print(cageSize + " ");
-                } else {
-                    int posX = scanner.nextInt();
-                    int posY = scanner.nextInt();
-                    pos.add(new Pos(posX-1,posY-1));
-                    System.out.print(posX+" "+posY);
-                }
-                ++count;
-                System.out.print(" count:"+count+'\n');
-            }
-            scanner.nextLine();
-        }*/

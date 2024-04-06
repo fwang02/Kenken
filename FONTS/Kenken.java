@@ -13,8 +13,8 @@ public class Kenken {
     Kenken(){
         this.dificult = TypeDificult.MEDIUM;
         size = 0;
-        operations = new HashSet<TypeOperation>();
-        cages = new ArrayList<KenkenCage>();
+        operations = new HashSet<>();
+        cages = new ArrayList<>();
         iniCells();
     }
 
@@ -91,8 +91,8 @@ public class Kenken {
 
 
     private void iniCells() {
-        cells = new ArrayList<KenkenCell>();
-        KenkenCell tmp = null;
+        cells = new ArrayList<>();
+        KenkenCell tmp;
         for(int i = 0; i < size; ++i) {
             for(int j = 0; j < size; ++j) {
                 tmp = new KenkenCell(i,j,-1, false);

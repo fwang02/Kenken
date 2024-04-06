@@ -52,22 +52,26 @@ public class KenkenPlay  {
 
 
 	private void filldificultCells() {
+
 		int indiv_cells = 0;
+
 		switch(k.getDificult()) {
 			case EASY:
-				indiv_cells = (int)(k.getSize() * k.getSize() * 0.45);
+				indiv_cells = (int)(k.getSize() * k.getSize() * 0.30);
 				break;
 			case MEDIUM:
-				indiv_cells = (int)(k.getSize() * k.getSize() * 0.25);
+				indiv_cells = (int)(k.getSize() * k.getSize() * 0.15);
 				break;
 			case HARD:
-				indiv_cells = (int)(k.getSize() * k.getSize() * 0.15);
+				indiv_cells = (int)(k.getSize() * k.getSize() * 0.05);
 				break;
 			case EXPERT:
 				indiv_cells = 0;
 				break;
 		}
+
 		for(int c = 0; c < indiv_cells; ++c) {
+
 			int tmp_x = new Random().nextInt(k.getSize());
 			int tmp_y = new Random().nextInt(k.getSize());
 
@@ -91,6 +95,7 @@ public class KenkenPlay  {
 		for(int i = 0; i < k.getSize(); ++i) {
 			for(int j = 0; j < k.getSize(); ++j) {
 				if(!k.AlreadyInCage(i, j)) {
+					
 					k.getCell(i,j).setLocked();
 					cageCells = new ArrayList<KenkenCell>();
 					KenkenCell aux = k.getCell(i,j);
@@ -108,7 +113,7 @@ public class KenkenPlay  {
 							cageCells.add(aux);
 						}
 						prob_to_stop_4 += 0.01;
-						prob_to_stop_2 += 0.001;
+						prob_to_stop_2 += 0.0001;
 					}
 
 					int s = cageCells.size();

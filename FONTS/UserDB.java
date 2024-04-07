@@ -13,14 +13,9 @@ public class UserDB {
     private static final String filePath = "./DATA/users.txt";
 
 
-    private UserDB()
-    {
+    private UserDB() {
         users = new HashMap<>();
         loadUserData();
-    }
-
-    public static UserDB getInstance() {
-        return userDB;
     }
 
     private void loadUserData() {
@@ -54,6 +49,10 @@ public class UserDB {
         }
     }
 
+    public static UserDB getInstance() {
+        return userDB;
+    }
+
     public void addUser(String username, String password) {
         users.put(username,new User(username,password));
         writeToFile(username);
@@ -78,6 +77,10 @@ public class UserDB {
 
     public User getUser(String username) {
         return users.get(username);
+    }
+
+    protected HashMap<String,User> getUsers() {
+        return users;
     }
 
     public void printUsers() {

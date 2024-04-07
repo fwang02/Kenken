@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 public class Main {
     private static final UserDB udb = UserDB.getInstance();
+    private static final Ranking ranking = Ranking.getInstance();
     private static final Scanner sc = new Scanner(System.in);
     private static User currentUser;
     private static TypeOperation getOperation(int num)
@@ -133,54 +134,95 @@ public class Main {
 
     }
 
-    private static void login() {
-        boolean loggedIn = false;
+    private static boolean login() {
         String username;
         String password;
-        while(!loggedIn) {
-            System.out.println("Escribe el username:");
-            username = sc.nextLine();
-            System.out.println("Escribe la contraseña:");
-            password = sc.nextLine();
-            currentUser = udb.loginUser(username,password);
-            if(currentUser != null) loggedIn = true;
-        }
+
+        System.out.println("Escribe el username:");
+        username = sc.nextLine();
+        System.out.println("Escribe la contraseña:");
+        password = sc.nextLine();
+        currentUser = udb.loginUser(username,password);
+        if(currentUser == null) return false;
+
         System.out.println("Welcome back! "+currentUser.getUsername());
+        return true;
     }
 
-    private static void register() {
-        boolean registered = false;
+    private static boolean register() {
         String username;
         String password;
-        while(! registered) {
-            System.out.println("Escribe un username nuevo:");
-            username = sc.nextLine();
-            if(!udb.isUserExist(username)) {
-                System.out.println("Configura la contraseña:");
-                password = sc.nextLine();
-                udb.addUser(username,password);
-                registered = true;
-            } else {
-                System.out.println("El username ya existe");
-            }
+        System.out.println("Escribe un username nuevo:");
+        username = sc.nextLine();
+
+        if(udb.isUserExist(username)) {
+            System.out.println("El username ya existe");
+            return false;
         }
+
+        System.out.println("Configura la contraseña:");
+        password = sc.nextLine();
+        udb.addUser(username,password);
+        System.out.println("El usuario: "+username+" está registrado");
+        return true;
     }
 
-    private static void loginRegister() {
+    private static boolean firstOptions() {
+        System.out.print('\n');
         System.out.println("Bienvenido a KenKen!");
         System.out.println("1. Iniciar sesión");
         System.out.println("2. Registrar");
+        System.out.println("3. Ranking");
+        System.out.print('\n');
 
         int option = sc.nextInt();
         sc.nextLine();
 
-        if(option == 1) login();
-        else if (option == 2) register();
+        switch (option) {
+            case 1:
+                return login();
+            case 2:
+                return register();
+            case 3:
+                ranking.showRanking();
+                return false;
+        }
+        return false;
     }
+
+    /* todovia no está implementada, no me quedo muy claro cómo mostrar los opciones
+    private static boolean gamePlayOption() {
+        System.out.print('\n');
+        System.out.println("1. Crear uno nuevo");
+        System.out.println("2. Importar desde un fichero");
+        System.out.println("3. Registrar");
+        System.out.println("3. Ranking");
+        System.out.print('\n');
+
+        int option = sc.nextInt();
+        sc.nextLine();
+
+        switch (option) {
+            case 1:
+                return login();
+            case 2:
+                return register();
+            case 3:
+                ranking.showRanking();
+                return false;
+        }
+        return false;
+    }
+     */
 
     public static void main(String[] args) {
         udb.printUsers();
-        loginRegister();
+        boolean firstPage = false;
+        while(!firstPage) {
+            firstPage = firstOptions();
+        }
+        boolean secondPage = false;
+
 
 
 

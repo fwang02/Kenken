@@ -216,17 +216,19 @@ public class Main {
      */
 
     public static void main(String[] args) {
+
+        /*
         udb.printUsers();
         boolean firstPage = false;
         while(!firstPage) {
             firstPage = firstOptions();
         }
         boolean secondPage = false;
+        */
 
 
 
 
-        /*
         int size = chooseSize();
         TypeDificult dif = chooseDifficulty();
         HashSet<TypeOperation> operations = chooseOps();
@@ -236,6 +238,7 @@ public class Main {
 
         kenkenPlay.generateKenken();
 
+        /*
         Main.readFile("./DATA/input.txt");
         */
     }

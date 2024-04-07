@@ -8,7 +8,16 @@ public class Kenken {
     private final HashSet<TypeOperation> operations;
     private ArrayList<KenkenCage> cages;
     private ArrayList<KenkenCell> cells;
-    
+
+
+    Kenken(Kenken k) {
+        this.size = k.getSize();
+        this.name = k.getName();
+        this.dificult = k.getDificult();
+        this.operations = k.getOperations();
+        this.cages = new ArrayList<KenkenCage>(k.getCages());
+        this.cells = new ArrayList<KenkenCell>(k.getCells());
+    }
     
     Kenken(){
         this.dificult = TypeDificult.MEDIUM;
@@ -24,6 +33,7 @@ public class Kenken {
         this.dificult = dificult;
         cages = new ArrayList<KenkenCage>();
         iniCells();
+        this.name = null;
     }
 
     Kenken(int size, HashSet<TypeOperation> operations, TypeDificult dificult, String name){
@@ -33,6 +43,10 @@ public class Kenken {
         cages = new ArrayList<KenkenCage>();
         iniCells();
         this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public int getSize() {
@@ -45,6 +59,10 @@ public class Kenken {
 
     public HashSet<TypeOperation> getOperations() {
         return operations;
+    }
+
+    public ArrayList<KenkenCell> getCells() {
+        return cells;
     }
 
     public KenkenCell getCell(int i, int j) {
@@ -95,7 +113,7 @@ public class Kenken {
         KenkenCell tmp;
         for(int i = 0; i < size; ++i) {
             for(int j = 0; j < size; ++j) {
-                tmp = new KenkenCell(i,j,-1, false);
+                tmp = new KenkenCell(i,j,0, false);
                 cells.add(tmp);
             }
         }

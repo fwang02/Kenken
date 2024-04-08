@@ -6,7 +6,6 @@ public class KenkenPlay  {
 
 	private Kenken k;
 	private Kenken k_play;
-
 	private boolean end;
 	private ArrayList<TypeOperation> two_cell_operator;
 	private ArrayList<TypeOperation> more_cell_operator;
@@ -16,7 +15,7 @@ public class KenkenPlay  {
 
 	KenkenPlay(Kenken kk) {
 		k = kk;
-		k_play = null;
+		k_play = new Kenken(k.getSize(), k.getOperations(), k.getDificult());
 		end = false;
 		two_cell_operator = new ArrayList<TypeOperation>();
 		more_cell_operator = new ArrayList<TypeOperation>();
@@ -305,8 +304,6 @@ public class KenkenPlay  {
 		fillCages();
 		fillCagesResult();
 		printKenken();
-
-		k_play = new Kenken(k.getSize(), k.getOperations(), k.getDificult());
 
 		KenkenPlaySolver kps = new KenkenPlaySolver(k, k_play);
 		kps.start();

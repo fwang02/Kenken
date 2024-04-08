@@ -233,12 +233,14 @@ public class Main {
         TypeDificult dif = chooseDifficulty();
         HashSet<TypeOperation> operations = chooseOps();
 
+        //UN KENKEN COMO SOLUCION Y OTRO COMO CAMPO DE JUEGO
         Kenken solution = new Kenken(size,operations,dif);
         Kenken playground = new Kenken(size,operations,dif);
 
         KenkenPlay kenkenPlay = new KenkenPlay(solution);
         kenkenPlay.generateKenken();
 
+        // COMANDOS PARA JUGAR
         KenkenPlaySolver kps = new KenkenPlaySolver(solution, playground);
         kps.start();
 

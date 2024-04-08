@@ -19,6 +19,7 @@ public class KenkenPlaySolver {
 
 	private void insertNumber(int x, int y, int v) {
 		if (x > playground.getSize()-1 || y > playground.getSize()-1 || x < 0 || y < 0) System.out.print("Porfavor, inserte coordenadas validas");
+		else if (v > playground.getSize() || v < 1) System.out.print("Porfavor, inserte valores entre 1 i " + playground.getSize());
 		else {
 			playground.getCell(x, y).setValue(v);
 		}

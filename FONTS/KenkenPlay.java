@@ -303,9 +303,5 @@ public class KenkenPlay  {
 		filldificultCells();
 		fillCages();
 		fillCagesResult();
-		printKenken();
-
-		KenkenPlaySolver kps = new KenkenPlaySolver(k, k_play);
-		kps.start();
 	}
 }

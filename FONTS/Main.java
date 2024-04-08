@@ -233,10 +233,14 @@ public class Main {
         TypeDificult dif = chooseDifficulty();
         HashSet<TypeOperation> operations = chooseOps();
 
-        Kenken kenken = new Kenken(size,operations,dif);
-        KenkenPlay kenkenPlay = new KenkenPlay(kenken);
+        Kenken solution = new Kenken(size,operations,dif);
+        Kenken playground = new Kenken(size,operations,dif);
 
+        KenkenPlay kenkenPlay = new KenkenPlay(solution);
         kenkenPlay.generateKenken();
+
+        KenkenPlaySolver kps = new KenkenPlaySolver(solution, playground);
+        kps.start();
 
         /*
         Main.readFile("./DATA/input.txt");

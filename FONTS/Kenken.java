@@ -73,6 +73,9 @@ public class Kenken {
         return cells.get(p.posX*getSize()+p.posY);
     }
 
+    /**
+     *  @brief Comprueba para valor val si se repite en alguna fila
+     */
     public boolean rowCheck(int row, int val) {
         for(int col = 0; col < getSize(); ++col) {
             if(getCell(row, col).getValue() == val) return false;
@@ -80,6 +83,9 @@ public class Kenken {
         return true;
     }
 
+    /**
+     *  @brief Comprueba para valor val si se repite en alguna columna
+     */
     public boolean colCheck(int col, int val) {
         for(int row = 0; row < getSize(); ++row) {
             if(getCell(row, col).getValue() == val) return false;

@@ -1,31 +1,31 @@
 public class KenkenCell {
     private final int posX;
     private final int posY;
-    private int valor;
+    private int value;
     private boolean locked;
 
     //esta creadora para las casillas del tablero vacío.
     KenkenCell(int posX, int posY) {
         this.posX = posX;
         this.posY = posY;
-        valor = -1;
+        value = -1;
         locked = false;
     }
     
     KenkenCell(int posX,int posY,int valor, boolean locked) {
         this.posX = posX;
         this.posY = posY;
-        this.valor = valor;
+        this.value = valor;
         this.locked = locked;
     }
 
     public void setValue(int val) {  
-        valor = val;                
-    }  
+        value = val;
+    }
 
     public int getValue() {
-        return valor;
-    }                             
+        return value;
+    }
 
     public int getPosX() {
         return posX;

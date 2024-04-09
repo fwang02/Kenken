@@ -4,7 +4,7 @@ public class User {
     private String username;
     private String password;
     private int maxPoint;
-    private HashMap<String,KenkenPlay> createdGames;
+    private HashMap<String, CtrlPlay> createdGames;
 
     User(String username, String password) {
         this.username = username;

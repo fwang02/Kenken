@@ -1,33 +1,33 @@
 import java.util.*;
-import java.io.*;
 
 
-public class KenkenPlay  {
+public class CtrlPlay {
 
 	private Kenken k;
 	private Kenken k_play;
+
+	private boolean solved;
 	private boolean end;
 	private ArrayList<TypeOperation> two_cell_operator;
 	private ArrayList<TypeOperation> more_cell_operator;
 	private int X[] = {0,1,0,-1};
 	private int Y[] = {1,0,-1,0};
-	
 
-	KenkenPlay(Kenken kk) {
-		k = kk;
-		k_play = new Kenken(k.getSize(), k.getOperations(), k.getDificult());
+	CtrlPlay(int size, HashSet<TypeOperation> operations, TypeDificult dificult) {
+		k = new Kenken(size, operations, dificult);
+		k_play = new Kenken(size, operations, dificult);
 		end = false;
 		two_cell_operator = new ArrayList<TypeOperation>();
 		more_cell_operator = new ArrayList<TypeOperation>();
 	}
 
-
+	/**
+	 *  @brief Comprueba que el kenken sea valido
+	 */
 	private boolean check(int tmp, int row, int col) {
 		if(!k.rowCheck(row, tmp)) return false;
-		else if(!k.colCheck(col, tmp)) return false;
-		else return true;
+		else return k.colCheck(col, tmp);
 	}
-
 
 	private void fillKenken(int i, int j) {
 		if (i == k.getSize()) {end = true;}
@@ -53,7 +53,7 @@ public class KenkenPlay  {
 	}
 
 
-	private void filldificultCells() {
+	private void fillDificultCells() {
 
 		int indiv_cells = 0;
 
@@ -300,8 +300,94 @@ public class KenkenPlay  {
 
 	public void generateKenken() {
 		fillKenken(0,0);
-		filldificultCells();
+		fillDificultCells();
 		fillCages();
 		fillCagesResult();
+	}
+
+	public void insertNumber(int x, int y, int v) {
+		if (x > k_play.getSize()-1 || y > k_play.getSize()-1 || x < 0 || y < 0) System.out.print("Porfavor, inserte coordenadas validas");
+		else {
+			k_play.getCell(x, y).setValue(v);
+		}
+	}
+
+	public void deleteNumber(int x, int y) {
+		if (x > k_play.getSize()-1 || y > k_play.getSize()-1 || x < 0 || y < 0) System.out.print("Porfavor, inserte coordenadas validas");
+		else {
+			k_play.getCell(x, y).setValue(0);
+		}
+	}
+
+	public void listCells() {
+		System.out.print("Kenken\n");
+		System.out.print("   ");
+		for (int i = 0; i < k_play.getSize(); ++i) {
+			System.out.print(i + "  ");
+		}
+		System.out.print("\n");
+
+		for (int i = 0; i < k_play.getSize(); ++i) {
+			System.out.print(i + " ");
+			for (int j = 0; j < k_play.getSize(); ++j) {
+				System.out.print(" " + k_play.getCell(i,j).getValue() + " ");
+			}
+			System.out.print("\n");
+		}
+		System.out.print("\n");
+	}
+
+	public boolean check() {
+		int error = 0;
+		int correct = 0;
+		int undefined = 0;
+		for(int i = 0; i < k_play.getSize(); ++i) {
+			for(int j = 0; j < k_play.getSize(); ++j) {
+				int v1 = k_play.getCell(i, j).getValue();
+				if(v1 == 0) ++undefined;
+				if(v1 != 0) {
+					int v2 = k.getCell(i, j).getValue();
+					if(v1 != v2) {System.out.println("Valor incorrecto en x=" + i + " y=" + j); ++error;}
+					else {++correct;}
+				}
+			}
+		}
+		if(error == 0 && correct == (k_play.getSize()*k_play.getSize()) && undefined == 0) solved = true;
+		return solved;
+	}
+
+	public void showSolution() {
+		System.out.println("Solucion del Kenken");
+		for (int i = 0; i < k.getSize(); ++i) {
+			for (int j = 0; j < k.getSize(); ++j) {
+				System.out.print(k.getCell(i,j).getValue() + " ");
+			}
+			System.out.print("\n");
+		}
+		System.out.print("\n");
+	}
+
+	public void listCages() {
+		ArrayList<KenkenCage> print_cages = new ArrayList<KenkenCage>();
+		print_cages = k.getCages();
+		for(int i = 0; i < print_cages.size(); ++i) {
+			System.out.print("Cage " + i + "-> ");
+			System.out.print("Size: " + print_cages.get(i).getCageSize() + " ");
+			System.out.print("Cells: ");
+			for(int j = 0; j < print_cages.get(i).getCageSize(); ++j) {
+				System.out.print(print_cages.get(i).getPos(j).posX + " ");
+				System.out.print(print_cages.get(i).getPos(j).posY + " || ");
+			}
+			System.out.print(print_cages.get(i).getOperation() + " = ");
+			System.out.print(print_cages.get(i).getResult() + "\n");
+		}
+	}
+
+	public void reset() {
+		for(int i = 0; i < k_play.getSize(); ++i)  {
+			for(int j = 0; j < k_play.getSize(); ++j) {
+				k_play.getCell(i,j).setValue(0);
+			}
+		}
 	}
 }

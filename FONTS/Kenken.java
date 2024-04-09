@@ -53,7 +53,6 @@ public class Kenken {
         this.cages = cages;
         this.dificult = dificult;
         this.operations = operations;
-        this.cages = new ArrayList<>();
         iniCells();
     }
 

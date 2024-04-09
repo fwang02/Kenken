@@ -136,4 +136,108 @@ public class KenkenCage {
         return operation;
     }
 
+    //@javi, feiyang he añadido esto que me permite solucionar los kenken de los ficheros
+
+    public boolean checkCompleteCage(Kenken kk) {
+        for(int i = 0; i < getCageSize(); ++i) {
+            int x = getPos(i).posX;
+            int y = getPos(i).posY;
+            if(kk.getCell(x, y).getValue() == 0) return false;
+        }
+        return true;
+    }
+
+    public boolean checkTotalCage(Kenken kk) {
+        int v = checkResult(kk);
+        if (v == result) return true;
+        else return false;
+
+    }
+
+    public boolean checkPartialCage(Kenken kk) {
+        if(operation == TypeOperation.ADD || operation == TypeOperation.MULT) {
+            int v = checkResult(kk);
+            if(v > result) return false;
+        }
+        return true;
+    }
+
+
+    private int checkResult(Kenken kk) {
+        int v = 0;
+        switch(operation) {
+            case ADD:
+                v = calcADD(kk);
+                break;
+            case MULT:
+                v = calcMULT(kk);
+                break;
+            case SUB:
+                v = calcSUB(kk);
+                break;
+            case DIV:
+                v = calcDIV(kk);
+                break;
+            case POW:
+                v = calcPOW(kk);
+                break;
+            case MOD:
+                v = calcMOD(kk);
+                break;
+        }
+        return v;
+    }
+
+
+    private int calcADD(Kenken kk) {
+        int v = 0;
+        for(int i = 0; i < getCageSize(); ++i) {
+            int x = getPos(i).posX;
+            int y = getPos(i).posY;
+            v += kk.getCell(x, y).getValue();
+        }
+        return v;
+    }
+
+    private int calcMULT(Kenken kk) {
+        int v = 0;
+        for(int i = 0; i < getCageSize(); ++i) {
+            int x = getPos(i).posX;
+            int y = getPos(i).posY;
+            v *= kk.getCell(x, y).getValue();
+        }
+        return v;
+    }
+
+    private int calcSUB(Kenken kk) {
+        int v1 = kk.getCell(getPos(0)).getValue();
+        int v2 = kk.getCell(getPos(1)).getValue();
+        int v = Math.abs(v1 - v2);
+        return v;
+    }
+
+    private int calcDIV(Kenken kk) {
+        int v = 0;
+        int v1 = kk.getCell(getPos(0)).getValue();
+        int v2 = kk.getCell(getPos(1)).getValue();
+        if((v1/v2) >= 1 && (v1%v2)==0) {return v = v1/v2;}
+        else {return v = v2/v1;}
+    }
+
+    private int calcPOW(Kenken kk) {
+        int v1 = kk.getCell(getPos(0)).getValue();
+        int v2 = kk.getCell(getPos(1)).getValue();
+        int v = (int)Math.pow(v1,v2);
+        return v;
+
+    }
+
+    private int calcMOD(Kenken kk) {
+        int v = 0;
+        int v1 = kk.getCell(getPos(0)).getValue();
+        int v2 = kk.getCell(getPos(1)).getValue();
+        if((v1%v2) != 0) {return v = v1%v2;}
+        else {return v = v2%v1;}
+    }
+
 }

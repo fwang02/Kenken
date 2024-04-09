@@ -1,13 +1,14 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.HashSet;
-import java.util.Scanner;
+import java.lang.reflect.Array;
+import java.util.*;
 
 public class Main {
     private static final UserDB udb = UserDB.getInstance();
     private static final Ranking ranking = Ranking.getInstance();
     private static final Scanner sc = new Scanner(System.in);
     private static User currentUser;
+    private static KenkenPlay currentGame;
     private static TypeOperation getOperation(int num)
     {
         switch (num) {
@@ -95,7 +96,7 @@ public class Main {
     }
 
     private static void readFile(String fileName) throws FileNotFoundException {
-        Scanner scanner = new Scanner(new File(fileName));
+        Scanner scanner = new Scanner(new File("./DATA/"+fileName+".txt"));
         int size = scanner.nextInt();
         if(size > 9 || size < 3) throw new IllegalArgumentException("Tamaño incorrecto");
         int numCage = scanner.nextInt();
@@ -103,21 +104,25 @@ public class Main {
         System.out.print(size);
         System.out.print(' ');
         System.out.println(numCage);
+
         scanner.nextLine();
         KenkenCage[] cages = new KenkenCage[numCage];
+        HashSet<TypeOperation> op_set = new HashSet<>();
         int count = 0;
         while(scanner.hasNextLine()) {
             String line = scanner.nextLine();
             String[] numStr = line.split("\\s+");
 
             TypeOperation op = Main.getOperation(Integer.parseInt(numStr[0]));
+            op_set.add(op);
+
             int result = Integer.parseInt(numStr[1]);
             int numCells = Integer.parseInt(numStr[2]);
 
             Pos[] posCells = new Pos[numCells];
             for (int i = 0; i < numCells; i++) {
-                int posX = Integer.parseInt(numStr[2*i+3]);
-                int posY = Integer.parseInt(numStr[2*i+4]);
+                int posX = Integer.parseInt(numStr[2*i+3])-1;
+                int posY = Integer.parseInt(numStr[2*i+4])-1;
                 posCells[i] = new Pos(posX,posY);
             }
             //test
@@ -130,7 +135,10 @@ public class Main {
             cages[count] = new KenkenCage(op,result,posCells);
             ++count;
         }
-        Kenken kenken = new Kenken();
+        scanner.close();
+
+        Kenken kenken = new Kenken(size,op_set,TypeDificult.EXPERT, new ArrayList<>(Arrays.asList(cages)));
+        currentGame = new KenkenPlay(kenken);
 
     }
 
@@ -163,7 +171,7 @@ public class Main {
         System.out.println("Configura la contraseña:");
         password = sc.nextLine();
         udb.addUser(username,password);
-        System.out.println("El usuario: "+username+" está registrado");
+        System.out.println("El usuario: "+username+" está registrado!");
         return true;
     }
 
@@ -190,13 +198,12 @@ public class Main {
         return false;
     }
 
-    /* todovia no está implementada, no me quedo muy claro cómo mostrar los opciones
     private static boolean gamePlayOption() {
         System.out.print('\n');
-        System.out.println("1. Crear uno nuevo");
-        System.out.println("2. Importar desde un fichero");
-        System.out.println("3. Registrar");
-        System.out.println("3. Ranking");
+        System.out.println("1. Crear nuevo");
+        System.out.println("2. Importar desde fichero");
+        System.out.println("3. Seguir jugar");
+        System.out.println("4. Ranking");
         System.out.print('\n');
 
         int option = sc.nextInt();
@@ -204,29 +211,31 @@ public class Main {
 
         switch (option) {
             case 1:
-                return login();
+                return createNewGame();
             case 2:
-                return register();
-            case 3:
+                return importFile();
+            case 4:
                 ranking.showRanking();
                 return false;
         }
         return false;
     }
-     */
 
-    public static void main(String[] args) {
-        udb.printUsers();
-        boolean firstPage = false;
-        while(!firstPage) {
-            firstPage = firstOptions();
+    private static boolean importFile() {
+        System.out.println("Escribe el nombre del fichero (sin poner ruta).");
+        String fileName = sc.nextLine();
+
+        try {
+            readFile(fileName);
+        } catch (FileNotFoundException e) {
+            System.err.println("El fichero no existe.");
+            return false;
         }
-        boolean secondPage = false;
+        return true;
 
+    }
 
-
-
-        /*
+    private static boolean createNewGame() {
         int size = chooseSize();
         TypeDificult dif = chooseDifficulty();
         HashSet<TypeOperation> operations = chooseOps();
@@ -235,9 +244,22 @@ public class Main {
         KenkenPlay kenkenPlay = new KenkenPlay(kenken);
 
         kenkenPlay.generateKenken();
+        return true;
+    }
 
-        Main.readFile("./DATA/input.txt");
-        */
+    public static void main(String[] args) {
+
+        //for test
+        udb.printUsers();
+
+        boolean firstPage = false;
+        while(!firstPage) {
+            firstPage = firstOptions();
+        }
+        boolean gameCreationPage = false;
+        while (! gameCreationPage) {
+            gameCreationPage = gamePlayOption();
+        }
     }
 
 

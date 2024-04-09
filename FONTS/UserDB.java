@@ -79,7 +79,7 @@ public class UserDB {
         return users.get(username);
     }
 
-    protected HashMap<String,User> getUsers() {
+    public HashMap<String,User> getUsers() {
         return users;
     }
 

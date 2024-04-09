@@ -95,13 +95,12 @@ public class KenkenCage {
         return true;
     }
 
-
-
     public int getCageSize() {      //@javi, la he añadido para poder consultar el tamaño de la cage
         return size;
     }
 
     public Pos getPos(int x) {      //@javi, la he añadido para poder consultar el vector de posiciones :D
+        assert posCells != null;
         return posCells[x];
     }
 

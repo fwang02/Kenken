@@ -4,19 +4,19 @@ import java.io.*;
 
 public class KenkenPlay  {
 
-	private Kenken k;
+	private final Kenken k;
 	private boolean end;
-	private int X[] = {0,1,0,-1};
-	private int Y[] = {1,0,-1,0};
-	private ArrayList<TypeOperation> two_cell_operator;
-	private ArrayList<TypeOperation> more_cell_operator;
+	private static final int[] X = {0,1,0,-1};
+	private static final int[] Y = {1,0,-1,0};
+	private final ArrayList<TypeOperation> two_cell_operator;
+	private final ArrayList<TypeOperation> more_cell_operator;
 
 
 	KenkenPlay(Kenken k) {
 		this.k = k;
 		this.end = false;
-		two_cell_operator = new ArrayList<TypeOperation>();
-		more_cell_operator = new ArrayList<TypeOperation>();
+		two_cell_operator = new ArrayList<>();
+		more_cell_operator = new ArrayList<>();
 	}
 
 

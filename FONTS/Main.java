@@ -260,6 +260,7 @@ public class Main {
         while (! gameCreationPage) {
             gameCreationPage = gamePlayOption();
         }
+        boolean gamePlayPage = false;
     }
 
 

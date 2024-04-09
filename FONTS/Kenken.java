@@ -7,7 +7,7 @@ public class Kenken {
     private final TypeDificult dificult;
     private final HashSet<TypeOperation> operations;
     private ArrayList<KenkenCage> cages;
-    private ArrayList<KenkenCell> cells;
+    private KenkenCell[][] cells;
 
 
     Kenken(){
@@ -23,8 +23,8 @@ public class Kenken {
         this.name = k.getName();
         this.dificult = k.getDificult();
         this.operations = k.getOperations();
-        this.cages = new ArrayList<KenkenCage>(k.getCages());
-        this.cells = new ArrayList<KenkenCell>(k.getCells());
+        this.cages = new ArrayList<>(k.getCages());
+        this.cells = k.getCells();
     }
     
 
@@ -33,7 +33,7 @@ public class Kenken {
         this.name = null;
         this.dificult = dificult;
         this.operations = operations;
-        this.cages = new ArrayList<KenkenCage>();
+        this.cages = new ArrayList<>();
         iniCells();
         
     }
@@ -44,10 +44,18 @@ public class Kenken {
         this.name = name;
         this.dificult = dificult;
         this.operations = operations;
-        this.cages = new ArrayList<KenkenCage>();
+        this.cages = new ArrayList<>();
         iniCells();  
     }
 
+    Kenken(int size, HashSet<TypeOperation> operations, TypeDificult dificult, ArrayList<KenkenCage> cages){
+        this.size = size;
+        this.cages = cages;
+        this.dificult = dificult;
+        this.operations = operations;
+        this.cages = new ArrayList<>();
+        iniCells();
+    }
 
     public int getSize() {
         return size;
@@ -65,16 +73,16 @@ public class Kenken {
         return operations;
     }
 
-    public ArrayList<KenkenCell> getCells() {
+    public KenkenCell[][] getCells() {
         return cells;
     }
 
     public KenkenCell getCell(int i, int j) {
-        return cells.get(i*getSize()+j);
+        return cells[i][j];
     }
 
     public KenkenCell getCell(Pos p) {
-        return cells.get(p.posX*getSize()+p.posY);
+        return cells[p.posX][p.posY];
     }
 
     public ArrayList<KenkenCage> getCages() {
@@ -82,11 +90,13 @@ public class Kenken {
     }
 
     public KenkenCage getCage(int row, int col) {
-        for(int i = 0; i < cages.size(); ++i) {
-            for(int j = 0; j < cages.get(i).getCageSize(); ++j) {
-                int x = cages.get(i).getPos(j).posX;
-                int y = cages.get(i).getPos(j).posY;
-                if(x == row && y == col) {return cages.get(i);}
+        for (KenkenCage cage : cages) {
+            for (int j = 0; j < cage.getCageSize(); ++j) {
+                int x = cage.getPos(j).posX;
+                int y = cage.getPos(j).posY;
+                if (x == row && y == col) {
+                    return cage;
+                }
             }
         }
         return null;
@@ -123,12 +133,12 @@ public class Kenken {
     }
 
     public void iniCells() {
-        cells = new ArrayList<>();
+        cells = new KenkenCell[size][size];
         KenkenCell tmp;
         for(int i = 0; i < size; ++i) {
             for(int j = 0; j < size; ++j) {
                 tmp = new KenkenCell(i,j,0, false);
-                cells.add(tmp);
+                cells[i][j] = tmp;
             }
         }
     }

@@ -6,8 +6,8 @@ public class KenkenPlay  {
 
 	private Kenken k;
 	private boolean end;
-	private ArrayList<TypeOperation> two_cell_operator;
-	private ArrayList<TypeOperation> more_cell_operator;
+	private final ArrayList<TypeOperation> two_cell_operator;
+	private final ArrayList<TypeOperation> more_cell_operator;
 	private int X[] = {0,1,0,-1};
 	private int Y[] = {1,0,-1,0};
 	
@@ -70,8 +70,7 @@ public class KenkenPlay  {
 				indiv_cells = (int)(k.getSize() * k.getSize() * 0.05);
 				break;
 			case EXPERT:
-				indiv_cells = 0;
-				break;
+                break;
 		}
 
 		for(int c = 0; c < indiv_cells; ++c) {

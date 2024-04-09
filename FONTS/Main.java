@@ -8,7 +8,7 @@ public class Main {
     private static final Ranking ranking = Ranking.getInstance();
     private static final Scanner sc = new Scanner(System.in);
     private static User currentUser;
-    private static KenkenPlay currentGame;
+    private static KenkenConfig currentGame;
     private static TypeOperation getOperation(int num)
     {
         switch (num) {
@@ -138,7 +138,7 @@ public class Main {
         scanner.close();
 
         Kenken kenken = new Kenken(size,op_set,TypeDificult.EXPERT, new ArrayList<>(Arrays.asList(cages)));
-        currentGame = new KenkenPlay(kenken);
+        currentGame = new KenkenConfig(kenken);
 
     }
 
@@ -241,9 +241,9 @@ public class Main {
         HashSet<TypeOperation> operations = chooseOps();
 
         Kenken kenken = new Kenken(size,operations,dif);
-        KenkenPlay kenkenPlay = new KenkenPlay(kenken);
+        KenkenConfig kenkenConfig = new KenkenConfig(kenken);
 
-        kenkenPlay.generateKenken();
+        kenkenConfig.generateKenken();
         return true;
     }
 

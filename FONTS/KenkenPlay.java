@@ -1,33 +1,35 @@
 import java.util.*;
+import java.io.*;
 
 
-public class CtrlPlay {
+public class KenkenPlay  {
 
 	private Kenken k;
-	private Kenken k_play;
-
-	private boolean solved;
 	private boolean end;
 	private ArrayList<TypeOperation> two_cell_operator;
 	private ArrayList<TypeOperation> more_cell_operator;
 	private int X[] = {0,1,0,-1};
 	private int Y[] = {1,0,-1,0};
+	
 
-	CtrlPlay(int size, HashSet<TypeOperation> operations, TypeDificult dificult) {
-		k = new Kenken(size, operations, dificult);
-		k_play = new Kenken(size, operations, dificult);
+	KenkenPlay(Kenken kk) {
+		k = kk;
 		end = false;
 		two_cell_operator = new ArrayList<TypeOperation>();
 		more_cell_operator = new ArrayList<TypeOperation>();
 	}
 
-	/**
-	 *  @brief Comprueba que el kenken sea valido
-	 */
+
+	// AUX FUNCTIONS //
+
 	private boolean check(int tmp, int row, int col) {
 		if(!k.rowCheck(row, tmp)) return false;
-		else return k.colCheck(col, tmp);
+		else if(!k.colCheck(col, tmp)) return false;
+		else return true;
 	}
+
+	// GENERAR UN KENKEN POR DEFECTO  (parametros de usuario)//
+
 
 	private void fillKenken(int i, int j) {
 		if (i == k.getSize()) {end = true;}
@@ -53,7 +55,7 @@ public class CtrlPlay {
 	}
 
 
-	private void fillDificultCells() {
+	private void filldificultCells() {
 
 		int indiv_cells = 0;
 
@@ -130,6 +132,7 @@ public class CtrlPlay {
 		}
 	}
 
+
 	private void check_operations(HashSet<TypeOperation> current) {
 		if(current.contains(TypeOperation.ADD)) {more_cell_operator.add(TypeOperation.ADD); two_cell_operator.add(TypeOperation.ADD);}
 		if(current.contains(TypeOperation.MULT)) {more_cell_operator.add(TypeOperation.MULT); two_cell_operator.add(TypeOperation.MULT);}
@@ -145,6 +148,7 @@ public class CtrlPlay {
 		int v1 ,v2, v3, v4 = 0;
 		for(int i = 0; i < k.getCages().size(); ++i) {
 			if(!k.getCages().get(i).isLocked()) {
+				k.getCages().get(i).setLocked();
 				switch(k.getCages().get(i).getCageSize()) {
 					case 1:
 						k.getCages().get(i).setOperation(TypeOperation.ADD);
@@ -261,11 +265,55 @@ public class CtrlPlay {
 		}
 
 	}
+
+	// SOLUCIONAR UN KENKEN MEDIANTE LAS CAJAS (por fichero) //
+
+	private void fillIndividualCellsFromCages() {
+		for(int i = 0; i < k.getCages().size(); ++i) {
+			if(k.getCages().get(i).getCageSize() == 1) {
+				int v = k.getCages().get(i).getResult();
+				int x = k.getCages().get(i).getPos(0).posX;
+				int y = k.getCages().get(i).getPos(0).posY;
+				k.getCell(x,y).setValue(v);
+				k.getCell(x,y).setLocked();
+			}
+		}
+	}
+
+	private void fillKenkenFromCages(int i, int j) {
+		if (i == k.getSize()) {end = true;}
+		else if (j == k.getSize()) {fillKenkenFromCages(i+1, 0);}
+		else if (k.getCell(i,j).isLocked()) {fillKenkenFromCages(i, j+1);}
+		else if (k.getCell(i,j).getValue() != 0) {fillKenkenFromCages(i, j+1);}
+		else {
+			Boolean[] tried = new Boolean[k.getSize()+1];
+			for(int t = 0; t <= k.getSize(); ++t) tried[t] = false;
+
+			int tmp = new Random().nextInt(k.getSize())+1;
+
+			for(int u = 0;u < k.getSize() && !end; ++u) {
+				while(tried[tmp]) {tmp = new Random().nextInt(k.getSize())+1;}
+				tried[tmp] = true;
+				if(check(tmp, i, j)) {
+					k.getCell(i,j).setValue(tmp);
+					KenkenCage kg = k.getCage(i, j);
+					if((kg.checkCompleteCage(k) && kg.checkTotalCage(k)) || (!kg.checkCompleteCage(k) && kg.checkPartialCage(k))) {
+						fillKenken(i, j+1);
+					}
+				}
+			}
+
+			if (!end) {k.getCell(i,j).setValue(0);}
+		}
+
+	}
 	
+
+	// ESCRIBIR EL KENKEN POR PANTALLA //
 
 	private void printKenken () {
 
-		// THIS FUNCTION IS FOR TESTING AND SEEING RESULTS //
+
 
 		System.out.println("Kenken");
 		for (int i = 0; i < k.getSize(); ++i) {
@@ -275,99 +323,8 @@ public class CtrlPlay {
 			System.out.print("\n");
 		}
 		System.out.print("\n");
-		/*
-		System.out.print("\n");
 		System.out.print("<--## CAGE LIST ##-->\n");
 		System.out.print("\n");
-
-	
-		ArrayList<KenkenCage> print_cages = new ArrayList<KenkenCage>();
-		print_cages = k_play.getCages();
-		for(int i = 0; i < print_cages.size(); ++i) {
-			System.out.print("Cage " + i + "-> ");
-			System.out.print("Size: " + print_cages.get(i).getCageSize() + " ");
-			System.out.print("Cells: ");
-			for(int j = 0; j < print_cages.get(i).getCageSize(); ++j) {
-				System.out.print(print_cages.get(i).getPos(j).posX + " ");
-				System.out.print(print_cages.get(i).getPos(j).posY + " || ");
-			}
-			System.out.print(print_cages.get(i).getOperation() + " = ");
-			System.out.print(print_cages.get(i).getResult() + "\n");
-		}
-		*/
-
-	}
-
-	public void generateKenken() {
-		fillKenken(0,0);
-		fillDificultCells();
-		fillCages();
-		fillCagesResult();
-	}
-
-	public void insertNumber(int x, int y, int v) {
-		if (x > k_play.getSize()-1 || y > k_play.getSize()-1 || x < 0 || y < 0) System.out.print("Porfavor, inserte coordenadas validas");
-		else {
-			k_play.getCell(x, y).setValue(v);
-		}
-	}
-
-	public void deleteNumber(int x, int y) {
-		if (x > k_play.getSize()-1 || y > k_play.getSize()-1 || x < 0 || y < 0) System.out.print("Porfavor, inserte coordenadas validas");
-		else {
-			k_play.getCell(x, y).setValue(0);
-		}
-	}
-
-	public void listCells() {
-		System.out.print("Kenken\n");
-		System.out.print("   ");
-		for (int i = 0; i < k_play.getSize(); ++i) {
-			System.out.print(i + "  ");
-		}
-		System.out.print("\n");
-
-		for (int i = 0; i < k_play.getSize(); ++i) {
-			System.out.print(i + " ");
-			for (int j = 0; j < k_play.getSize(); ++j) {
-				System.out.print(" " + k_play.getCell(i,j).getValue() + " ");
-			}
-			System.out.print("\n");
-		}
-		System.out.print("\n");
-	}
-
-	public boolean check() {
-		int error = 0;
-		int correct = 0;
-		int undefined = 0;
-		for(int i = 0; i < k_play.getSize(); ++i) {
-			for(int j = 0; j < k_play.getSize(); ++j) {
-				int v1 = k_play.getCell(i, j).getValue();
-				if(v1 == 0) ++undefined;
-				if(v1 != 0) {
-					int v2 = k.getCell(i, j).getValue();
-					if(v1 != v2) {System.out.println("Valor incorrecto en x=" + i + " y=" + j); ++error;}
-					else {++correct;}
-				}
-			}
-		}
-		if(error == 0 && correct == (k_play.getSize()*k_play.getSize()) && undefined == 0) solved = true;
-		return solved;
-	}
-
-	public void showSolution() {
-		System.out.println("Solucion del Kenken");
-		for (int i = 0; i < k.getSize(); ++i) {
-			for (int j = 0; j < k.getSize(); ++j) {
-				System.out.print(k.getCell(i,j).getValue() + " ");
-			}
-			System.out.print("\n");
-		}
-		System.out.print("\n");
-	}
-
-	public void listCages() {
 		ArrayList<KenkenCage> print_cages = new ArrayList<KenkenCage>();
 		print_cages = k.getCages();
 		for(int i = 0; i < print_cages.size(); ++i) {
@@ -383,11 +340,19 @@ public class CtrlPlay {
 		}
 	}
 
-	public void reset() {
-		for(int i = 0; i < k_play.getSize(); ++i)  {
-			for(int j = 0; j < k_play.getSize(); ++j) {
-				k_play.getCell(i,j).setValue(0);
-			}
-		}
+	// GENERAR UN KENKEN //
+
+	public void generateKenken() {
+		fillKenken(0,0);
+		filldificultCells();
+		fillCages();
+		fillCagesResult();
+	}
+
+	// RESOLVER UN KENKEN //
+
+	public void solveKenken() {
+		fillIndividualCellsFromCages();
+		fillKenkenFromCages(0,0);
 	}
 }

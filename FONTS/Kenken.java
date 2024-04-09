@@ -10,6 +10,14 @@ public class Kenken {
     private ArrayList<KenkenCell> cells;
 
 
+    Kenken(){
+        this.dificult = TypeDificult.MEDIUM;
+        this.size = 0;
+        this.operations = new HashSet<>();
+        this.cages = new ArrayList<>();
+        iniCells();
+    }
+
     Kenken(Kenken k) {
         this.size = k.getSize();
         this.name = k.getName();
@@ -19,38 +27,34 @@ public class Kenken {
         this.cells = new ArrayList<KenkenCell>(k.getCells());
     }
     
-    Kenken(){
-        this.dificult = TypeDificult.MEDIUM;
-        size = 0;
-        operations = new HashSet<>();
-        cages = new ArrayList<>();
-        iniCells();
-    }
 
     Kenken(int size, HashSet<TypeOperation> operations, TypeDificult dificult){
         this.size = size;
-        this.operations = operations;
-        this.dificult = dificult;
-        cages = new ArrayList<KenkenCage>();
-        iniCells();
         this.name = null;
+        this.dificult = dificult;
+        this.operations = operations;
+        this.cages = new ArrayList<KenkenCage>();
+        iniCells();
+        
     }
+
 
     Kenken(int size, HashSet<TypeOperation> operations, TypeDificult dificult, String name){
         this.size = size;
-        this.operations = operations;
-        this.dificult = dificult;
-        cages = new ArrayList<KenkenCage>();
-        iniCells();
         this.name = name;
+        this.dificult = dificult;
+        this.operations = operations;
+        this.cages = new ArrayList<KenkenCage>();
+        iniCells();  
+    }
+
+
+    public int getSize() {
+        return size;
     }
 
     public String getName() {
         return name;
-    }
-
-    public int getSize() {
-        return size;
     }
 
     public TypeDificult getDificult() {
@@ -73,28 +77,19 @@ public class Kenken {
         return cells.get(p.posX*getSize()+p.posY);
     }
 
-    /**
-     *  @brief Comprueba para valor val si se repite en alguna fila
-     */
-    public boolean rowCheck(int row, int val) {
-        for(int col = 0; col < getSize(); ++col) {
-            if(getCell(row, col).getValue() == val) return false;
-        }
-        return true;
-    }
-
-    /**
-     *  @brief Comprueba para valor val si se repite en alguna columna
-     */
-    public boolean colCheck(int col, int val) {
-        for(int row = 0; row < getSize(); ++row) {
-            if(getCell(row, col).getValue() == val) return false;
-        }
-        return true;
-    }
-
     public ArrayList<KenkenCage> getCages() {
         return cages;
+    }
+
+    public KenkenCage getCage(int row, int col) {
+        for(int i = 0; i < cages.size(); ++i) {
+            for(int j = 0; j < cages.get(i).getCageSize(); ++j) {
+                int x = cages.get(i).getPos(j).posX;
+                int y = cages.get(i).getPos(j).posY;
+                if(x == row && y == col) {return cages.get(i);}
+            }
+        }
+        return null;
     }
 
     public void addCage(TypeOperation operation, int result, Pos[] posCells) {
@@ -113,8 +108,21 @@ public class Kenken {
         else return false;
     }
 
+    public boolean rowCheck(int row, int val) {
+        for(int col = 0; col < getSize(); ++col) {
+            if(getCell(row, col).getValue() == val) return false;
+        }
+        return true;
+    }
 
-    private void iniCells() {
+    public boolean colCheck(int col, int val) {
+        for(int row = 0; row < getSize(); ++row) {
+            if(getCell(row, col).getValue() == val) return false;
+        }
+        return true;
+    }
+
+    public void iniCells() {
         cells = new ArrayList<>();
         KenkenCell tmp;
         for(int i = 0; i < size; ++i) {

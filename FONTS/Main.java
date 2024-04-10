@@ -1,7 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.lang.reflect.Array;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Scanner;
 
 public class Main {
     private static final UserDB udb = UserDB.getInstance();
@@ -106,15 +106,16 @@ public class Main {
         System.out.println(numCage);
 
         scanner.nextLine();
-        KenkenCage[] cages = new KenkenCage[numCage];
-        HashSet<TypeOperation> op_set = new HashSet<>();
+
+        Kenken kenken = new Kenken(size,TypeDificult.EXPERT,numCage);
+
         int count = 0;
         while(scanner.hasNextLine()) {
             String line = scanner.nextLine();
             String[] numStr = line.split("\\s+");
 
             TypeOperation op = Main.getOperation(Integer.parseInt(numStr[0]));
-            op_set.add(op);
+            kenken.addOpSet(op);
 
             int result = Integer.parseInt(numStr[1]);
             int numCells = Integer.parseInt(numStr[2]);
@@ -132,12 +133,11 @@ public class Main {
             }
             System.out.print('\n');
 
-            cages[count] = new KenkenCage(op,result,posCells);
+            kenken.addCage(op,result,posCells);
             ++count;
         }
-        scanner.close();
 
-        Kenken kenken = new Kenken(size,op_set,TypeDificult.EXPERT, new ArrayList<>(Arrays.asList(cages)));
+        scanner.close();
         currentGame = new KenkenConfig(kenken);
 
     }

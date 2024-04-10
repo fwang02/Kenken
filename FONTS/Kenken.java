@@ -56,6 +56,14 @@ public class Kenken {
         iniCells();
     }
 
+    public Kenken(int size, TypeDificult dificult, int numCages) {
+        this.size = size;
+        this.dificult = dificult;
+        cages = new ArrayList<>(numCages);
+        operations = new HashSet<>();
+        iniCells();
+    }
+
     public int getSize() {
         return size;
     }
@@ -99,6 +107,10 @@ public class Kenken {
             }
         }
         return null;
+    }
+
+    public void addOpSet(TypeOperation op) {
+        operations.add(op);
     }
 
     public void addCage(TypeOperation operation, int result, Pos[] posCells) {

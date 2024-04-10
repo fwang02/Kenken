@@ -149,15 +149,14 @@ public class KenkenCage {
 
     public boolean checkTotalCage(Kenken kk) {
         int v = checkResult(kk);
-        if (v == result) return true;
-        else return false;
+        return v == result;
 
     }
 
     public boolean checkPartialCage(Kenken kk) {
         if(operation == TypeOperation.ADD || operation == TypeOperation.MULT) {
             int v = checkResult(kk);
-            if(v > result) return false;
+            return v <= result;
         }
         return true;
     }
@@ -200,7 +199,7 @@ public class KenkenCage {
     }
 
     private int calcMULT(Kenken kk) {
-        int v = 0;
+        int v = 1;
         for(int i = 0; i < getCageSize(); ++i) {
             int x = getPos(i).posX;
             int y = getPos(i).posY;
@@ -212,32 +211,28 @@ public class KenkenCage {
     private int calcSUB(Kenken kk) {
         int v1 = kk.getCell(getPos(0)).getValue();
         int v2 = kk.getCell(getPos(1)).getValue();
-        int v = Math.abs(v1 - v2);
-        return v;
+        return Math.abs(v1 - v2);
     }
 
     private int calcDIV(Kenken kk) {
-        int v = 0;
         int v1 = kk.getCell(getPos(0)).getValue();
         int v2 = kk.getCell(getPos(1)).getValue();
-        if((v1/v2) >= 1 && (v1%v2)==0) {return v = v1/v2;}
-        else {return v = v2/v1;}
+        if((v1/v2) >= 1 && (v1%v2)==0) {return v1/v2;}
+        else {return v2/v1;}
     }
 
     private int calcPOW(Kenken kk) {
         int v1 = kk.getCell(getPos(0)).getValue();
         int v2 = kk.getCell(getPos(1)).getValue();
-        int v = (int)Math.pow(v1,v2);
-        return v;
+        return (int)Math.pow(v1,v2);
 
     }
 
     private int calcMOD(Kenken kk) {
-        int v = 0;
         int v1 = kk.getCell(getPos(0)).getValue();
         int v2 = kk.getCell(getPos(1)).getValue();
-        if((v1%v2) != 0) {return v = v1%v2;}
-        else {return v = v2%v1;}
+        if((v1%v2) != 0) {return v1%v2;}
+        else {return v2%v1;}
     }
 
 }

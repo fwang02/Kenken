@@ -61,6 +61,15 @@ public class Main {
         return dif;
     }
 
+    private static int chooseNumCages()
+    {
+        System.out.println("Selecciona el número de regiones");
+        int numCages = sc.nextInt();
+        //if(numCages < 1 || numCages > 9) throw new IllegalArgumentException("El número .");
+        /*else */System.out.println("El número de regiones es: "+numCages+"\n");
+        return numCages;
+    }
+
     private static int chooseSize()
     {
         System.out.println("Selecciona el tamaño del tablero (3-9).");
@@ -270,14 +279,21 @@ public class Main {
         */
 
         int size = chooseSize();
+        int nCages = chooseNumCages();
         TypeDificult dif = chooseDifficulty();
         HashSet<TypeOperation> operations = chooseOps();
 
-        Kenken kenken = new Kenken(size,operations,dif);
-        
+        // Kenken generado por dificultad
+        //Kenken kenken = new Kenken(size, operations, dif);
+
+        // Kenken generado por numero de regiones
+        Kenken kenken = new Kenken(size, operations, nCages);
+
         KenkenConfig kenkenConfig = new KenkenConfig(kenken);
 
-        kenkenConfig.generateKenkenv1();
+        //kenkenConfig.generateKenkenv1();
+
+        kenkenConfig.generateKenkenv2();
 
         Kenken tablero = new Kenken(kenken);
 

@@ -289,6 +289,28 @@ public class KenkenConfig  {
 
 	// GENEREAR Y RESOLVER v2 //   <- FALTA ESTE, que es el que se especifica tamaño, operaciones, n regiones y n casillas
 
+	private void generateKenkenFromCages() {
+		int size = k.getSize();
+		int ncages = k.getNCages();
+
+		int randX, randY;
+		randX = new Random().nextInt(size);
+		randY = new Random().nextInt(size);
+
+		// generar regiones aleatorias
+		for (int i = 0; i < ncages; ++i) {
+			// cambiar posicion hasta que haya alguna disponible
+			while (k.getCage(randX, randY) != null) {
+				randX = new Random().nextInt(size);
+				randY = new Random().nextInt(size);
+			}
+			Pos[] iniCell = new Pos[1];
+			iniCell[0] = new Pos(randX, randY);
+			k.addCage(TypeOperation.ADD, 0, iniCell);
+		}
+
+	}
+
 	private void fillIndividualCells() {
 		int indiv_cells = k.getNICells();
 		for(int c = 0; c < indiv_cells; ++c) {
@@ -311,7 +333,7 @@ public class KenkenConfig  {
 		int total_cages = k.getNCages();
 		int n_cages = total_cages - i_cells;
 		int remaining_cells = (k.getSize()*k.getSize()) - i_cells;
-		ArrayList<integer> sizes = new ArrayList<integer>()
+		//ArrayList<integer> sizes = new ArrayList<integer>()
 
 		if((b_two_cell_operator && b_more_cell_operator) || (!b_two_cell_operator && b_more_cell_operator)) {	//in this case cages can be size 2,3 or 4
 
@@ -413,7 +435,11 @@ public class KenkenConfig  {
 	//Esto genera un kenken mediante el tamaño, las operaciones, el numero de regiones y el numero de casillas individuales indicadas por el usuario (NO ACABADO)
 	public void generateKenkenv2() {
 		checkOperations(k.getOperations());
-		//poner funciones aqui
+		fillKenken(0, 0);
+		//funcion donde el kenken cree las regiones antes que los numeros
+		generateKenkenFromCages();
+
+		fillKenkenFromCages(0, 0);
 	}
 
 	// Resuelve un kenken con las regiones ya definidas, es decir, uno importado desde fichero
@@ -421,4 +447,6 @@ public class KenkenConfig  {
 		fillIndividualCellsFromCages();
 		fillKenkenFromCages(0,0);
 	}
+
+
 }

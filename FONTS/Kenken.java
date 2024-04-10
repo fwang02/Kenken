@@ -24,8 +24,8 @@ public class Kenken {
         this.name = k.getName();
         this.dificult = k.getDificult();
         this.operations = k.getOperations();
-        this.ncages = 0;
-        this.nicells = 0;
+        this.ncages = k.ncages;
+        this.nicells = k.nicells;
         this.cages = new ArrayList<>(k.getCages());
         iniCells();
     }
@@ -37,6 +37,16 @@ public class Kenken {
         this.operations = operations;
         this.ncages = 0;
         this.nicells = 0;
+        this.cages = new ArrayList<>();
+        iniCells();
+    }
+
+    Kenken(int size, HashSet<TypeOperation> operations, int ncages){         // PARA GENERAR Y RESOLVER KENKENS v2
+        this.size = size;
+        this.name = null;
+        this.dificult = TypeDificult.MEDIUM;
+        this.operations = operations;
+        this.ncages = ncages;
         this.cages = new ArrayList<>();
         iniCells();
     }

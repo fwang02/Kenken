@@ -1,22 +1,21 @@
 import java.util.*;
-import java.io.*;
 
 
 public class KenkenConfig  {
 
-	private Kenken k;
-	private boolean end;
+	private final Kenken k;
+	private boolean endFill;
 	private final ArrayList<TypeOperation> two_cell_operator;
 	private final ArrayList<TypeOperation> more_cell_operator;
 	private boolean b_two_cell_operator;
 	private boolean b_more_cell_operator;
-	private int X[] = {0,1,0,-1};
-	private int Y[] = {1,0,-1,0};
+	private static final int[] X = {0,1,0,-1};
+	private static final int[] Y = {1,0,-1,0};
 	
 
 	KenkenConfig(Kenken kk) {
 		k = kk;
-		end = false;
+		endFill = false;
 		two_cell_operator = new ArrayList<TypeOperation>();
 		more_cell_operator = new ArrayList<TypeOperation>();
 	}
@@ -48,7 +47,8 @@ public class KenkenConfig  {
 
 	// esta funcion rellena el tablero con numeros sin que se repitan por fila ni por columna
 	private void fillKenken(int i, int j) {
-		if (i == k.getSize()) {end = true;}
+		if (i == k.getSize()) {
+			endFill = true;}
 		else if (j == k.getSize()) {fillKenken(i+1, 0);}
 		else if (k.getCell(i,j).getValue() != 0) {fillKenken(i, j+1);}
 		else {
@@ -57,7 +57,7 @@ public class KenkenConfig  {
 
 			int tmp = new Random().nextInt(k.getSize())+1;
 
-			for(int u = 0;u < k.getSize() && !end; ++u) {
+			for(int u = 0; u < k.getSize() && !endFill; ++u) {
 				while(tried[tmp]) {tmp = new Random().nextInt(k.getSize())+1;}
 				tried[tmp] = true;
 				if(check(tmp, i, j)) {
@@ -66,7 +66,7 @@ public class KenkenConfig  {
 				}
 			}
 
-			if (!end) {k.getCell(i,j).setValue(0);}
+			if (!endFill) {k.getCell(i,j).setValue(0);}
 		}
 	}
 
@@ -166,66 +166,66 @@ public class KenkenConfig  {
 	private void fillCagesResult() {
 		int v1 ,v2, v3, v4 = 0;
 		for(int i = 0; i < k.getCages().size(); ++i) {
-			if(!k.getCages().get(i).isLocked()) {
-				k.getCages().get(i).setLocked();
-				switch(k.getCages().get(i).getCageSize()) {
+			if(!k.getCage(i).isLocked()) {
+				k.getCage(i).setLocked();
+				switch(k.getCage(i).getCageSize()) {
 					case 1:
-						k.getCages().get(i).setOperation(TypeOperation.ADD);
-						int result_add = k.getCell(k.getCages().get(i).getPos(0)).getValue();
-						k.getCages().get(i).setResult(result_add);
+						k.getCage(i).setOperation(TypeOperation.ADD);
+						int result_add = k.getCell(k.getCage(i).getPos(0)).getValue();
+						k.getCage(i).setResult(result_add);
 						break;
 					case 2:
 						int pos_2 = new Random().nextInt(two_cell_operator.size());
 						TypeOperation operator = two_cell_operator.get(pos_2);
-						v1 = k.getCell(k.getCages().get(i).getPos(0)).getValue();
-						v2 = k.getCell(k.getCages().get(i).getPos(1)).getValue();
+						v1 = k.getCell(k.getCage(i).getPos(0)).getValue();
+						v2 = k.getCell(k.getCage(i).getPos(1)).getValue();
 						switch(operator) {
 							case SUB:
-								k.getCages().get(i).setOperation(TypeOperation.SUB);
+								k.getCage(i).setOperation(TypeOperation.SUB);
 								int result_sub = Math.abs(v1 - v2);
-								k.getCages().get(i).setResult(result_sub);
+								k.getCage(i).setResult(result_sub);
 								break;
 
 							case DIV:
-								k.getCages().get(i).setOperation(TypeOperation.DIV);
+								k.getCage(i).setOperation(TypeOperation.DIV);
 								int result1_div = v1/v2;
 								int result2_div = v2/v1;
 								if(result1_div >= 1 && (v1%v2)==0) {
-									k.getCages().get(i).setResult(result1_div);
+									k.getCage(i).setResult(result1_div);
 								}
 								else {
-									k.getCages().get(i).setResult(result2_div);
+									k.getCage(i).setResult(result2_div);
 								}
 								break;
 
 							case POW:
-								k.getCages().get(i).setOperation(TypeOperation.POW);
+								k.getCage(i).setOperation(TypeOperation.POW);
 								int result_pow = (int)Math.pow(v1, v2);
-								k.getCages().get(i).setResult(result_pow);
+								k.getCage(i).setResult(result_pow);
 								break;
 
 							case MOD:
-								k.getCages().get(i).setOperation(TypeOperation.MOD);
+								k.getCage(i).setOperation(TypeOperation.MOD);
 								int result1_mod = v1%v2;
 								int result2_mod = v2%v1;
 								if(result1_mod != 0) {
-									k.getCages().get(i).setResult(result1_mod);
+									k.getCage(i).setResult(result1_mod);
 								}
 								else {
-									k.getCages().get(i).setResult(result2_mod);
+									k.getCage(i).setResult(result2_mod);
 								}
 								break;
 
 							case ADD:
-								k.getCages().get(i).setOperation(TypeOperation.ADD);
+								k.getCage(i).setOperation(TypeOperation.ADD);
 								int result_add_2 = v1+v2;
-								k.getCages().get(i).setResult(result_add_2);
+								k.getCage(i).setResult(result_add_2);
 								break;
 
 							case MULT:
-								k.getCages().get(i).setOperation(TypeOperation.MULT);
+								k.getCage(i).setOperation(TypeOperation.MULT);
 								int result_mult_2 = v1*v2;
-								k.getCages().get(i).setResult(result_mult_2);
+								k.getCage(i).setResult(result_mult_2);
 								break;
 
 							default:
@@ -235,41 +235,41 @@ public class KenkenConfig  {
 					case 3:
 						int pos_3 = new Random().nextInt(more_cell_operator.size());
 						TypeOperation operator_3 = more_cell_operator.get(pos_3);
-						v1 = k.getCell(k.getCages().get(i).getPos(0)).getValue();
-						v2 = k.getCell(k.getCages().get(i).getPos(1)).getValue();
-						v3 = k.getCell(k.getCages().get(i).getPos(2)).getValue();
+						v1 = k.getCell(k.getCage(i).getPos(0)).getValue();
+						v2 = k.getCell(k.getCage(i).getPos(1)).getValue();
+						v3 = k.getCell(k.getCage(i).getPos(2)).getValue();
 						switch(operator_3) {
 							case ADD:
-								k.getCages().get(i).setOperation(TypeOperation.ADD);
+								k.getCage(i).setOperation(TypeOperation.ADD);
 								int result_add_3 = v1+v2+v3;
-								k.getCages().get(i).setResult(result_add_3);
+								k.getCage(i).setResult(result_add_3);
 								break;
 
 							case MULT:
-								k.getCages().get(i).setOperation(TypeOperation.MULT);
+								k.getCage(i).setOperation(TypeOperation.MULT);
 								int result_mult_3 = v1*v2*v3;
-								k.getCages().get(i).setResult(result_mult_3);
+								k.getCage(i).setResult(result_mult_3);
 								break;
 						}
 						break;
 					case 4:
 						int pos_4 = new Random().nextInt(more_cell_operator.size());
 						TypeOperation operator_4 = more_cell_operator.get(pos_4);
-						v1 = k.getCell(k.getCages().get(i).getPos(0)).getValue();
-						v2 = k.getCell(k.getCages().get(i).getPos(1)).getValue();
-						v3 = k.getCell(k.getCages().get(i).getPos(2)).getValue();
-						v4 = k.getCell(k.getCages().get(i).getPos(3)).getValue();
+						v1 = k.getCell(k.getCage(i).getPos(0)).getValue();
+						v2 = k.getCell(k.getCage(i).getPos(1)).getValue();
+						v3 = k.getCell(k.getCage(i).getPos(2)).getValue();
+						v4 = k.getCell(k.getCage(i).getPos(3)).getValue();
 						switch(operator_4) {
 							case ADD:
-								k.getCages().get(i).setOperation(TypeOperation.ADD);
+								k.getCage(i).setOperation(TypeOperation.ADD);
 								int result_add_4 = v1+v2+v3+v4;
-								k.getCages().get(i).setResult(result_add_4);
+								k.getCage(i).setResult(result_add_4);
 								break;
 
 							case MULT:
-								k.getCages().get(i).setOperation(TypeOperation.MULT);
+								k.getCage(i).setOperation(TypeOperation.MULT);
 								int result_mult_4 = v1*v2*v3*v4;
-								k.getCages().get(i).setResult(result_mult_4);
+								k.getCage(i).setResult(result_mult_4);
 								break;
 
 							default:
@@ -322,14 +322,16 @@ public class KenkenConfig  {
 	}
 
 
+
+
 	// SOLUCIONAR UN KENKEN MEDIANTE LAS CAJAS (un kenken de fichero) //
 
 	private void fillIndividualCellsFromCages() {
 		for(int i = 0; i < k.getCages().size(); ++i) {
-			if(k.getCages().get(i).getCageSize() == 1) {
-				int v = k.getCages().get(i).getResult();
-				int x = k.getCages().get(i).getPos(0).posX;
-				int y = k.getCages().get(i).getPos(0).posY;
+			if(k.getCage(i).getCageSize() == 1) {
+				int v = k.getCage(i).getResult();
+				int x = k.getCage(i).getPos(0).posX;
+				int y = k.getCage(i).getPos(0).posY;
 				k.getCell(x,y).setValue(v);
 				k.getCell(x,y).setLocked();
 			}
@@ -337,7 +339,8 @@ public class KenkenConfig  {
 	}
 
 	private void fillKenkenFromCages(int i, int j) {
-		if (i == k.getSize()) {end = true;}
+		if (i == k.getSize()) {
+			endFill = true;}
 		else if (j == k.getSize()) {fillKenkenFromCages(i+1, 0);}
 		else if (k.getCell(i,j).isLocked()) {fillKenkenFromCages(i, j+1);}
 		else if (k.getCell(i,j).getValue() != 0) {fillKenkenFromCages(i, j+1);}
@@ -347,19 +350,19 @@ public class KenkenConfig  {
 
 			int tmp = new Random().nextInt(k.getSize())+1;
 
-			for(int u = 0;u < k.getSize() && !end; ++u) {
+			for(int u = 0; u < k.getSize() && !endFill; ++u) {
 				while(tried[tmp]) {tmp = new Random().nextInt(k.getSize())+1;}
 				tried[tmp] = true;
 				if(check(tmp, i, j)) {
 					k.getCell(i,j).setValue(tmp);
 					KenkenCage kg = k.getCage(i, j);
-					if((kg.checkCompleteCage(k) && kg.checkTotalCage(k)) || (!kg.checkCompleteCage(k) && kg.checkPartialCage(k))) {
+					if((kg.isCageComplete(k) && kg.checkTotalCage(k)) || (!kg.isCageComplete(k) && kg.checkPartialCage(k))) {
 						fillKenken(i, j+1);
 					}
 				}
 			}
 
-			if (!end) {k.getCell(i,j).setValue(0);}
+			if (!endFill) {k.getCell(i,j).setValue(0);}
 		}
 
 	}

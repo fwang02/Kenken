@@ -1,5 +1,4 @@
 import static java.lang.Math.abs;
-import static java.lang.Math.pow;
 
 class Pos {
     int posX;
@@ -16,8 +15,7 @@ public class KenkenCage {
     private final int size;
     private TypeOperation operation;
     private int result;
-    private boolean allLocked;
-    private Kenken k;
+    private boolean allCellSet;
     private boolean locked;     //@javi, hola feiyang. he añadido esto pq no se si podia utilizar otra. Es basicamente para: como primero creo las regiones de casillas individuales
                                 //y despues las regiones totales, para no volver a asignarles un resultado y operacion ya que ya lo tienen.
                                 //VIGILA PQ LA CREACIÓN DE CASILLAS DEPENDEN DE ESTE BOOL
@@ -26,19 +24,8 @@ public class KenkenCage {
         posCells = null;
         size = 0;
         operation = null;
-        k = null;
         result = 0;
-        allLocked = false;
-        locked = false;
-    }
-
-    KenkenCage(Kenken k, TypeOperation operation, int result) {
-        this.k = k;
-        posCells = null;
-        size = 0;
-        this.operation = operation;
-        this.result = result;
-        allLocked = false;
+        allCellSet = false;
         locked = false;
     }
 
@@ -47,53 +34,54 @@ public class KenkenCage {
         this.result = result;
         this.posCells = posCells;
         size = posCells.length;
-        allLocked = false;
-        k = null;
+        allCellSet = false;
         locked = false;
     }
 
 
 
 
-    public boolean isCageValid() {
+    /*
+    public boolean isCageValid(Kenken kk) {
         assert posCells != null;
-        assert k != null;
+        assert kk != null;
         if(operation == TypeOperation.ADD) {
             int sum = 0;
             for (Pos pos_cell : posCells) {
-                if (k.getCell(pos_cell).isLocked()) {
-                    sum += k.getCell(pos_cell).getValue();
+                if (kk.getCell(pos_cell).isLocked()) {
+                    sum += kk.getCell(pos_cell).getValue();
                 }
             }
             if(allLocked) return result == sum;
             else return result > sum;
         } else if (operation == TypeOperation.SUB) {
-            if(allLocked) return abs(k.getCell(posCells[0]).getValue() - k.getCell(posCells[1]).getValue()) == result;
+            if(allLocked) return abs(kk.getCell(posCells[0]).getValue() - kk.getCell(posCells[1]).getValue()) == result;
         } else if (operation == TypeOperation.MULT) {
             int mult = 1;
             for (Pos pos_cell : posCells) {
-                if(k.getCell(pos_cell).isLocked()) {
-                    mult = mult * k.getCell(pos_cell).getValue();
+                if(kk.getCell(pos_cell).isLocked()) {
+                    mult = mult * kk.getCell(pos_cell).getValue();
                 }
             }
             if(allLocked) return result == mult;
             else return result > mult;
         } else if (operation == TypeOperation.DIV) {
             if(allLocked) {
-                if(k.getCell(posCells[0]).getValue() > k.getCell(posCells[1]).getValue()) return k.getCell(posCells[0]).getValue() / k.getCell(posCells[1]).getValue() == result;
-                else return k.getCell(posCells[1]).getValue() / k.getCell(posCells[0]).getValue() == result;
+                if(kk.getCell(posCells[0]).getValue() > kk.getCell(posCells[1]).getValue()) return kk.getCell(posCells[0]).getValue() / kk.getCell(posCells[1]).getValue() == result;
+                else return kk.getCell(posCells[1]).getValue() / kk.getCell(posCells[0]).getValue() == result;
             }
         } else if (operation == TypeOperation.MOD) {
             if(allLocked) {
-                return k.getCell(posCells[0]).getValue() % k.getCell(posCells[1]).getValue() == result || k.getCell(posCells[1]).getValue() % k.getCell(posCells[0]).getValue() == result;
+                return kk.getCell(posCells[0]).getValue() % kk.getCell(posCells[1]).getValue() == result || kk.getCell(posCells[1]).getValue() % kk.getCell(posCells[0]).getValue() == result;
             }
         } else if (operation == TypeOperation.POW) {
             if(allLocked) {
-                return pow(k.getCell(posCells[0]).getValue(),k.getCell(posCells[1]).getValue()) == result || pow(k.getCell(posCells[1]).getValue(),k.getCell(posCells[0]).getValue()) == result;
+                return pow(kk.getCell(posCells[0]).getValue(),kk.getCell(posCells[1]).getValue()) == result || pow(kk.getCell(posCells[1]).getValue(),kk.getCell(posCells[0]).getValue()) == result;
             }
         }
         return true;
     }
+     */
 
     public int getCageSize() {      //@javi, la he añadido para poder consultar el tamaño de la cage
         return size;
@@ -124,8 +112,8 @@ public class KenkenCage {
         return locked;
     }
 
-    public boolean isAllLocked() {
-        return allLocked;
+    public boolean isAllCellSet() {
+        return allCellSet;
     }
 
     public void setOperation(TypeOperation operator) {
@@ -138,7 +126,7 @@ public class KenkenCage {
 
     //@javi, feiyang he añadido esto que me permite solucionar los kenken de los ficheros
 
-    public boolean checkCompleteCage(Kenken kk) {
+    public boolean isCageComplete(Kenken kk) {
         for(int i = 0; i < getCageSize(); ++i) {
             int x = getPos(i).posX;
             int y = getPos(i).posY;

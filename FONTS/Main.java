@@ -243,12 +243,15 @@ public class Main {
         Kenken kenken = new Kenken(size,operations,dif);
         KenkenConfig kenkenConfig = new KenkenConfig(kenken);
 
-        kenkenConfig.generateKenken();
+        kenkenConfig.generateKenkenv1();
+
+        
         return true;
     }
 
     public static void main(String[] args) {
-
+        
+        /*
         //for test
         udb.printUsers();
 
@@ -261,6 +264,23 @@ public class Main {
             gameCreationPage = gamePlayOption();
         }
         boolean gamePlayPage = false;
+        */
+
+        int size = chooseSize();
+        TypeDificult dif = chooseDifficulty();
+        HashSet<TypeOperation> operations = chooseOps();
+
+        Kenken kenken = new Kenken(size,operations,dif);
+        
+        KenkenConfig kenkenConfig = new KenkenConfig(kenken);
+
+        kenkenConfig.generateKenkenv1();
+
+        Kenken tablero = new Kenken(kenken);
+
+        KenkenPlay kenkenPlay = new KenkenPlay(kenken, tablero);
+        kenkenPlay.start();
+
     }
 
 

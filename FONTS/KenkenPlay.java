@@ -1,5 +1,4 @@
 import java.util.*;
-import java.io.*;
 
 public class KenkenPlay {
 
@@ -60,7 +59,7 @@ public class KenkenPlay {
 
 	private void listCages() {
 		ArrayList<KenkenCage> print_cages = new ArrayList<KenkenCage>();
-		print_cages = solution.getCages();
+		print_cages = solution.getAllCages();
 		for(int i = 0; i < print_cages.size(); ++i) {
 			System.out.print("Cage " + i + "-> ");
 			System.out.print("Size: " + print_cages.get(i).getCageSize() + " ");

@@ -1,15 +1,3 @@
-import static java.lang.Math.abs;
-
-class Pos {
-    int posX;
-    int posY;
-
-    public Pos(int x, int y) {
-        posX = x;
-        posY = y;
-    }
-}
-
 public class KenkenCage {
     private final Pos[] posCells;
     private final int size;

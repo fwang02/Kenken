@@ -26,7 +26,7 @@ public class Kenken {
         this.operations = k.getOperations();
         this.ncages = k.ncages;
         this.nicells = k.nicells;
-        this.cages = new ArrayList<>(k.getCages());
+        this.cages = new ArrayList<>(k.getAllCages());
         iniCells();
     }
     
@@ -51,7 +51,8 @@ public class Kenken {
         iniCells();
     }
 
-    Kenken(int size, HashSet<TypeOperation> operations, int number_cages, int number_i_cells){        // PARA GENERAR Y RESOLVER KENKENS v2
+    // PARA GENERAR Y RESOLVER KENKENS v2
+    Kenken(int size, HashSet<TypeOperation> operations, int number_cages, int number_i_cells){
         this.size = size;
         this.name = null;
         this.dificult = null;
@@ -62,7 +63,8 @@ public class Kenken {
         iniCells();
     }
 
-    Kenken(int size, HashSet<TypeOperation> operations, TypeDificult dificult, ArrayList<KenkenCage> cages){        // PARA RESOLVER KENKENS DESDE UN FICHERO
+    // PARA RESOLVER KENKEN DESDE UN FICHERO
+     Kenken(int size, HashSet<TypeOperation> operations, TypeDificult dificult, ArrayList<KenkenCage> cages){
         this.size = size;
         this.cages = cages;
         this.dificult = dificult;
@@ -94,7 +96,7 @@ public class Kenken {
         return nicells;
     }
 
-    public KenkenCell[][] getCells() {
+    public KenkenCell[][] getAllCells() {
         return cells;
     }
 
@@ -106,7 +108,7 @@ public class Kenken {
         return cells[p.posX][p.posY];
     }
 
-    public ArrayList<KenkenCage> getCages() {
+    public ArrayList<KenkenCage> getAllCages() {
         return cages;
     }
 
@@ -139,8 +141,7 @@ public class Kenken {
     }
 
     public boolean AlreadyInCage(int x, int y) {
-        if(this.getCell(x, y).isLocked()) return true;
-        else return false;
+        return this.getCell(x, y).isLocked();
     }
 
     public boolean rowCheck(int row, int val) {
@@ -166,9 +167,5 @@ public class Kenken {
                 cells[i][j] = tmp;
             }
         }
-    }
-
-    public void addOpSet(TypeOperation op) {
-        operations.add(op);
     }
 }

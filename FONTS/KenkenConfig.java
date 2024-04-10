@@ -165,7 +165,7 @@ public class KenkenConfig  {
 	// esta funcion asigna operacion y resultado a las regiones
 	private void fillCagesResult() {
 		int v1 ,v2, v3, v4 = 0;
-		for(int i = 0; i < k.getCages().size(); ++i) {
+		for(int i = 0; i < k.getAllCages().size(); ++i) {
 			if(!k.getCage(i).isLocked()) {
 				k.getCage(i).setLocked();
 				switch(k.getCage(i).getCageSize()) {
@@ -349,7 +349,7 @@ public class KenkenConfig  {
 	// SOLUCIONAR UN KENKEN MEDIANTE LAS CAJAS (un kenken de fichero) //
 
 	private void fillIndividualCellsFromCages() {
-		for(int i = 0; i < k.getCages().size(); ++i) {
+		for(int i = 0; i < k.getAllCages().size(); ++i) {
 			if(k.getCage(i).getCageSize() == 1) {
 				int v = k.getCage(i).getResult();
 				int x = k.getCage(i).getPos(0).posX;
@@ -405,7 +405,7 @@ public class KenkenConfig  {
 		System.out.print("<--## CAGE LIST ##-->\n");
 		System.out.print("\n");
 		ArrayList<KenkenCage> print_cages = new ArrayList<KenkenCage>();
-		print_cages = k.getCages();
+		print_cages = k.getAllCages();
 		for(int i = 0; i < print_cages.size(); ++i) {
 			System.out.print("Cage " + i + "-> ");
 			System.out.print("Size: " + print_cages.get(i).getCageSize() + " ");

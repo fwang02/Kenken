@@ -132,7 +132,7 @@ public class KenkenCage {
     public boolean checkPartialCage(Kenken kk) {
         if(operation == TypeOperation.ADD || operation == TypeOperation.MULT) {
             int v = checkResult(kk);
-            return v <= result;
+            return v < result;
         }
         return true;
     }
@@ -179,7 +179,8 @@ public class KenkenCage {
         for(int i = 0; i < getCageSize(); ++i) {
             int x = getPos(i).posX;
             int y = getPos(i).posY;
-            v *= kk.getCell(x, y).getValue();
+            if(kk.getCell(x, y).getValue() != 0)
+                v *= kk.getCell(x, y).getValue();
         }
         return v;
     }

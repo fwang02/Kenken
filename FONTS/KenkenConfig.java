@@ -74,7 +74,6 @@ public class KenkenConfig  {
 	private void filldificultCells() {
 
 		int indiv_cells = 0;
-
 		switch(k.getDificult()) {
 			case EASY:
 				indiv_cells = (int)(k.getSize() * k.getSize() * 0.30);
@@ -86,9 +85,9 @@ public class KenkenConfig  {
 				indiv_cells = (int)(k.getSize() * k.getSize() * 0.05);
 				break;
 			case EXPERT:
-                break;
+				indiv_cells = 0;
+				break;
 		}
-
 		for(int c = 0; c < indiv_cells; ++c) {
 
 			int tmp_x = new Random().nextInt(k.getSize());
@@ -137,6 +136,7 @@ public class KenkenConfig  {
 					cageCells.add(aux);
 
 					while(stop_2(prob_to_stop_2, cageCells.size()) || stop_4(prob_to_stop_4, cageCells.size())){
+					//while((prob_to_stop_4 < new Random().nextDouble() && cageCells.size() < 4) || (prob_to_stop_2 < new Random().nextDouble() && cageCells.size() < 2)) {
 						int m = new Random().nextInt(4);
 						int x = cageCells.get(cageCells.size()-1).getPosX() + X[m];  
 						int y = cageCells.get(cageCells.size()-1).getPosY() + Y[m];
@@ -146,8 +146,8 @@ public class KenkenConfig  {
 							aux = k.getCell(x, y);
 							cageCells.add(aux);
 						}
-						prob_to_stop_4 += 0.01;
-						prob_to_stop_2 += 0.0001;
+						prob_to_stop_4 += 0.001;
+						prob_to_stop_2 += 0.000001;
 					}
 
 					int s = cageCells.size();

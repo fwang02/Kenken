@@ -287,13 +287,13 @@ public class Main {
         //Kenken kenken = new Kenken(size, operations, dif);
 
         // Kenken generado por numero de regiones
-        Kenken kenken = new Kenken(size, operations, nCages);
+        Kenken kenken = new Kenken(size, operations, dif);
 
         KenkenConfig kenkenConfig = new KenkenConfig(kenken);
 
         //kenkenConfig.generateKenkenv1();
 
-        kenkenConfig.generateKenkenv2();
+        kenkenConfig.generateKenkenv1();
 
         Kenken tablero = new Kenken(kenken);
 
@@ -301,6 +301,5 @@ public class Main {
         kenkenPlay.start();
 
     }
-
 
 }

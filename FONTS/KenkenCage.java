@@ -112,6 +112,14 @@ public class KenkenCage {
         return operation;
     }
 
+    public void clearCage(Kenken kk) {
+        for(int i = 0; i < getCageSize(); ++i) {
+            Pos pos = getPos(i);
+            kk.getCell(pos).setValue(0);
+        }
+    }
+    
+
     //@javi, feiyang he añadido esto que me permite solucionar los kenken de los ficheros
 
     public boolean isCageComplete(Kenken kk) {
@@ -123,18 +131,10 @@ public class KenkenCage {
         return true;
     }
 
-    public boolean checkTotalCage(Kenken kk) {
+    public boolean checkValueCage(Kenken kk) {
         int v = checkResult(kk);
         return v == result;
 
-    }
-
-    public boolean checkPartialCage(Kenken kk) {
-        if(operation == TypeOperation.ADD || operation == TypeOperation.MULT) {
-            int v = checkResult(kk);
-            return v < result;
-        }
-        return true;
     }
 
 
@@ -179,8 +179,7 @@ public class KenkenCage {
         for(int i = 0; i < getCageSize(); ++i) {
             int x = getPos(i).posX;
             int y = getPos(i).posY;
-            if(kk.getCell(x, y).getValue() != 0)
-                v *= kk.getCell(x, y).getValue();
+            v *= kk.getCell(x, y).getValue();
         }
         return v;
     }

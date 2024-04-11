@@ -6,5 +6,4 @@ public class Pos {
         posX = x;
         posY = y;
     }
-
 }

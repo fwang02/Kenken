@@ -107,7 +107,7 @@ public class Main {
     }
 
     private static void readFile(String fileName) throws FileNotFoundException {
-        Scanner scanner = new Scanner(new File("./DATA/"+fileName+".txt"));
+        Scanner scanner = new Scanner(new File("../DATA/"+fileName+".txt"));
         int size = scanner.nextInt();
         if(size > 9 || size < 3) throw new IllegalArgumentException("Tamaño incorrecto");
         int numCage = scanner.nextInt();
@@ -152,7 +152,9 @@ public class Main {
         Kenken kenken = new Kenken(size,opSet,TypeDificult.EXPERT,cages);
         KenkenConfig kenkenConfig = new KenkenConfig(kenken);
         kenkenConfig.solveKenken();
+
         Kenken table = new Kenken(kenken);
+        
         currentGame = new KenkenPlay(kenken,table);
         currentGame.start();
 
@@ -282,17 +284,20 @@ public class Main {
         boolean gamePlayPage = false;
         */
 
+        /*
         int size = chooseSize();
         int nCages = chooseNumCages();
         TypeDificult dif = chooseDifficulty();
         HashSet<TypeOperation> operations = chooseOps();
+              
 
         // Kenken generado por dificultad
-        //Kenken kenken = new Kenken(size, operations, dif);
+        Kenken kenken = new Kenken(size, operations, dif);
 
         // Kenken generado por numero de regiones
-        /*Kenken kenken = new Kenken(size, operations, dif);
-
+        //Kenken kenken = new Kenken(size, operations, nCages);
+        
+        
         KenkenConfig kenkenConfig = new KenkenConfig(kenken);
 
         kenkenConfig.generateKenkenv1();
@@ -301,15 +306,16 @@ public class Main {
 
         KenkenPlay kenkenPlay = new KenkenPlay(kenken, tablero);
         kenkenPlay.start();
-         */
-
+        */
+        
+        
         try {
             readFile("input");
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
-
-
+    
+    
     }
 
 }

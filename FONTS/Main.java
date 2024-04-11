@@ -10,7 +10,7 @@ public class Main {
     private static final Ranking ranking = Ranking.getInstance();
     private static final Scanner sc = new Scanner(System.in);
     private static User currentUser;
-    private static KenkenConfig currentGame;
+    private static KenkenPlay currentGame;
     private static TypeOperation getOperation(int num)
     {
         switch (num) {
@@ -150,7 +150,11 @@ public class Main {
 
         scanner.close();
         Kenken kenken = new Kenken(size,opSet,TypeDificult.EXPERT,cages);
-        currentGame = new KenkenConfig(kenken);
+        KenkenConfig kenkenConfig = new KenkenConfig(kenken);
+        kenkenConfig.solveKenken();
+        Kenken table = new Kenken(kenken);
+        currentGame = new KenkenPlay(kenken,table);
+        currentGame.start();
 
     }
 
@@ -287,11 +291,9 @@ public class Main {
         //Kenken kenken = new Kenken(size, operations, dif);
 
         // Kenken generado por numero de regiones
-        Kenken kenken = new Kenken(size, operations, dif);
+        /*Kenken kenken = new Kenken(size, operations, dif);
 
         KenkenConfig kenkenConfig = new KenkenConfig(kenken);
-
-        //kenkenConfig.generateKenkenv1();
 
         kenkenConfig.generateKenkenv1();
 
@@ -299,6 +301,14 @@ public class Main {
 
         KenkenPlay kenkenPlay = new KenkenPlay(kenken, tablero);
         kenkenPlay.start();
+         */
+
+        try {
+            readFile("input");
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
 
     }
 

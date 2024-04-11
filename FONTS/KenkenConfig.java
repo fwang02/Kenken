@@ -442,6 +442,8 @@ public class KenkenConfig  {
 		fillKenkenFromCages(0, 0);
 	}
 
+	//
+
 	// Resuelve un kenken con las regiones ya definidas, es decir, uno importado desde fichero
 	public void solveKenken() {
 		fillIndividualCellsFromCages();

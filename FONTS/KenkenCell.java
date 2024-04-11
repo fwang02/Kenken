@@ -8,7 +8,7 @@ public class KenkenCell {
     KenkenCell(int posX, int posY) {
         this.posX = posX;
         this.posY = posY;
-        valor = -1;
+        valor = 0;
         locked = false;
     }
     

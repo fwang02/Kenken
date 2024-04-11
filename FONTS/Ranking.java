@@ -38,6 +38,21 @@ public class Ranking {
         }
     }
 
+    public void updateMaxPoint(String username, int maxPoint) {
+        if(!ranking.containsValue(username) || !udb.isUserExist(username)) {
+            System.err.println("El usuario no existe en ranking o tabla de usuarios");
+        }
+
+        int currentPoint = udb.getUser(username).getMaxPoint();
+
+        ranking.remove(currentPoint,username);
+        ranking.put(maxPoint,username);
+
+        udb.getUser(username).setMaxPoint(maxPoint);
+    }
+
+
+
 
 
 

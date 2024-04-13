@@ -1,3 +1,5 @@
+package Domain;
+
 import java.util.HashMap;
 
 public class User {
@@ -6,6 +8,12 @@ public class User {
     private int maxPoint;
     private HashMap<String,KenkenPlay> createdGames;
 
+    User() {
+        username = null;
+        password = null;
+        maxPoint = 0;
+        createdGames = null;
+    }
     User(String username, String password) {
         this.username = username;
         this.password = password;

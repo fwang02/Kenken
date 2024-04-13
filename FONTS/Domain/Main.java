@@ -1,6 +1,7 @@
+package Domain;
+
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Scanner;
@@ -154,7 +155,7 @@ public class Main {
         kenkenConfig.solveKenken();
 
         Kenken table = new Kenken(kenken);
-        
+
         currentGame = new KenkenPlay(kenken,table);
         currentGame.start();
 
@@ -198,7 +199,7 @@ public class Main {
         System.out.println("Bienvenido a KenKen!");
         System.out.println("1. Iniciar sesión");
         System.out.println("2. Registrar");
-        System.out.println("3. Ranking");
+        System.out.println("3. domain.Ranking");
         System.out.print('\n');
 
         int option = sc.nextInt();
@@ -221,7 +222,7 @@ public class Main {
         System.out.println("1. Crear nuevo");
         System.out.println("2. Importar desde fichero");
         System.out.println("3. Seguir jugar");
-        System.out.println("4. Ranking");
+        System.out.println("4. domain.Ranking");
         System.out.print('\n');
 
         int option = sc.nextInt();
@@ -289,33 +290,33 @@ public class Main {
         int nCages = chooseNumCages();
         TypeDificult dif = chooseDifficulty();
         HashSet<TypeOperation> operations = chooseOps();
-              
 
-        // Kenken generado por dificultad
-        Kenken kenken = new Kenken(size, operations, dif);
 
-        // Kenken generado por numero de regiones
-        //Kenken kenken = new Kenken(size, operations, nCages);
-        
-        
-        KenkenConfig kenkenConfig = new KenkenConfig(kenken);
+        // domain.Kenken generado por dificultad
+        domain.Kenken kenken = new domain.Kenken(size, operations, dif);
+
+        // domain.Kenken generado por numero de regiones
+        //domain.Kenken kenken = new domain.Kenken(size, operations, nCages);
+
+
+        domain.KenkenConfig kenkenConfig = new domain.KenkenConfig(kenken);
 
         kenkenConfig.generateKenkenv1();
 
-        Kenken tablero = new Kenken(kenken);
+        domain.Kenken tablero = new domain.Kenken(kenken);
 
-        KenkenPlay kenkenPlay = new KenkenPlay(kenken, tablero);
+        domain.KenkenPlay kenkenPlay = new domain.KenkenPlay(kenken, tablero);
         kenkenPlay.start();
         */
-        
-        
+
+
         try {
             readFile("input");
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
-    
-    
+
+
     }
 
 }

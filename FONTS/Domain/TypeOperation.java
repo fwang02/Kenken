@@ -1,3 +1,5 @@
+package Domain;
+
 public enum TypeOperation {
 	ADD,
 	SUB,

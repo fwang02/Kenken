@@ -1,3 +1,5 @@
+package Domain;
+
 public class KenkenCage {
     private final Pos[] posCells;
     private final int size;
@@ -8,7 +10,7 @@ public class KenkenCage {
                                 //y despues las regiones totales, para no volver a asignarles un resultado y operacion ya que ya lo tienen.
                                 //VIGILA PQ LA CREACIÓN DE CASILLAS DEPENDEN DE ESTE BOOL
 
-    KenkenCage() {
+    public KenkenCage() {
         posCells = null;
         size = 0;
         operation = null;
@@ -30,39 +32,39 @@ public class KenkenCage {
 
 
     /*
-    public boolean isCageValid(Kenken kk) {
+    public boolean isCageValid(domain.Kenken kk) {
         assert posCells != null;
         assert kk != null;
-        if(operation == TypeOperation.ADD) {
+        if(operation == domain.TypeOperation.ADD) {
             int sum = 0;
-            for (Pos pos_cell : posCells) {
+            for (domain.Pos pos_cell : posCells) {
                 if (kk.getCell(pos_cell).isLocked()) {
                     sum += kk.getCell(pos_cell).getValue();
                 }
             }
             if(allLocked) return result == sum;
             else return result > sum;
-        } else if (operation == TypeOperation.SUB) {
+        } else if (operation == domain.TypeOperation.SUB) {
             if(allLocked) return abs(kk.getCell(posCells[0]).getValue() - kk.getCell(posCells[1]).getValue()) == result;
-        } else if (operation == TypeOperation.MULT) {
+        } else if (operation == domain.TypeOperation.MULT) {
             int mult = 1;
-            for (Pos pos_cell : posCells) {
+            for (domain.Pos pos_cell : posCells) {
                 if(kk.getCell(pos_cell).isLocked()) {
                     mult = mult * kk.getCell(pos_cell).getValue();
                 }
             }
             if(allLocked) return result == mult;
             else return result > mult;
-        } else if (operation == TypeOperation.DIV) {
+        } else if (operation == domain.TypeOperation.DIV) {
             if(allLocked) {
                 if(kk.getCell(posCells[0]).getValue() > kk.getCell(posCells[1]).getValue()) return kk.getCell(posCells[0]).getValue() / kk.getCell(posCells[1]).getValue() == result;
                 else return kk.getCell(posCells[1]).getValue() / kk.getCell(posCells[0]).getValue() == result;
             }
-        } else if (operation == TypeOperation.MOD) {
+        } else if (operation == domain.TypeOperation.MOD) {
             if(allLocked) {
                 return kk.getCell(posCells[0]).getValue() % kk.getCell(posCells[1]).getValue() == result || kk.getCell(posCells[1]).getValue() % kk.getCell(posCells[0]).getValue() == result;
             }
-        } else if (operation == TypeOperation.POW) {
+        } else if (operation == domain.TypeOperation.POW) {
             if(allLocked) {
                 return pow(kk.getCell(posCells[0]).getValue(),kk.getCell(posCells[1]).getValue()) == result || pow(kk.getCell(posCells[1]).getValue(),kk.getCell(posCells[0]).getValue()) == result;
             }
@@ -176,10 +178,11 @@ public class KenkenCage {
 
     private int calcMULT(Kenken kk) {
         int v = 1;
+
         for(int i = 0; i < getCageSize(); ++i) {
-            int x = getPos(i).posX;
-            int y = getPos(i).posY;
-            v *= kk.getCell(x, y).getValue();
+            Pos p = getPos(i);
+            if(kk.getCell(p).getValue() != 0)
+                v *= kk.getCell(p).getValue();
         }
         return v;
     }

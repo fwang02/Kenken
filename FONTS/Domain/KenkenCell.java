@@ -1,3 +1,5 @@
+package Domain;
+
 public class KenkenCell {
     private final int posX;
     private final int posY;

@@ -1,3 +1,5 @@
+package Domain;
+
 import java.util.*;
 
 public class KenkenPlay {
@@ -40,7 +42,7 @@ public class KenkenPlay {
 	}
 
 	private void listCells() {
-		System.out.print("Kenken\n");
+		System.out.print("domain.Kenken\n");
 		System.out.print("   ");
 		for (int i = 0; i < playground.getSize(); ++i) {
 			System.out.print(i + "  ");
@@ -92,7 +94,7 @@ public class KenkenPlay {
 	}
 
 	private void showSolution() {
-		System.out.println("Solucion del Kenken");
+		System.out.println("Solucion del domain.Kenken");
 		for (int i = 0; i < solution.getSize(); ++i) {
 			for (int j = 0; j < solution.getSize(); ++j) {
 				System.out.print(solution.getCell(i,j).getValue() + " ");

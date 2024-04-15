@@ -1,36 +1,15 @@
 package Domain;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Scanner;
 
 public class Main {
-    private static final UserDB udb = UserDB.getInstance();
+    private static final CtrlDomainUser udb = CtrlDomainUser.getInstance();
     private static final Ranking ranking = Ranking.getInstance();
     private static final Scanner sc = new Scanner(System.in);
     private static User currentUser;
     private static KenkenPlay currentGame;
-    private static TypeOperation getOperation(int num)
-    {
-        switch (num) {
-            case 1:
-                return TypeOperation.ADD;
-            case 2:
-                return TypeOperation.SUB;
-            case 3:
-                return TypeOperation.MULT;
-            case 4:
-                return TypeOperation.DIV;
-            case 5:
-                return TypeOperation.MOD;
-            case 6:
-                return TypeOperation.POW;
-            default:
-                throw new IllegalArgumentException("Carácter no válido encontrado en la cadena: " + num);
-        }
-    }
+
     private static TypeDificult chooseDifficulty()
     {
         System.out.println("Selecciona una dificultad.");
@@ -95,7 +74,7 @@ public class Main {
 
         for (int i = 0; i < op.length(); ++i) {
             int num = Character.getNumericValue(op.charAt(i)); // Obtener el carácter en la posición i
-            operations.add(getOperation(num));
+            //operations.add(getOperation(num));
         }
         if(operations.isEmpty()) throw new NullPointerException("La lista de operaciones no puede ser nula.");
 
@@ -107,59 +86,7 @@ public class Main {
         return operations;
     }
 
-    private static void readFile(String fileName) throws FileNotFoundException {
-        Scanner scanner = new Scanner(new File("../DATA/"+fileName+".txt"));
-        int size = scanner.nextInt();
-        if(size > 9 || size < 3) throw new IllegalArgumentException("Tamaño incorrecto");
-        int numCage = scanner.nextInt();
-        //for test
-        System.out.print(size);
-        System.out.print(' ');
-        System.out.println(numCage);
 
-        scanner.nextLine();
-        HashSet<TypeOperation> opSet = new HashSet<>();
-        ArrayList<KenkenCage> cages = new ArrayList<>(numCage);
-
-        int count = 0;
-        while(scanner.hasNextLine() && count < numCage) {
-            String line = scanner.nextLine();
-            String[] numStr = line.split("\\s+");
-
-            TypeOperation op = Main.getOperation(Integer.parseInt(numStr[0]));
-            opSet.add(op);
-
-            int result = Integer.parseInt(numStr[1]);
-            int numCells = Integer.parseInt(numStr[2]);
-            Pos[] posCells = new Pos[numCells];
-
-            for (int i = 0; i < numCells; i++) {
-                int posX = Integer.parseInt(numStr[2*i+3])-1;
-                int posY = Integer.parseInt(numStr[2*i+4])-1;
-                posCells[i] = new Pos(posX,posY);
-            }
-            //test
-            for(Pos p : posCells) {
-                System.out.print(p.posX+" ");
-                System.out.print(p.posY+"  ");
-            }
-            System.out.print('\n');
-
-            cages.add(new KenkenCage(op,result,posCells));
-            ++count;
-        }
-
-        scanner.close();
-        Kenken kenken = new Kenken(size,opSet,TypeDificult.EXPERT,cages);
-        KenkenConfig kenkenConfig = new KenkenConfig(kenken);
-        kenkenConfig.solveKenken();
-
-        Kenken table = new Kenken(kenken);
-
-        currentGame = new KenkenPlay(kenken,table);
-        currentGame.start();
-
-    }
 
     private static boolean login() {
         String username;
@@ -169,7 +96,7 @@ public class Main {
         username = sc.nextLine();
         System.out.println("Escribe la contraseña:");
         password = sc.nextLine();
-        currentUser = udb.loginUser(username,password);
+        //currentUser = udb.checkPassword(username,password);
         if(currentUser == null) return false;
 
         System.out.println("Welcome back! "+currentUser.getUsername());
@@ -244,12 +171,14 @@ public class Main {
         System.out.println("Escribe el nombre del fichero (sin poner ruta).");
         String fileName = sc.nextLine();
 
-        try {
+        /*try {
             readFile(fileName);
         } catch (FileNotFoundException e) {
             System.err.println("El fichero no existe.");
             return false;
         }
+
+         */
         return true;
 
     }
@@ -308,13 +237,6 @@ public class Main {
         domain.KenkenPlay kenkenPlay = new domain.KenkenPlay(kenken, tablero);
         kenkenPlay.start();
         */
-
-
-        try {
-            readFile("input");
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
 
 
     }

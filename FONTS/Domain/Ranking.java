@@ -8,16 +8,16 @@ import java.util.TreeMap;
 public class Ranking {
     private static final Ranking rk = new Ranking();
     private static TreeMap<Integer,String> ranking;
-    private static UserDB udb;
+    private static CtrlDomainUser udb;
 
     Ranking() {
         ranking = new TreeMap<>(Comparator.reverseOrder());
-        udb = UserDB.getInstance();
+        udb = CtrlDomainUser.getInstance();
         loadRanking();
     }
 
     private void loadRanking() {
-        HashMap<String,User> users = udb.getUsers();
+        HashMap<String,User> users = udb.getAllUsers();
         for(Map.Entry<String,User> u: users.entrySet()) {
             ranking.put(u.getValue().getMaxPoint(),u.getKey());
         }

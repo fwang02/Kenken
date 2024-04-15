@@ -104,14 +104,6 @@ public class DriverKenkenCage {
         }
     }
 
-
-
-    private static void printOp() {
-        System.out.println("Options:");
-        System.out.println("1. Constructora");
-        System.out.println("2. ");
-    }
-
     private static void testGetResult() {
         try {
             int result = kkc.getResult();
@@ -120,6 +112,16 @@ public class DriverKenkenCage {
             System.err.println("Debería crear una instancia antes de hacer esta operación");
         }
     }
+
+
+
+    private static void printOp() {
+        System.out.println("Options:");
+        System.out.println("1. Constructora");
+        System.out.println("2. ");
+    }
+
+
 
     public static void main(String[] args) {
         printOp();

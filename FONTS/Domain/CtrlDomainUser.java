@@ -9,13 +9,13 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Scanner;
 
-public class UserDB {
-    private static final UserDB userDB = new UserDB();
+public class CtrlDomainUser {
+    private static final CtrlDomainUser CTRL_USER = new CtrlDomainUser();
     private final HashMap<String,User> users;
     private static final String filePath = "./DATA/users.txt";
 
 
-    private UserDB() {
+    private CtrlDomainUser() {
         users = new HashMap<>();
         loadUserData();
     }
@@ -34,7 +34,7 @@ public class UserDB {
                 }
             }
         } catch (FileNotFoundException e) {
-            System.out.println("Fichero no existe：" + filePath);
+            System.out.println("Fichero no existe：" + filePath+", los usuarios no están cargados en la memoria");
         }
 
     }
@@ -47,12 +47,13 @@ public class UserDB {
             fw.write(username+';'+password+';'+maxPoint+'\n');
             fw.close();
         } catch (IOException e) {
+            System.err.println("El usuario no se ha guardado en el fichero");
             throw new RuntimeException(e);
         }
     }
 
-    public static UserDB getInstance() {
-        return userDB;
+    public static CtrlDomainUser getInstance() {
+        return CTRL_USER;
     }
 
     public void addUser(String username, String password) {
@@ -60,18 +61,14 @@ public class UserDB {
         writeToFile(username);
     }
 
-    public User loginUser(String username, String password) {
+    public boolean checkPassword(String username, String password) {
         User u = users.get(username);
         if(u == null) {
-            System.out.println("El usuario no existe");
-            return null;
+            return false;
         }
-        if(! Objects.equals(u.getPassword(), password)) {
-            System.out.println("La contraseña es incorrecta");
-            return null;
-        }
-        return u;
+        return Objects.equals(u.getPassword(), password);
     }
+
 
     public boolean isUserExist(String username) {
         return users.containsKey(username);
@@ -81,7 +78,7 @@ public class UserDB {
         return users.get(username);
     }
 
-    public HashMap<String,User> getUsers() {
+    public HashMap<String,User> getAllUsers() {
         return users;
     }
 
@@ -91,4 +88,6 @@ public class UserDB {
             System.out.println(set.getKey()+" "+set.getValue().getPassword()+" "+set.getValue().getMaxPoint());
         }
     }
+
+
 }

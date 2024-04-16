@@ -27,6 +27,7 @@ public class Ranking {
         return rk;
     }
 
+    /*
     public void showRanking() {
         if(ranking.isEmpty()) {
             System.out.println("No hay usuario, el ranking está vacío");
@@ -38,6 +39,12 @@ public class Ranking {
             System.out.println(count+". "+set.getValue()+": "+set.getKey());
             count++;
         }
+    }
+
+     */
+
+    public TreeMap<Integer, String> getRanking() {
+        return ranking;
     }
 
     public void updateMaxPoint(String username, int maxPoint) {

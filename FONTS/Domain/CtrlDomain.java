@@ -5,12 +5,15 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Scanner;
+import java.util.TreeMap;
+
 
 public class CtrlDomain {
     private static final CtrlDomainUser ctrlDomainUser = CtrlDomainUser.getInstance();
     private static final Ranking ranking = Ranking.getInstance();
     private static User loggedUser;
-    private static KenkenPlay currentGame;
+    private static KenkenPlay currentPlay;
+    private static Kenken currentGame;
 
     CtrlDomain() {
         loggedUser = null;
@@ -71,16 +74,58 @@ public class CtrlDomain {
         }
         scanner.close();
 
-        Kenken kenken = new Kenken(size,opSet,TypeDificult.EXPERT,cages);
-        KenkenConfig kenkenConfig = new KenkenConfig(kenken);
+        currentGame = new Kenken(size,opSet,TypeDificult.EXPERT,cages);
+        KenkenConfig kenkenConfig = new KenkenConfig(currentGame);
         kenkenConfig.solveKenken();
 
-        Kenken table = new Kenken(kenken);
 
-        currentGame = new KenkenPlay(kenken,table);
+
+        //Kenken table = new Kenken(kenken);
+
+        //currentPlay = new KenkenPlay(kenken,table);
         //currentGame.start();
 
     }
+
+    public Boolean generateKenkenByDifficulty(int size, HashSet<TypeOperation> ops, TypeDificult difficulty){
+        Kenken kenken = new Kenken(size,ops,difficulty);
+        KenkenConfig kkConfig = new KenkenConfig(kenken);
+        kkConfig.generateKenkenv1();
+        currentGame = kenken;
+        return true;
+    }
+
+    public Boolean generateKkByNumCagesNumICells(int size, HashSet<TypeOperation> ops, int numCages, int numICells) {
+        Kenken kenken = new Kenken(size,ops,numCages,numICells);
+        KenkenConfig kkConfig = new KenkenConfig(kenken);
+        kkConfig.generateKenkenv2();
+        currentGame = kenken;
+        return true;
+    }
+
+    public Boolean generateKenkenByNumCages(int size, HashSet<TypeOperation> ops, int numCages) {
+        Kenken kenken = new Kenken(size,ops,numCages);
+        KenkenConfig kkConfig = new KenkenConfig(kenken);
+        kkConfig.generateKenkenv2();
+        currentGame = kenken;
+        return true;
+    }
+
+    public void playCurrentGame() {
+        Kenken table = new Kenken(currentGame);
+        KenkenPlay kkPlay = new KenkenPlay(currentGame,table);
+        kkPlay.start();
+    }
+
+    //Para pasar el mapa a la capa de presentación
+    public TreeMap<Integer,String> showRanking() {
+        return ranking.getRanking();
+    }
+
+
+
+
+
     private static TypeOperation getOperation(int num)
     {
         switch (num) {
@@ -100,5 +145,8 @@ public class CtrlDomain {
                 throw new IllegalArgumentException("Carácter no válido encontrado en la cadena: " + num);
         }
     }
+
+
+
 
 }

@@ -4,9 +4,9 @@ import java.util.*;
 
 public class KenkenPlay {
 
-	private Scanner command = new Scanner(System.in);
-	private Kenken solution;
-	private Kenken playground;
+	private final Scanner command = new Scanner(System.in);
+	private final Kenken solution;
+	private final Kenken playground;
 	private boolean solved;
 	private boolean finish;
 
@@ -60,7 +60,7 @@ public class KenkenPlay {
 	}
 
 	private void listCages() {
-		ArrayList<KenkenCage> print_cages = new ArrayList<KenkenCage>();
+		ArrayList<KenkenCage> print_cages;
 		print_cages = solution.getAllCages();
 		for(int i = 0; i < print_cages.size(); ++i) {
 			System.out.print("Cage " + i + "-> ");

@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -82,12 +81,14 @@ public class CtrlDomainUser {
         return users;
     }
 
-    public void printUsers() {
+    /*public void printUsers() {
         System.out.println("Username  Password  MaxPoint");
         for(Map.Entry<String,User> set: users.entrySet()) {
             System.out.println(set.getKey()+" "+set.getValue().getPassword()+" "+set.getValue().getMaxPoint());
         }
     }
+
+     */
 
 
 }

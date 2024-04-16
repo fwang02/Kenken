@@ -93,7 +93,7 @@ public class KenkenConfig  {
 			}
 			Pos[] tmpPos = {new Pos(tmpX, tmpY)};
 			kenken.getCell(tmpX, tmpY).setLocked();
-			kenken.addCage(TypeOperation.ADD, 0, tmpPos);
+			kenken.addCagePos(TypeOperation.ADD, 0, tmpPos);
 		}
 	}
 
@@ -128,7 +128,7 @@ public class KenkenConfig  {
 
 					while(stop_2(probToStop2, cageCells.size()) || stop_4(probToStop4, cageCells.size())){
 						int v = new Random().nextInt(4);
-						int x = cageCells.get(cageCells.size()-1).getPosX() + X[v];  
+						int x = cageCells.get(cageCells.size()-1).getPosX() + X[v];
 						int y = cageCells.get(cageCells.size()-1).getPosY() + Y[v];
 
 						if(x < kenken.getSize() && x >= 0 && y < kenken.getSize() && y >= 0 && !kenken.alreadyInCage(x, y)) {
@@ -141,9 +141,10 @@ public class KenkenConfig  {
 					}
 
 					int s = cageCells.size();
-					Pos[] cageCellsPos = new Pos[s];
+					KenkenCell[] cageCellsPos = new KenkenCell[s];
 					for(int ii = 0; ii < s; ++ii) {
-						cageCellsPos[ii] = new Pos(cageCells.get(ii).getPosX(), cageCells.get(ii).getPosY());
+						KenkenCell kc = cageCells.get(ii);
+						cageCellsPos[ii] = kc;
 					}
 					kenken.addCage(TypeOperation.ADD, 0, cageCellsPos);
 				}
@@ -281,7 +282,7 @@ public class KenkenConfig  {
 			}
 			Pos[] iniCell = new Pos[1];
 			iniCell[0] = new Pos(randX, randY);
-			kenken.addCage(TypeOperation.ADD, 0, iniCell);
+			//kenken.addCage(TypeOperation.ADD, 0, iniCell);
 		}
 
 	}
@@ -297,7 +298,7 @@ public class KenkenConfig  {
 				tmp_x = new Random().nextInt(kenken.getSize());
 				tmp_y = new Random().nextInt(kenken.getSize());
 			}
-			Pos[] tmp_p = {new Pos(tmp_x, tmp_y)};
+			KenkenCell[] tmp_p = {new KenkenCell(tmp_x, tmp_y)};
 			kenken.getCell(tmp_x, tmp_y).setLocked();
 			kenken.addCage(TypeOperation.ADD, kenken.getCell(tmp_x, tmp_y).getValue(), tmp_p);
 		}
@@ -309,36 +310,37 @@ public class KenkenConfig  {
 
 	// SOLUCIONAR UN KENKEN MEDIANTE LAS CAJAS (un kenken de fichero) //
 
-   private void SolveKenkenByCages(KenkenCage cage, int ii) {
-        if (cage.isCageComplete(kenken)) {
-            if (cage.checkValueCage(kenken)) {
-            	++index;
-            	if(index == kenken.getAllCages().size()) filled = true;
-                if(!filled) SolveKenkenByCages(kenken.getCage(index), 0);
-                --index; 
-            }
-            else {
-            	Pos pos = cage.getPos(cage.getCageSize()-1);
-            	kenken.getCell(pos).setValue(0);
-            	return;
-            }
-        } 
-        else {
-            for (int i = ii; i < cage.getCageSize(); ++i) {
-                int x = cage.getPos(i).posX;
-                int y = cage.getPos(i).posY;
-                for (int v = 1; v <= kenken.getSize(); ++v) {
-                    if (check(v, x, y)) {
-                        kenken.getCell(x, y).setValue(v);
-                        SolveKenkenByCages(cage, i + 1);
-                    }
-                }
+	private void SolveKenkenByCages(KenkenCage cage, int ii) {
+		if (cage.isCageComplete()) {
+			if (cage.checkValueCage()) {
+				++index;
+				if (index == kenken.getAllCages().size()) filled = true;
+				if (!filled) SolveKenkenByCages(kenken.getCage(index), 0);
+				--index;
+			}
+			else {
+				Pos pos = cage.getPos(cage.getCageSize()-1);
+				kenken.getCell(pos).setValue(0);
+				//cage.setValue(pos, 0);
+			}
+		}
+		else {
+			for (int i = ii; i < cage.getCageSize(); ++i) {
+				if (cage.getCell(i).getValue() > 0) continue;
+				int x = cage.getPos(i).posX;
+				int y = cage.getPos(i).posY;
+				for (int v = 1; v <= kenken.getSize(); ++v) {
+					if (check(v, x, y)) {
+						kenken.getCell(x, y).setValue(v);
+						SolveKenkenByCages(cage, i + 1);
+					}
+				}
 
                 if(!filled) kenken.getCell(x,y).setValue(0);
                 return;
             }
         }
-    }		
+    }
 
 	// GENERAR/RESOLVER UN KENKEN //
 

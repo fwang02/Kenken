@@ -1,20 +1,22 @@
 package Domain;
 
 public class KenkenCage {
-    private final Pos[] posCells;
+    //private final Pos[] posCells;
+    private final KenkenCell[] cells;
     private final int size;
     private TypeOperation operation;
     private int result;
     private boolean allCellSet;
 
-    public KenkenCage() {
-        posCells = null;
+    KenkenCage() {
+        cells = null;
         size = 0;
         operation = null;
         result = 0;
         allCellSet = false;
     }
 
+    /*
     KenkenCage(TypeOperation operation, int result, Pos[] posCells) {
         this.operation = operation;
         this.result = result;
@@ -22,58 +24,30 @@ public class KenkenCage {
         size = posCells.length;
         allCellSet = false;
     }
+    */
 
-
-
-    /*
-    public boolean isCageValid(domain.Kenken kk) {
-        assert posCells != null;
-        assert kk != null;
-        if(operation == domain.TypeOperation.ADD) {
-            int sum = 0;
-            for (domain.Pos pos_cell : posCells) {
-                if (kk.getCell(pos_cell).isLocked()) {
-                    sum += kk.getCell(pos_cell).getValue();
-                }
-            }
-            if(allLocked) return result == sum;
-            else return result > sum;
-        } else if (operation == domain.TypeOperation.SUB) {
-            if(allLocked) return abs(kk.getCell(posCells[0]).getValue() - kk.getCell(posCells[1]).getValue()) == result;
-        } else if (operation == domain.TypeOperation.MULT) {
-            int mult = 1;
-            for (domain.Pos pos_cell : posCells) {
-                if(kk.getCell(pos_cell).isLocked()) {
-                    mult = mult * kk.getCell(pos_cell).getValue();
-                }
-            }
-            if(allLocked) return result == mult;
-            else return result > mult;
-        } else if (operation == domain.TypeOperation.DIV) {
-            if(allLocked) {
-                if(kk.getCell(posCells[0]).getValue() > kk.getCell(posCells[1]).getValue()) return kk.getCell(posCells[0]).getValue() / kk.getCell(posCells[1]).getValue() == result;
-                else return kk.getCell(posCells[1]).getValue() / kk.getCell(posCells[0]).getValue() == result;
-            }
-        } else if (operation == domain.TypeOperation.MOD) {
-            if(allLocked) {
-                return kk.getCell(posCells[0]).getValue() % kk.getCell(posCells[1]).getValue() == result || kk.getCell(posCells[1]).getValue() % kk.getCell(posCells[0]).getValue() == result;
-            }
-        } else if (operation == domain.TypeOperation.POW) {
-            if(allLocked) {
-                return pow(kk.getCell(posCells[0]).getValue(),kk.getCell(posCells[1]).getValue()) == result || pow(kk.getCell(posCells[1]).getValue(),kk.getCell(posCells[0]).getValue()) == result;
-            }
-        }
-        return true;
+    // Using Kenken Cells
+    KenkenCage(TypeOperation operation, int result, KenkenCell[] cells) {
+        this.cells = cells;
+        this.operation = operation;
+        this.result = result;
+        //this.posCells = posCells;
+        size = cells.length;
+        allCellSet = false;
     }
-     */
 
-    public int getCageSize() {     
+    public int getCageSize() {
         return size;
     }
 
-    public Pos getPos(int x) {      
-        assert posCells != null;
-        return posCells[x];
+    public Pos getPos(int x) {
+        assert cells != null;
+        return cells[x].getPos();
+    }
+
+    public KenkenCell getCell(int i) {
+        assert cells != null;
+        return cells[i];
     }
 
     public void setResult(int x) {
@@ -103,91 +77,110 @@ public class KenkenCage {
         }
     }
 
-    public boolean isCageComplete(Kenken kk) {
-        for(int i = 0; i < getCageSize(); ++i) {
+    public boolean isCageComplete() {
+        /*for(int i = 0; i < getCageSize(); ++i) {
             int x = getPos(i).posX;
             int y = getPos(i).posY;
             if(kk.getCell(x, y).getValue() == 0) return false;
+        }*/
+        assert cells != null;
+        for(int i = 0; i < size; ++i) {
+            if(cells[i].getValue() == 0) return false;
         }
         return true;
     }
 
-    public boolean checkValueCage(Kenken kk) {
-        int v = checkResult(kk);
+    public boolean checkValueCage() {
+        int v = checkResult();
         return v == result;
 
     }
 
-    private int checkResult(Kenken kk) {
+    public void setValue(Pos pos, int val) {
+        int i = getCellIndex(pos);
+
+        cells[i].setValue(val);
+    }
+
+    private int getCellIndex(Pos pos) {
+        for (int i = 0; i < size; ++i) {
+            if (cells[i].getPos() == pos) return i;
+        }
+        return 0;
+    }
+
+    private int checkResult() {
         int v = 0;
         switch(operation) {
             case ADD:
-                v = calcADD(kk);
+                v = calcADD();
                 break;
             case MULT:
-                v = calcMULT(kk);
+                v = calcMULT();
                 break;
             case SUB:
-                v = calcSUB(kk);
+                v = calcSUB();
                 break;
             case DIV:
-                v = calcDIV(kk);
+                v = calcDIV();
                 break;
             case POW:
-                v = calcPOW(kk);
+                v = calcPOW();
                 break;
             case MOD:
-                v = calcMOD(kk);
+                v = calcMOD();
                 break;
         }
         return v;
     }
 
 
-    private int calcADD(Kenken kk) {
+    private int calcADD() {
         int v = 0;
-        for(int i = 0; i < getCageSize(); ++i) {
-            int x = getPos(i).posX;
-            int y = getPos(i).posY;
-            v += kk.getCell(x, y).getValue();
+        assert cells != null;
+        for(int i = 0; i < size; ++i) {
+            v += cells[i].getValue();
         }
         return v;
     }
 
-    private int calcMULT(Kenken kk) {
+    private int calcMULT() {
         int v = 1;
-
-        for(int i = 0; i < getCageSize(); ++i) {
-            Pos p = getPos(i);
-            if(kk.getCell(p).getValue() != 0)
-                v *= kk.getCell(p).getValue();
+        assert cells != null;
+        for(int i = 0; i < size; ++i) {
+            int tmp = cells[i].getValue();
+            if (tmp > 0) v *= tmp;
         }
         return v;
     }
 
-    private int calcSUB(Kenken kk) {
-        int v1 = kk.getCell(getPos(0)).getValue();
-        int v2 = kk.getCell(getPos(1)).getValue();
+    private int calcSUB() {
+        assert cells != null;
+        int v1 = cells[0].getValue();
+        int v2 = cells[1].getValue();
         return Math.abs(v1 - v2);
     }
 
-    private int calcDIV(Kenken kk) {
-        int v1 = kk.getCell(getPos(0)).getValue();
-        int v2 = kk.getCell(getPos(1)).getValue();
+    private int calcDIV() {
+        assert cells != null;
+        int v1 = cells[0].getValue();
+        int v2 = cells[1].getValue();
         if((v1/v2) >= 1 && (v1%v2)==0) {return v1/v2;}
         else {return v2/v1;}
     }
 
-    private int calcPOW(Kenken kk) {
-        int v1 = kk.getCell(getPos(0)).getValue();
-        int v2 = kk.getCell(getPos(1)).getValue();
+    private int calcPOW() {
+        assert cells != null;
+        int v1 = cells[0].getValue();
+        int v2 = cells[1].getValue();
         return (int)Math.pow(v1,v2);
 
     }
 
-    private int calcMOD(Kenken kk) {
-        int v1 = kk.getCell(getPos(0)).getValue();
-        int v2 = kk.getCell(getPos(1)).getValue();
+    private int calcMOD() {
+        assert cells != null;
+        int v1 = cells[0].getValue();
+        int v2 = cells[1].getValue();;
         if((v1%v2) != 0) {return v1%v2;}
         else {return v2%v1;}
     }

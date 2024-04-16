@@ -13,7 +13,7 @@ public class KenkenCell {
         valor = 0;
         locked = false;
     }
-    
+
     KenkenCell(int posX,int posY,int valor, boolean locked) {
         this.posX = posX;
         this.posY = posY;
@@ -21,13 +21,14 @@ public class KenkenCell {
         this.locked = locked;
     }
 
-    public void setValue(int val) {  
-        valor = val;                
-    }  
+    public void setValue(int val) {
+        valor = val;
+        //System.out.println(val);
+    }
 
     public int getValue() {
         return valor;
-    }                             
+    }
 
     public int getPosX() {
         return posX;
@@ -37,8 +38,16 @@ public class KenkenCell {
         return posY;
     }
 
+    public Pos getPos() {
+        return new Pos(posX, posY);
+    }
+
     public void setLocked() {
         locked = true;
+    }
+
+    public void setUnlocked() {
+        locked = false;
     }
 
     public boolean isLocked() {

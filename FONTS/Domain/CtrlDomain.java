@@ -33,9 +33,9 @@ public class CtrlDomain {
     }
 
     private static void readFile(String fileName) throws FileNotFoundException {
-        Scanner scanner = new Scanner(new File("../DATA/"+fileName+".txt"));
+        Scanner scanner = new Scanner(new File("./DATA/" + fileName + ".txt"));
         int size = scanner.nextInt();
-        if(size > 9 || size < 3) throw new IllegalArgumentException("Tamaño incorrecto");
+        if (size > 9 || size < 3) throw new IllegalArgumentException("Tamaño incorrecto");
         int numCage = scanner.nextInt();
         //for test
         System.out.print(size);
@@ -47,7 +47,7 @@ public class CtrlDomain {
         ArrayList<KenkenCage> cages = new ArrayList<>(numCage);
 
         int count = 0;
-        while(scanner.hasNextLine() && count < numCage) {
+        while (scanner.hasNextLine() && count < numCage) {
             String line = scanner.nextLine();
             String[] numStr = line.split("\\s+");
 
@@ -56,30 +56,47 @@ public class CtrlDomain {
 
             int result = Integer.parseInt(numStr[1]);
             int numCells = Integer.parseInt(numStr[2]);
-            Pos[] posCells = new Pos[numCells];
-
+            //Pos[] posCells = new Pos[numCells];
+            KenkenCell[] cells = new KenkenCell[numCells];
+            int offset = 3;
             for (int i = 0; i < numCells; i++) {
-                int posX = Integer.parseInt(numStr[2*i+3])-1;
-                int posY = Integer.parseInt(numStr[2*i+4])-1;
-                posCells[i] = new Pos(posX,posY);
+                int posX = Integer.parseInt(numStr[offset + 2 * i]) - 1;
+                int posY = Integer.parseInt(numStr[offset + 1 + 2 * i]) - 1;
+                // Locked number cell
+                if ((offset + 2 + 2 * i < numStr.length) && numStr[offset + 2 + 2 * i].startsWith("[")) {
+                    String str = numStr[offset + 2 + 2 * i];
+                    int val = Integer.parseInt(str.substring(1, str.length() - 1));
+
+                    cells[i] = new KenkenCell(posX, posY, val, true);
+                    offset++;
+                } else {
+                    cells[i] = new KenkenCell(posX, posY);
+                }
+
+
+                //posCells[i] = new Pos(posX,posY);
+
+
             }
             //test
-            for(Pos p : posCells) {
+            /*for(Pos p : posCells) {
                 System.out.print(p.posX+" ");
                 System.out.print(p.posY+"  ");
             }
             System.out.print('\n');
+            */
 
-            cages.add(new KenkenCage(op,result,posCells));
+            cages.add(new KenkenCage(op, result, cells));
             ++count;
         }
+
         scanner.close();
 
         Kenken Game = new Kenken(size,opSet,TypeDificult.EXPERT,cages);
         KenkenConfig kenkenConfig = new KenkenConfig(Game);
         if(kenkenConfig.solveKenken()) {
             KenkenPlay currentPlay = new KenkenPlay(Game);
-            currentPlay.start();    
+            currentPlay.start();
         }
         else {
             System.out.println("El Kenken no tiene solucion");
@@ -103,6 +120,7 @@ public class CtrlDomain {
         return true;
     }
 
+    /*
     public Boolean generateKenkenByNumCages(int size, HashSet<TypeOperation> ops, int numCages) {
         Kenken kenken = new Kenken(size,ops,numCages);
         KenkenConfig kkConfig = new KenkenConfig(kenken);
@@ -113,9 +131,10 @@ public class CtrlDomain {
 
     public void playCurrentGame() {
         Kenken table = new Kenken(currentGame);
-        KenkenPlay kkPlay = new KenkenPlay(currentGame,table);
+        KenkenPlay kkPlay = new KenkenPlay(currentGame, table);
         kkPlay.start();
     }
+    */
 
     //Para pasar el mapa a la capa de presentación
     public TreeMap<Integer,String> showRanking() {

@@ -71,6 +71,7 @@ public class Kenken {
         this.cages = cages;
         this.dificult = dificult;
         this.operations = operations;
+        this.ncages = cages.size();
         iniCells();
     }
 
@@ -142,7 +143,7 @@ public class Kenken {
         cages.add(tmp);
     }
 
-    public boolean AlreadyInCage(int x, int y) {
+    public boolean alreadyInCage(int x, int y) {
         return this.getCell(x, y).isLocked();
     }
 

@@ -20,8 +20,8 @@ public class KenkenConfig  {
 		this.kenken = kk;
 		this.filled = false;
 		this.index = 0;
-		this.two_cell_operator = new ArrayList<TypeOperation>();
-		this.more_cell_operator = new ArrayList<TypeOperation>();
+		this.two_cell_operator = new ArrayList<>();
+		this.more_cell_operator = new ArrayList<>();
 	}
 
 
@@ -30,8 +30,7 @@ public class KenkenConfig  {
 	// esta funcion comprueba que no se repita el numero en filas y columnas
 	private boolean check(int val, int row, int col) {
 		if(!kenken.rowCheck(row, val)) return false;
-		else if(!kenken.colCheck(col, val)) return false;
-		else return true;
+		else return kenken.colCheck(col, val);
 	}
 
 	// esta funcion examina las operaciones que tenemos disponibles para asignarlas y para, por ejemplo, si unicamente tenemos operaciones de dos valores, definir
@@ -73,7 +72,7 @@ public class KenkenConfig  {
 	}
 
 	// esta funcion añade las casillas individuales dependiendo de la dificultad indicada por el usuario
-	private void filldificultCells() {
+	private void fillCellsByDifficulty() {
 		int individualCells = 0;
 		switch(kenken.getDificult()) {
 			case EASY:
@@ -86,15 +85,14 @@ public class KenkenConfig  {
 				individualCells = (int)(kenken.getSize() * kenken.getSize() * 0.05);
 				break;
 			case EXPERT:
-				individualCells = 0;
-				break;
+                break;
 		}
 		for(int c = 0; c < individualCells; ++c) {
 
 			int tmpX = new Random().nextInt(kenken.getSize());
 			int tmpY = new Random().nextInt(kenken.getSize());
 
-			while(kenken.AlreadyInCage(tmpX, tmpY)) {
+			while(kenken.alreadyInCage(tmpX, tmpY)) {
 				tmpX = new Random().nextInt(kenken.getSize());
 				tmpY = new Random().nextInt(kenken.getSize());
 			}
@@ -129,7 +127,7 @@ public class KenkenConfig  {
 
 		for(int i = 0; i < kenken.getSize(); ++i) {
 			for(int j = 0; j < kenken.getSize(); ++j) {
-				if(!kenken.AlreadyInCage(i, j)) {
+				if(!kenken.alreadyInCage(i, j)) {
 					
 					kenken.getCell(i,j).setLocked();
 					cageCells = new ArrayList<KenkenCell>();
@@ -141,7 +139,7 @@ public class KenkenConfig  {
 						int x = cageCells.get(cageCells.size()-1).getPosX() + X[v];  
 						int y = cageCells.get(cageCells.size()-1).getPosY() + Y[v];
 
-						if(x < kenken.getSize() && x >= 0 && y < kenken.getSize() && y >= 0 && !kenken.AlreadyInCage(x, y)) {
+						if(x < kenken.getSize() && x >= 0 && y < kenken.getSize() && y >= 0 && !kenken.alreadyInCage(x, y)) {
 							kenken.getCell(x,y).setLocked();
 							aux = kenken.getCell(x, y);
 							cageCells.add(aux);
@@ -305,7 +303,7 @@ public class KenkenConfig  {
 			int tmp_x = new Random().nextInt(kenken.getSize());
 			int tmp_y = new Random().nextInt(kenken.getSize());
 
-			while(kenken.AlreadyInCage(tmp_x, tmp_y)) {
+			while(kenken.alreadyInCage(tmp_x, tmp_y)) {
 				tmp_x = new Random().nextInt(kenken.getSize());
 				tmp_y = new Random().nextInt(kenken.getSize());
 			}
@@ -359,7 +357,7 @@ public class KenkenConfig  {
 	public void generateKenkenv1() {
 		checkOperations(kenken.getOperations());
 		fillKenken(0,0);
-		filldificultCells();
+		fillCellsByDifficulty();
 		fillCages();
 		fillCagesResult();
 	}

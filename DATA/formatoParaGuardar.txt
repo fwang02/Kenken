@@ -1,0 +1,6 @@
+size
+operations
+numCages
+op_cages result posCells[]
+...
+

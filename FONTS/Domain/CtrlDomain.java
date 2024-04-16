@@ -122,6 +122,10 @@ public class CtrlDomain {
         return ranking.getRanking();
     }
 
+    public void saveCurrentGame() {
+
+    }
+
 
 
 

@@ -27,7 +27,7 @@ public class Ranking {
         return rk;
     }
 
-    /*
+
     public void showRanking() {
         if(ranking.isEmpty()) {
             System.out.println("No hay usuario, el ranking está vacío");
@@ -41,7 +41,6 @@ public class Ranking {
         }
     }
 
-     */
 
     public TreeMap<Integer, String> getRanking() {
         return ranking;

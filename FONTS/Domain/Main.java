@@ -3,6 +3,8 @@ package Domain;
 import java.util.HashSet;
 import java.util.Scanner;
 
+import static Domain.CtrlDomain.getOperation;
+
 public class Main {
     private static final CtrlDomainUser udb = CtrlDomainUser.getInstance();
     private static final Ranking ranking = Ranking.getInstance();
@@ -74,7 +76,7 @@ public class Main {
 
         for (int i = 0; i < op.length(); ++i) {
             int num = Character.getNumericValue(op.charAt(i)); // Obtener el carácter en la posición i
-            //operations.add(getOperation(num));
+            operations.add(getOperation(num));
         }
         if(operations.isEmpty()) throw new NullPointerException("La lista de operaciones no puede ser nula.");
 
@@ -214,7 +216,7 @@ public class Main {
         boolean gamePlayPage = false;
         */
 
-        /*
+
         int size = chooseSize();
         int nCages = chooseNumCages();
         TypeDificult dif = chooseDifficulty();
@@ -222,21 +224,20 @@ public class Main {
 
 
         // domain.Kenken generado por dificultad
-        domain.Kenken kenken = new domain.Kenken(size, operations, dif);
+        Kenken kenken = new Kenken(size, operations, dif);
 
         // domain.Kenken generado por numero de regiones
-        //domain.Kenken kenken = new domain.Kenken(size, operations, nCages);
+        //Kenken kenken = new Kenken(size, operations, nCages);
 
 
-        domain.KenkenConfig kenkenConfig = new domain.KenkenConfig(kenken);
+        KenkenConfig kenkenConfig = new KenkenConfig(kenken);
 
         kenkenConfig.generateKenkenv1();
 
-        domain.Kenken tablero = new domain.Kenken(kenken);
+        Kenken tablero = new Kenken(kenken);
 
-        domain.KenkenPlay kenkenPlay = new domain.KenkenPlay(kenken, tablero);
+        KenkenPlay kenkenPlay = new KenkenPlay(kenken, tablero);
         kenkenPlay.start();
-        */
 
 
     }

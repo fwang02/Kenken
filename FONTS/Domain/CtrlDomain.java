@@ -122,7 +122,9 @@ public class CtrlDomain {
         return ranking.getRanking();
     }
 
-    public void saveCurrentGame() {
+    public void saveCurrentGame(String nameGame) {
+
+
 
     }
 
@@ -130,7 +132,7 @@ public class CtrlDomain {
 
 
 
-    private static TypeOperation getOperation(int num)
+    static TypeOperation getOperation(int num)
     {
         switch (num) {
             case 1:

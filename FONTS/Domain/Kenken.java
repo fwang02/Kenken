@@ -8,47 +8,43 @@ public class Kenken {
     private String name;
     private final TypeDificult dificult;
     private final HashSet<TypeOperation> operations;
-    private int ncages;
-    private int nicells;
+    private final int numberCages;
+    private final int numberIndCells;
     private ArrayList<KenkenCage> cages;
     private KenkenCell[][] cells;
 
     Kenken(){
-        this.dificult = TypeDificult.EASY;
         this.size = 0;
+        this.name = null;
+        this.dificult = TypeDificult.EASY;
         this.operations = new HashSet<>();
+        this.numberCages = 0;
+        this.numberIndCells = 0;
         this.cages = new ArrayList<>();
+        iniCells();
 
     }
 
+    // COPIAR UN KENKEN PERO CON LAS CASILLAS A 0
     Kenken(Kenken k) {
         this.size = k.getSize();
         this.name = k.getName();
         this.dificult = k.getDificult();
         this.operations = k.getOperations();
-        this.ncages = k.ncages;
-        this.nicells = k.nicells;
+        this.numberCages = k.numberCages;
+        this.numberIndCells = k.numberIndCells;
         this.cages = new ArrayList<>(k.getAllCages());
         iniCells();
     }
     
-    Kenken(int size, HashSet<TypeOperation> operations, TypeDificult dificult){         // PARA GENERAR Y RESOLVER KENKENS v1
+    // PARA GENERAR Y RESOLVER KENKENS v1
+    Kenken(int size, HashSet<TypeOperation> operations, TypeDificult dificult){         
         this.size = size;
         this.name = null;
         this.dificult = dificult;
         this.operations = operations;
-        this.ncages = 0;
-        this.nicells = 0;
-        this.cages = new ArrayList<>();
-        iniCells();
-    }
-
-    Kenken(int size, HashSet<TypeOperation> operations, int ncages){         // PARA GENERAR Y RESOLVER KENKENS v2
-        this.size = size;
-        this.name = null;
-        this.dificult = TypeDificult.MEDIUM;
-        this.operations = operations;
-        this.ncages = ncages;
+        this.numberCages = 0;
+        this.numberIndCells = 0;
         this.cages = new ArrayList<>();
         iniCells();
     }
@@ -59,8 +55,8 @@ public class Kenken {
         this.name = null;
         this.dificult = null;
         this.operations = operations;
-        this.ncages = number_cages;
-        this.nicells = number_i_cells;
+        this.numberCages = number_cages;
+        this.numberIndCells = number_i_cells;
         this.cages = new ArrayList<>();
         iniCells();
     }
@@ -68,10 +64,12 @@ public class Kenken {
     // PARA RESOLVER KENKEN DESDE UN FICHERO
      Kenken(int size, HashSet<TypeOperation> operations, TypeDificult dificult, ArrayList<KenkenCage> cages){
         this.size = size;
-        this.cages = cages;
+        this.name = null;
         this.dificult = dificult;
         this.operations = operations;
-        this.ncages = cages.size();
+        this.numberCages = 0;
+        this.numberIndCells = 0;
+        this.cages = cages;
         iniCells();
     }
 
@@ -91,12 +89,12 @@ public class Kenken {
         return operations;
     }
 
-    public int getNCages() {
-        return ncages;
+    public int getNumberCages() {
+        return numberCages;
     }
 
-    public int getNICells() {
-        return nicells;
+    public int getNumberIndCells() {
+        return numberIndCells;
     }
 
     public KenkenCell[][] getAllCells() {
@@ -134,12 +132,6 @@ public class Kenken {
 
     public void addCage(TypeOperation operation, int result, Pos[] posCells) {
         KenkenCage tmp = new KenkenCage(operation, result, posCells);
-        cages.add(tmp);
-    }
-
-    public void addLockedCage(TypeOperation operation, int result, Pos[] posCells) {
-        KenkenCage tmp = new KenkenCage(operation, result, posCells);
-        tmp.setLocked();
         cages.add(tmp);
     }
 

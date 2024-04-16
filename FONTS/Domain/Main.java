@@ -2,8 +2,11 @@ package Domain;
 
 import java.util.HashSet;
 import java.util.Scanner;
+import java.util.*;
+import java.io.File;
+import java.io.*;
 
-import static Domain.CtrlDomain.getOperation;
+//import static Domain.CtrlDomain.getOperation;
 
 public class Main {
     private static final CtrlDomainUser udb = CtrlDomainUser.getInstance();
@@ -52,6 +55,15 @@ public class Main {
         return numCages;
     }
 
+    private static int chooseNumIndividualCells()
+    {
+        System.out.println("Selecciona el número de casillas individuales");
+        int numCages = sc.nextInt();
+        //if(numCages < 1 || numCages > 9) throw new IllegalArgumentException("El número .");
+        /*else */System.out.println("El número de regiones es: "+numCages+"\n");
+        return numCages;
+    }
+
     private static int chooseSize()
     {
         System.out.println("Selecciona el tamaño del tablero (3-9).");
@@ -60,6 +72,27 @@ public class Main {
         else System.out.println("El tamaño es: "+size+"\n");
         return size;
     }
+
+    static TypeOperation getOperation(int num)
+    {
+        switch (num) {
+            case 1:
+                return TypeOperation.ADD;
+            case 2:
+                return TypeOperation.SUB;
+            case 3:
+                return TypeOperation.MULT;
+            case 4:
+                return TypeOperation.DIV;
+            case 5:
+                return TypeOperation.MOD;
+            case 6:
+                return TypeOperation.POW;
+            default:
+                throw new IllegalArgumentException("Carácter no válido encontrado en la cadena: " + num);
+        }
+    }
+
     private static HashSet<TypeOperation> chooseOps()
     {
         System.out.println("Selecciona las operaciones.");
@@ -185,6 +218,7 @@ public class Main {
 
     }
 
+    
     private static boolean createNewGame() {
         int size = chooseSize();
         TypeDificult dif = chooseDifficulty();
@@ -199,7 +233,8 @@ public class Main {
         return true;
     }
 
-    public static void main(String[] args) {
+
+    public static void main(String[] args) throws FileNotFoundException {
         
         /*
         //for test
@@ -216,9 +251,10 @@ public class Main {
         boolean gamePlayPage = false;
         */
 
-
+        
         int size = chooseSize();
         int nCages = chooseNumCages();
+        int niCells = chooseNumIndividualCells();
         TypeDificult dif = chooseDifficulty();
         HashSet<TypeOperation> operations = chooseOps();
 
@@ -227,18 +263,17 @@ public class Main {
         Kenken kenken = new Kenken(size, operations, dif);
 
         // domain.Kenken generado por numero de regiones
-        //Kenken kenken = new Kenken(size, operations, nCages);
+        //Kenken kenken = new Kenken(size, operations, niCells,nCages);
 
 
         KenkenConfig kenkenConfig = new KenkenConfig(kenken);
 
         kenkenConfig.generateKenkenv1();
 
-        Kenken tablero = new Kenken(kenken);
 
-        KenkenPlay kenkenPlay = new KenkenPlay(kenken, tablero);
+        KenkenPlay kenkenPlay = new KenkenPlay(kenken);
         kenkenPlay.start();
-
+        
 
     }
 

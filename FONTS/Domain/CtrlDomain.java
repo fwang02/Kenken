@@ -18,6 +18,7 @@ public class CtrlDomain {
     CtrlDomain() {
         loggedUser = null;
     }
+
     public boolean loginUser(String username, String password) {
         if(!ctrlDomainUser.isUserExist(username)) return false;
         if(!ctrlDomainUser.checkPassword(username,password)) return false;
@@ -74,16 +75,15 @@ public class CtrlDomain {
         }
         scanner.close();
 
-        currentGame = new Kenken(size,opSet,TypeDificult.EXPERT,cages);
-        KenkenConfig kenkenConfig = new KenkenConfig(currentGame);
-        kenkenConfig.solveKenken();
-
-
-
-        //Kenken table = new Kenken(kenken);
-
-        //currentPlay = new KenkenPlay(kenken,table);
-        //currentGame.start();
+        Kenken Game = new Kenken(size,opSet,TypeDificult.EXPERT,cages);
+        KenkenConfig kenkenConfig = new KenkenConfig(Game);
+        if(kenkenConfig.solveKenken()) {
+            KenkenPlay currentPlay = new KenkenPlay(Game);
+            currentPlay.start();    
+        }
+        else {
+            System.out.println("El Kenken no tiene solucion");
+        }
 
     }
 
@@ -127,10 +127,6 @@ public class CtrlDomain {
 
 
     }
-
-
-
-
 
     static TypeOperation getOperation(int num)
     {

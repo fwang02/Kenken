@@ -6,9 +6,6 @@ public class KenkenCage {
     private TypeOperation operation;
     private int result;
     private boolean allCellSet;
-    private boolean locked;     //@javi, hola feiyang. he añadido esto pq no se si podia utilizar otra. Es basicamente para: como primero creo las regiones de casillas individuales
-                                //y despues las regiones totales, para no volver a asignarles un resultado y operacion ya que ya lo tienen.
-                                //VIGILA PQ LA CREACIÓN DE CASILLAS DEPENDEN DE ESTE BOOL
 
     public KenkenCage() {
         posCells = null;
@@ -16,7 +13,6 @@ public class KenkenCage {
         operation = null;
         result = 0;
         allCellSet = false;
-        locked = false;
     }
 
     KenkenCage(TypeOperation operation, int result, Pos[] posCells) {
@@ -25,9 +21,7 @@ public class KenkenCage {
         this.posCells = posCells;
         size = posCells.length;
         allCellSet = false;
-        locked = false;
     }
-
 
 
 
@@ -73,11 +67,11 @@ public class KenkenCage {
     }
      */
 
-    public int getCageSize() {      //@javi, la he añadido para poder consultar el tamaño de la cage
+    public int getCageSize() {     
         return size;
     }
 
-    public Pos getPos(int x) {      //@javi, la he añadido para poder consultar el vector de posiciones :D
+    public Pos getPos(int x) {      
         assert posCells != null;
         return posCells[x];
     }
@@ -88,18 +82,6 @@ public class KenkenCage {
 
     public int getResult() {
         return result;
-    }
-
-    public void setLocked() {   
-        locked = true;
-    }
-
-    public void setUnlocked() {
-        locked = false;
-    }
-
-    public boolean isLocked() {
-        return locked;
     }
 
     public boolean isAllCellSet() {
@@ -120,9 +102,6 @@ public class KenkenCage {
             kk.getCell(pos).setValue(0);
         }
     }
-    
-
-    //@javi, feiyang he añadido esto que me permite solucionar los kenken de los ficheros
 
     public boolean isCageComplete(Kenken kk) {
         for(int i = 0; i < getCageSize(); ++i) {
@@ -138,7 +117,6 @@ public class KenkenCage {
         return v == result;
 
     }
-
 
     private int checkResult(Kenken kk) {
         int v = 0;

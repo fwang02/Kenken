@@ -1,10 +1,8 @@
 package Domain;
 
+import java.io.FileNotFoundException;
 import java.util.HashSet;
 import java.util.Scanner;
-import java.util.*;
-import java.io.File;
-import java.io.*;
 
 //import static Domain.CtrlDomain.getOperation;
 
@@ -73,7 +71,7 @@ public class Main {
         return size;
     }
 
-    static TypeOperation getOperation(int num)
+    private static TypeOperation getOperation(int num)
     {
         switch (num) {
             case 1:
@@ -218,7 +216,7 @@ public class Main {
 
     }
 
-    
+
     private static boolean createNewGame() {
         int size = chooseSize();
         TypeDificult dif = chooseDifficulty();
@@ -251,7 +249,7 @@ public class Main {
         boolean gamePlayPage = false;
         */
 
-        
+
         int size = chooseSize();
         int nCages = chooseNumCages();
         int niCells = chooseNumIndividualCells();
@@ -273,7 +271,7 @@ public class Main {
 
         KenkenPlay kenkenPlay = new KenkenPlay(kenken);
         kenkenPlay.start();
-        
+
 
     }
 

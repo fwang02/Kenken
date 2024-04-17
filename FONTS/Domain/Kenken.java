@@ -5,12 +5,12 @@ import java.util.HashSet;
 
 public class Kenken {
     private final int size;
-    private String name;
+    private final String name;
     private final TypeDificult dificult;
     private final HashSet<TypeOperation> operations;
     private final int numberCages;
     private final int numberIndCells;
-    private ArrayList<KenkenCage> cages;
+    private final ArrayList<KenkenCage> cages;
     private KenkenCell[][] cells;
 
     Kenken(){
@@ -36,8 +36,9 @@ public class Kenken {
         this.cages = new ArrayList<>(k.getAllCagesEmpty());
         iniCells();
     }
-// PARA GENERAR Y RESOLVER KENKENS v1
-    Kenken(int size, HashSet<TypeOperation> operations, TypeDificult dificult){
+    
+    // PARA GENERAR Y RESOLVER KENKENS v1
+    Kenken(int size, HashSet<TypeOperation> operations, TypeDificult dificult){         
         this.size = size;
         this.name = null;
         this.dificult = dificult;

@@ -8,16 +8,16 @@ import java.util.TreeMap;
 public class Ranking {
     private static final Ranking rk = new Ranking();
     private static TreeMap<Integer,String> ranking;
-    private static CtrlDomainUser udb;
+    private static CtrlDomainUser ctrlDomainUser;
 
     Ranking() {
         ranking = new TreeMap<>(Comparator.reverseOrder());
-        udb = CtrlDomainUser.getInstance();
+        ctrlDomainUser = CtrlDomainUser.getInstance();
         loadRanking();
     }
 
     private void loadRanking() {
-        HashMap<String,User> users = udb.getAllUsers();
+        HashMap<String,User> users = ctrlDomainUser.getAllUsers();
         for(Map.Entry<String,User> u: users.entrySet()) {
             ranking.put(u.getValue().getMaxPoint(),u.getKey());
         }
@@ -47,16 +47,16 @@ public class Ranking {
     }
 
     public void updateMaxPoint(String username, int maxPoint) {
-        if(!ranking.containsValue(username) || !udb.isUserExist(username)) {
+        if(!ranking.containsValue(username) || !ctrlDomainUser.isUserExist(username)) {
             System.err.println("El usuario no existe en ranking o tabla de usuarios");
         }
 
-        int currentPoint = udb.getUser(username).getMaxPoint();
+        int currentPoint = ctrlDomainUser.getUser(username).getMaxPoint();
 
         ranking.remove(currentPoint,username);
         ranking.put(maxPoint,username);
 
-        udb.getUser(username).setMaxPoint(maxPoint);
+        ctrlDomainUser.getUser(username).setMaxPoint(maxPoint);
     }
 
 

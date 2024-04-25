@@ -1,0 +1,2 @@
+En este directorio podemos encontrar actual y provisionalmente
+los kenkens ya creados, la bd de usuarios etc

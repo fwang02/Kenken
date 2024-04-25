@@ -1,0 +1,9 @@
+COGNOMS, NOM:
+ESTEVE CASANOVAS, ROMEU
+PARCERISAS NISA, JAVIER
+WANG, FEIYANG
+
+CORREUS:
+romeu.esteve@estudiantat.upc.edu
+javier.parcerisas@estudiantat.upc.edu
+feiyang.wang@estudiantat.upc.edu

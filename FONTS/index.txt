@@ -1,0 +1,38 @@
+Este directorio contiene el codigo del proyecto
+
+Directorio Domain: contiene las clases del proyecto
+
+Directorio Presentation: Actualmente contiene el codigo de los distintos drivers
+
+Directorio JUnit: contiene los test JUnit de las clases
+
+
+MAKEFILE:
+
+Drivers:
+
+make jars: compila todos los drivers
+
+make jarUser: compila el driver de ctrlUser
+
+make jarKenken: compila el driver de ctrlKenken
+
+make jarDomini: compila el driver de ctrldomini
+
+make executaDriver: ejecuta el Driver de CtrlDomain
+
+make executaDriverKenken: ejecuta el Driver de CtrlKenken
+
+make executaDriverUser: ejecuta el Driver de CtrlUser
+
+make clean: limpia el directorio EXE
+
+Tests:
+
+make testCtrlDomainKenken: compila y ejecuta los tests de CtrlDomainKenken
+
+make testCtrlDomainUser: compila y ejecuta los tests de CtrlDomainUser
+
+make testKenken: compila y ejecuta los tests de Kenken
+
+make testUser: compila y ejecuta los tests de User

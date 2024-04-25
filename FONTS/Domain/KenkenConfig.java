@@ -1,5 +1,6 @@
 package Domain;
 
+import java.security.SecureRandom;
 import java.util.*;
 
 
@@ -14,6 +15,7 @@ public class KenkenConfig  {
 	private final ArrayList<TypeOperation> moreCellOperator;
 	private static final int[] X = {0,1,0,-1};
 	private static final int[] Y = {1,0,-1,0};
+	private static SecureRandom sr;
 	
 
 	KenkenConfig(Kenken kenken) {
@@ -24,8 +26,8 @@ public class KenkenConfig  {
 		this.moreCellOperatorBool = false;
 		this.twoCellOperator = new ArrayList<>();
 		this.moreCellOperator = new ArrayList<>();
+		sr = new SecureRandom();
 	}
-
 
 
 	private boolean check(int val, int row, int col) {
@@ -46,18 +48,19 @@ public class KenkenConfig  {
 
 	// GENERAR Y RESOLVER UN KENKEN v1//
 
+	//esta funcion es un backtracking que rellena la matriz del kenken
 	private void fillKenken(int i, int j) {
 		if (i == kenken.getSize()) {filled = true;}
 		else if (j == kenken.getSize()) {fillKenken(i+1, 0);}
 		else {
-			Boolean[] tried = new Boolean[kenken.getSize()+1];
-			for(int t = 0; t <= kenken.getSize(); ++t) tried[t] = false;
+			Boolean[] tried = new Boolean[kenken.getSize()];
+			for(int t = 0; t < kenken.getSize(); ++t) tried[t] = false;
 
-			int tmp = new Random().nextInt(kenken.getSize())+1;
+			int tmp = sr.nextInt(kenken.getSize())+1;
 
 			for(int u = 0; u < kenken.getSize() && !filled; ++u) {
-				while(tried[tmp]) {tmp = new Random().nextInt(kenken.getSize())+1;}
-				tried[tmp] = true;
+				while(tried[tmp-1]) {tmp = sr.nextInt(kenken.getSize())+1;}
+				tried[tmp-1] = true;
 				if(check(tmp, i, j)) {
 					kenken.getCell(i,j).setValue(tmp);
 					fillKenken(i, j+1);
@@ -67,6 +70,7 @@ public class KenkenConfig  {
 		}
 	}
 
+	//esta funcion crea regiones de una sola casilla dependiendo de la dificultad que haya indicado el usuario
 	private void fillCellsByDifficulty() {
 		int individualCells = 0;
 		switch(kenken.getDificult()) {
@@ -84,35 +88,35 @@ public class KenkenConfig  {
 		}
 		for(int c = 0; c < individualCells; ++c) {
 
-			int tmpX = new Random().nextInt(kenken.getSize());
-			int tmpY = new Random().nextInt(kenken.getSize());
+			int tmpX = sr.nextInt(kenken.getSize());
+			int tmpY = sr.nextInt(kenken.getSize());
 
 			while(kenken.alreadyInCage(tmpX, tmpY)) {
-				tmpX = new Random().nextInt(kenken.getSize());
-				tmpY = new Random().nextInt(kenken.getSize());
+				tmpX = sr.nextInt(kenken.getSize());
+				tmpY = sr.nextInt(kenken.getSize());
 			}
 			Pos[] tmpPos = {new Pos(tmpX, tmpY)};
 			kenken.getCell(tmpX, tmpY).setLocked();
-			kenken.addCagePos(TypeOperation.ADD, 0, tmpPos);
+			kenken.addCage(TypeOperation.ADD, 0, tmpPos);
 		}
 	}
 
 	private boolean stop_2 (double p, int s) {
 		if(twoCellOperatorBool) {
-			return ((p < new Random().nextDouble()) && s < 2);
+			return ((p < sr.nextDouble()) && s < 2);
 		}
 		else return false;
 	}
 
 	private boolean stop_4 (double p, int s) {
 		if (moreCellOperatorBool) {
-			return ((p < new Random().nextDouble()) && s < 4);
+			return ((p < sr.nextDouble()) && s < 4);
 		}
 		else return false;
 	}
 
+	//esta funcion genera las regiones del kenken de forma aleatoria
 	private void fillCages() {
-
 		ArrayList<KenkenCell> cageCells;
 		double probToStop4 = 0.0;
 		double probToStop2 = 0.0;
@@ -122,13 +126,13 @@ public class KenkenConfig  {
 				if(!kenken.alreadyInCage(i, j)) {
 					
 					kenken.getCell(i,j).setLocked();
-					cageCells = new ArrayList<KenkenCell>();
+					cageCells = new ArrayList<>();
 					KenkenCell aux = kenken.getCell(i,j);
 					cageCells.add(aux);
 
 					while(stop_2(probToStop2, cageCells.size()) || stop_4(probToStop4, cageCells.size())){
-						int v = new Random().nextInt(4);
-						int x = cageCells.get(cageCells.size()-1).getPosX() + X[v];
+						int v = sr.nextInt(4);
+						int x = cageCells.get(cageCells.size()-1).getPosX() + X[v];  
 						int y = cageCells.get(cageCells.size()-1).getPosY() + Y[v];
 
 						if(x < kenken.getSize() && x >= 0 && y < kenken.getSize() && y >= 0 && !kenken.alreadyInCage(x, y)) {
@@ -141,17 +145,18 @@ public class KenkenConfig  {
 					}
 
 					int s = cageCells.size();
-					KenkenCell[] cageCellsPos = new KenkenCell[s];
+					Pos[] cageCellsPos = new Pos[s];
 					for(int ii = 0; ii < s; ++ii) {
-						KenkenCell kc = cageCells.get(ii);
-						cageCellsPos[ii] = kc;
+						cageCellsPos[ii] = new Pos(cageCells.get(ii).getPosX(), cageCells.get(ii).getPosY());
 					}
-					kenken.addCage(TypeOperation.ADD, 0, cageCellsPos);
+					kenken.addNoOpCage(cageCellsPos);
 				}
 			}
 		}
 	}
 
+	// esta funcion, se necesita previamente haber generado la matriz del kenken y creado las regiones, asigna una operacion y resultado
+	// a la region
 	private void fillCagesResult() {
 		int v1 ,v2, v3, v4 = 0;
 		for(int i = 0; i < kenken.getAllCages().size(); ++i) {
@@ -162,7 +167,7 @@ public class KenkenConfig  {
 					kenken.getCage(i).setResult(result_add);
 					break;
 				case 2:
-					int pos_2 = new Random().nextInt(twoCellOperator.size());
+					int pos_2 = sr.nextInt(twoCellOperator.size());
 					TypeOperation operator = twoCellOperator.get(pos_2);
 					v1 = kenken.getCell(kenken.getCage(i).getPos(0)).getValue();
 					v2 = kenken.getCell(kenken.getCage(i).getPos(1)).getValue();
@@ -180,7 +185,12 @@ public class KenkenConfig  {
 								kenken.getCage(i).setResult(result1_div);
 							}
 							else {
-								kenken.getCage(i).setResult(result2_div);
+								if(result2_div >= 1 && (v2%v1) == 0)
+									kenken.getCage(i).setResult(result2_div);
+								else {
+									if(result1_div == 0)kenken.getCage(i).setResult(result1_div);
+									else kenken.getCage(i).setResult(result2_div);
+								}
 							}
 							break;
 						case POW:
@@ -214,7 +224,7 @@ public class KenkenConfig  {
 					}
 					break; 
 				case 3:
-					int pos_3 = new Random().nextInt(moreCellOperator.size());
+					int pos_3 = sr.nextInt(moreCellOperator.size());
 					TypeOperation operator_3 = moreCellOperator.get(pos_3);
 					v1 = kenken.getCell(kenken.getCage(i).getPos(0)).getValue();
 					v2 = kenken.getCell(kenken.getCage(i).getPos(1)).getValue();
@@ -233,7 +243,7 @@ public class KenkenConfig  {
 					}
 					break;
 				case 4:
-					int pos_4 = new Random().nextInt(moreCellOperator.size());
+					int pos_4 = sr.nextInt(moreCellOperator.size());
 					TypeOperation operator_4 = moreCellOperator.get(pos_4);
 					v1 = kenken.getCell(kenken.getCage(i).getPos(0)).getValue();
 					v2 = kenken.getCell(kenken.getCage(i).getPos(1)).getValue();
@@ -261,80 +271,30 @@ public class KenkenConfig  {
 		}
 	}
 
-
-
-	// GENEREAR Y RESOLVER v2 //   <- FALTA ESTE, que es el que se especifica tamaño, operaciones, n regiones y n casillas
-
-	private void generateKenkenFromCages() {
-		int size = kenken.getSize();
-		int ncages = kenken.getNumberCages();
-
-		int randX, randY;
-		randX = new Random().nextInt(size);
-		randY = new Random().nextInt(size);
-
-		// generar regiones aleatorias
-		for (int i = 0; i < ncages; ++i) {
-			// cambiar posicion hasta que haya alguna disponible
-			while (kenken.getCage(randX, randY) != null) {
-				randX = new Random().nextInt(size);
-				randY = new Random().nextInt(size);
-			}
-			Pos[] iniCell = new Pos[1];
-			iniCell[0] = new Pos(randX, randY);
-			//kenken.addCage(TypeOperation.ADD, 0, iniCell);
-		}
-
-	}
-
-	private void fillIndividualCells() {
-		int indiv_cells = kenken.getNumberIndCells();
-		for(int c = 0; c < indiv_cells; ++c) {
-
-			int tmp_x = new Random().nextInt(kenken.getSize());
-			int tmp_y = new Random().nextInt(kenken.getSize());
-
-			while(kenken.alreadyInCage(tmp_x, tmp_y)) {
-				tmp_x = new Random().nextInt(kenken.getSize());
-				tmp_y = new Random().nextInt(kenken.getSize());
-			}
-			KenkenCell[] tmp_p = {new KenkenCell(tmp_x, tmp_y)};
-			kenken.getCell(tmp_x, tmp_y).setLocked();
-			kenken.addCage(TypeOperation.ADD, kenken.getCell(tmp_x, tmp_y).getValue(), tmp_p);
-		}
-	}
-
-
-	
-
-
-	// SOLUCIONAR UN KENKEN MEDIANTE LAS CAJAS (un kenken de fichero) //
-
-	private void SolveKenkenByCages(KenkenCage cage, int ii) {
-		if (cage.isCageComplete()) {
-			if (cage.checkValueCage()) {
-				++index;
-				if (index == kenken.getAllCages().size()) filled = true;
-				if (!filled) SolveKenkenByCages(kenken.getCage(index), 0);
-				--index;
-			}
-			else {
-				Pos pos = cage.getPos(cage.getCageSize()-1);
-				kenken.getCell(pos).setValue(0);
-				//cage.setValue(pos, 0);
-			}
-		}
-		else {
-			for (int i = ii; i < cage.getCageSize(); ++i) {
-				if (cage.getCell(i).getValue() > 0) continue;
-				int x = cage.getPos(i).posX;
-				int y = cage.getPos(i).posY;
-				for (int v = 1; v <= kenken.getSize(); ++v) {
-					if (check(v, x, y)) {
-						kenken.getCell(x, y).setValue(v);
-						SolveKenkenByCages(cage, i + 1);
-					}
-				}
+	// esta funcion es un backtracking que resuelve el kenken importado desde fichero u otros lados
+   private void solveKenkenByCages(KenkenCage cage, int ii) {
+        if (cage.isCageComplete(kenken)) {
+            if (cage.checkValueCage(kenken)) {
+            	++index;
+            	if(index == kenken.getAllCages().size()) filled = true;
+                if(!filled) solveKenkenByCages(kenken.getCage(index), 0);
+                --index; 
+            }
+            else {
+            	Pos pos = cage.getPos(cage.getCageSize()-1);
+            	kenken.getCell(pos).setValue(0);
+            }
+        } 
+        else {
+            for (int i = ii; i < cage.getCageSize(); ++i) {
+                int x = cage.getPos(i).posX;
+                int y = cage.getPos(i).posY;
+                for (int v = 1; v <= kenken.getSize(); ++v) {
+                    if (check(v, x, y)) {
+                        kenken.getCell(x, y).setValue(v);
+                        solveKenkenByCages(cage, i + 1);
+                    }
+                }
 
                 if(!filled) kenken.getCell(x,y).setValue(0);
                 return;
@@ -342,10 +302,11 @@ public class KenkenConfig  {
         }
     }
 
+
 	// GENERAR/RESOLVER UN KENKEN //
 
-	//Esto genera un kenken mediante el tamaño, la dificultad y las operaciones indicadas por el usuario
-	public void generateKenkenv1() {
+	//Esta funcion genera un kenken mediante el tamaño, la dificultad y las operaciones indicadas por el usuario
+	public void generateKenkenV1() {
 		checkOperations(kenken.getOperations());
 		fillKenken(0,0);
 		fillCellsByDifficulty();
@@ -353,17 +314,9 @@ public class KenkenConfig  {
 		fillCagesResult();
 	}
 
-	//Esto genera un kenken mediante el tamaño, las operaciones, el numero de regiones y el numero de casillas individuales indicadas por el usuario (NO ACABADO)
-	public void generateKenkenv2() {
-		checkOperations(kenken.getOperations());
-		fillKenken(0, 0);
-		generateKenkenFromCages();
-
-	}
-
-	// Resuelve un kenken con las regiones ya definidas, es decir, uno importado desde fichero
+	// Esta funcion resuelve un kenken con las regiones previamente definidas
 	public boolean solveKenken() {
-		SolveKenkenByCages(kenken.getCage(0), 0);
+		solveKenkenByCages(kenken.getCage(0), 0);
 		return filled;
 	}
 }

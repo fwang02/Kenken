@@ -1,31 +1,25 @@
 package Domain;
 
-import java.util.HashMap;
-
 public class User {
     private String username;
     private String password;
     private int maxPoint;
-    private HashMap<String,KenkenPlay> createdGames;
 
-    User() {
+    public User() {
         username = null;
         password = null;
         maxPoint = 0;
-        createdGames = null;
     }
-    User(String username, String password) {
+    public User(String username, String password) {
         this.username = username;
         this.password = password;
         maxPoint = 0;
-        createdGames = new HashMap<>();
     }
 
-    User(String username, String password, int maxPoint) {
+    public User(String username, String password, int maxPoint) {
         this.username = username;
         this.password = password;
         this.maxPoint = maxPoint;
-        createdGames = new HashMap<>();
     }
     public String getUsername() {
         return username;
@@ -50,7 +44,4 @@ public class User {
     public void setMaxPoint(int point) {
         maxPoint = point;
     }
-
-
-
 }

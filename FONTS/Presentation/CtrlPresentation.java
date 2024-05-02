@@ -8,18 +8,18 @@ import Domain.CtrlDomain;
 public class CtrlPresentation {
 
     private CtrlDomain ctrlDomain;
-    private ViewMainMenu viewMainMenu;
+    private static ViewMainMenu viewMainMenu;
 
     public CtrlPresentation (){
         ctrlDomain = new CtrlDomain();
-        viewMainMenu = new ViewMainMenu();
+        //viewMainMenu = new ViewMainMenu();
     }
 
     /**
      *
      */
     public static void initPresentation() {
-
+        viewMainMenu = new ViewMainMenu();
     }
 
 }

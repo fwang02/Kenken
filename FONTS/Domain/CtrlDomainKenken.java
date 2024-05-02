@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Scanner;
 
-import Domain.Operation;
+import Domain.Operation.Operation;
 
 public class CtrlDomainKenken {
 	private Kenken currentGame;
@@ -43,17 +43,17 @@ public class CtrlDomainKenken {
 	static Operation getOperation(int num) {
         switch (num) {
             case 1:
-                return new Domain.ADD();
+                return new ADD();
             case 2:
-                return new Domain.SUB();
+                return new SUB();
             case 3:
-                return new Domain.MULT();
+                return new MULT();
             case 4:
-                return new Domain.DIV();
+                return new DIV();
             case 5:
-                return new Domain.MOD();
+                return new MOD();
             case 6:
-                return new Domain.POW();
+                return new POW();
             default:
                 throw new IllegalArgumentException("Carácter no válido encontrado en la cadena: " + num);
         }

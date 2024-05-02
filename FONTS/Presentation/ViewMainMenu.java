@@ -96,7 +96,6 @@ public class ViewMainMenu extends JFrame {
                 }
             }
         };
-
         bLogin.addActionListener(Login);
         bRegister.addActionListener(Register);
     }

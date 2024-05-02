@@ -1,10 +1,15 @@
-package Domain;
+/**
+ * @author Javier Parcerisas Nisa
+ */
+package Domain.Operation;
 
-import java.util.*;
+import Domain.Kenken;
+import Domain.KenkenCage;
+import Domain.Pos;
 
 public class MULT extends Operation {
 	
-	int checkResult(Kenken kk, KenkenCage kkc) {
+	public int checkResult(Kenken kk, KenkenCage kkc) {
 		int v = 1;
         for(int i = 0; i < kkc.getCageSize(); ++i) {
             Pos p = kkc.getPos(i);

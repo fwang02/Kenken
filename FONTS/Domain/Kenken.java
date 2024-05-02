@@ -1,7 +1,13 @@
+/**
+ * @author Javier Parcerisas Nisa
+ */
 package Domain;
+
+import Domain.Operation.Operation;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+
 
 public class Kenken {
     private final int size;

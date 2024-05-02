@@ -1,3 +1,7 @@
+/**
+ * @author Romeu Esteve Casanovas
+ */
+
 package JUnit;
 
 import Domain.User;

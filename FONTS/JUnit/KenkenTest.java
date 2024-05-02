@@ -1,16 +1,14 @@
+/**
+ * @author Romeu Esteve Casanovas
+ */
+
 package JUnit;
 
 import Domain.Kenken;
 import Domain.KenkenCage;
 import Domain.KenkenCell;
 import Domain.TypeDifficulty;
-import Domain.Operation;
-import Domain.ADD;
-import Domain.MULT;
-import Domain.SUB;
-import Domain.DIV;
-import Domain.POW;
-import Domain.MOD;
+import Domain.Operation.*;
 import org.junit.Test;
 import java.util.HashSet;
 import java.util.ArrayList;

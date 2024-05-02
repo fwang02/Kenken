@@ -1,7 +1,12 @@
+/**
+ * @author Javier Parcerisas Nisa
+ */
 package Domain;
 
+import Domain.Operation.*;
 import java.security.SecureRandom;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
 
 
 public class KenkenConfig  {

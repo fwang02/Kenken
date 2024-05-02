@@ -1,4 +1,9 @@
+/**
+ * @author Javier Parcerisas Nisa
+ */
 package Domain;
+
+import Domain.Operation.Operation;
 
 public class KenkenCage {
     private final Pos[] posCells;

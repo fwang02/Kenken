@@ -1,10 +1,14 @@
-package Domain;
+/**
+ * @author Javier Parcerisas Nisa
+ */
+package Domain.Operation;
 
-import java.util.*;
+import Domain.Kenken;
+import Domain.KenkenCage;
 
 
 public abstract class Operation {
 
-	abstract int checkResult(Kenken kk, KenkenCage kkc);
+	public abstract int checkResult(Kenken kk, KenkenCage kkc);
 
 }

@@ -1,10 +1,15 @@
+/**
+ * @author Romeu Esteve Casanovas
+ */
+
 package JUnit;
 
 import Domain.CtrlDomainUser;
 import Domain.User;
 import org.junit.Test;
-import java.io.File;
+
 import java.util.HashMap;
+
 import static org.junit.Assert.*;
 
 public class CtrlDomainUserTest {

@@ -1,10 +1,14 @@
-package Domain;
+/**
+ * @author Javier Parcerisas Nisa
+ */
+package Domain.Operation;
 
-import java.util.*;
+import Domain.Kenken;
+import Domain.KenkenCage;
 
 public class ADD extends Operation {
 	
-	int checkResult(Kenken kk, KenkenCage kkc) {
+	public int checkResult(Kenken kk, KenkenCage kkc) {
 		int v = 0;
         for(int i = 0; i < kkc.getCageSize(); ++i) {
             int x = kkc.getPos(i).posX;

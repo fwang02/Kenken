@@ -1,9 +1,12 @@
+/**
+ * @author Feiyang Wang
+ */
 package Domain;
 
+import Domain.Operation.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.PriorityQueue;
-
 
 public class CtrlDomain {
     private static final CtrlDomainUser CDU = CtrlDomainUser.getInstance();

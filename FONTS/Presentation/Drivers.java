@@ -76,7 +76,7 @@ public class Drivers {
                     registerUser();
                     break;
                 case "3":
-                    TreeMap<Integer,String> rk = CD.showRanking();
+                    /*TreeMap<Integer,String> rk = CD.showRanking();
                     if(rk.isEmpty()) {
                         System.out.println("No hay usuario, el ranking está vacío");
                         break;
@@ -86,7 +86,7 @@ public class Drivers {
                     for(Map.Entry<Integer,String> set : rk.entrySet()) {
                         System.out.println(count+". "+set.getValue()+": "+set.getKey());
                         count++;
-                    }
+                    }*/
                     break;
                 default:
                     System.out.println("Comando incorrecto");
@@ -126,7 +126,7 @@ public class Drivers {
                     System.out.println("dsdasd");
                     break;
                 case "4":
-                    TreeMap<Integer,String> rk = CD.showRanking();
+                    /*TreeMap<Integer,String> rk = CD.showRanking();
                     if(rk.isEmpty()) {
                         System.out.println("No hay usuario, el ranking está vacío");
                         break;
@@ -136,7 +136,7 @@ public class Drivers {
                     for(Map.Entry<Integer,String> set : rk.entrySet()) {
                         System.out.println(count+". "+set.getValue()+": "+set.getKey());
                         count++;
-                    }
+                    }*/
                     break;
 
             }

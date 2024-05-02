@@ -68,27 +68,27 @@ public class DriverKenken {
         return size;
     }
 
-    private static TypeOperation getOperation(int num)
+    private static Operation getOperation(int num)
     {
         switch (num) {
             case 1:
-                return TypeOperation.ADD;
+                return new ADD();
             case 2:
-                return TypeOperation.SUB;
+                return new SUB();
             case 3:
-                return TypeOperation.MULT;
+                return new MULT();
             case 4:
-                return TypeOperation.DIV;
+                return new DIV();
             case 5:
-                return TypeOperation.MOD;
+                return new MOD();
             case 6:
-                return TypeOperation.POW;
+                return new POW();
             default:
                 throw new IllegalArgumentException("Carácter no válido encontrado en la cadena: " + num);
         }
     }
 
-    private static HashSet<TypeOperation> chooseOps()
+    private static HashSet<Operation> chooseOps()
     {
         System.out.println("Selecciona las operaciones.");
         System.out.println("+-----------+------------+");
@@ -98,7 +98,7 @@ public class DriverKenken {
         System.out.println("+-----------+------------+");
         System.out.println("Poner los números consecutivamente.");
 
-        HashSet<TypeOperation> operations = new HashSet<>();
+        HashSet<Operation> operations = new HashSet<>();
         sc.nextLine();
         String op = sc.nextLine();
 
@@ -109,7 +109,7 @@ public class DriverKenken {
         if(operations.isEmpty()) throw new NullPointerException("La lista de operaciones no puede ser nula.");
 
         System.out.println("Has seleccionado las siguientes operaciones:");
-        for(TypeOperation operation : operations) {
+        for(Operation operation : operations) {
             System.out.println(operation);
         }
         System.out.print('\n');
@@ -119,7 +119,7 @@ public class DriverKenken {
     private static void generatekenken() {
         int size = chooseSize();
         TypeDifficulty dif = chooseDifficulty();
-        HashSet<TypeOperation> operations = chooseOps();
+        HashSet<Operation> operations = chooseOps();
         CDK.generateKenkenByDifficulty(size, operations, dif);
         System.out.println("KENKEN GENERADO, YA PUEDES JUGAR");
     }
@@ -138,7 +138,7 @@ public class DriverKenken {
         int size = chooseSize();
         int maxCells = 0;
         KenkenCell[][] cells = CDK.getDomainCells(size);
-        HashSet<TypeOperation> opSet = CDK.getDomainOperations();
+        HashSet<Operation> opSet = CDK.getDomainOperations();
         ArrayList<KenkenCage> cages = CDK.getDomainCages();
         System.out.println("\nVamos a definir las regiones");
         System.out.println("Cuando hayas finalizado, escribe stop");
@@ -151,7 +151,7 @@ public class DriverKenken {
 
         while(!line.equals("stop")) {
             String[] numStr = line.split("\\s+");
-            TypeOperation op = getOperation(Integer.parseInt(numStr[0]));
+            Operation op = getOperation(Integer.parseInt(numStr[0]));
             opSet.add(op);
 
             int result = Integer.parseInt(numStr[1]);

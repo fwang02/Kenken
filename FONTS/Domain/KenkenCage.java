@@ -3,7 +3,7 @@ package Domain;
 public class KenkenCage {
     private final Pos[] posCells;
     private final int size;
-    private TypeOperation operation;
+    private Operation operation;
     private int result;
 
     public KenkenCage() {
@@ -13,7 +13,7 @@ public class KenkenCage {
         result = 0;
     }
 
-    KenkenCage(TypeOperation operation, int result, Pos[] posCells) {
+    KenkenCage(Operation operation, int result, Pos[] posCells) {
         this.operation = operation;
         this.result = result;
         this.posCells = posCells;
@@ -45,11 +45,11 @@ public class KenkenCage {
         return result;
     }
 
-    public void setOperation(TypeOperation operator) {
+    public void setOperation(Operation operator) {
         operation = operator;
     }
 
-    public TypeOperation getOperation() {
+    public Operation getOperation() {
         return operation;
     }
 
@@ -70,11 +70,11 @@ public class KenkenCage {
     }
 
     public boolean checkValueCage(Kenken kk) {
-        int v = checkResult(kk);
+        int v = operation.checkResult(kk, this);
         return v == result;
 
     }
-
+    /*
     private int checkResult(Kenken kk) {
         int v = 0;
         switch(operation) {
@@ -148,5 +148,5 @@ public class KenkenCage {
         if((v1%v2) != 0) {return v1%v2;}
         else {return v2%v1;}
     }
-
+    */
 }

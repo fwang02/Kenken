@@ -68,7 +68,7 @@ public class Driver {
         }
         System.out.println("El tamaño es: " + size + "\n");
 
-        HashSet<TypeOperation> operations = chooseOps();
+        HashSet<Operation> operations = chooseOps();
         if (operations == null) {
             return false;
         }
@@ -102,7 +102,7 @@ public class Driver {
         return CD.generateKenkenByDifficulty(size, operations, diff);
     }
 
-    private static HashSet<TypeOperation> chooseOps() {
+    private static HashSet<Operation> chooseOps() {
         System.out.println("Selecciona las operaciones.");
         System.out.println("+-----------+------------+");
         System.out.println("| 1. ADD  + | 2. SUB   - |");
@@ -111,7 +111,7 @@ public class Driver {
         System.out.println("+-----------+------------+");
         System.out.println("Poner los números consecutivamente.");
 
-        HashSet<TypeOperation> operations = new HashSet<>();
+        HashSet<Operation> operations = new HashSet<>();
         String op = sc.nextLine();
 
         for (int i = 0; i < op.length(); ++i) {
@@ -124,27 +124,27 @@ public class Driver {
         }
 
         System.out.println("Has seleccionado las siguientes operaciones:");
-        for (TypeOperation operation : operations) {
+        for (Operation operation : operations) {
             System.out.println(operation);
         }
         System.out.print('\n');
         return operations;
     }
 
-    private static TypeOperation getOperation(int num) {
+    private static Operation getOperation(int num) {
         switch (num) {
             case 1:
-                return TypeOperation.ADD;
+                return new ADD();
             case 2:
-                return TypeOperation.SUB;
+                return new SUB();
             case 3:
-                return TypeOperation.MULT;
+                return new MULT();
             case 4:
-                return TypeOperation.DIV;
+                return new DIV();
             case 5:
-                return TypeOperation.MOD;
+                return new MOD();
             case 6:
-                return TypeOperation.POW;
+                return new POW();
             default:
                 System.out.println("Carácter no válido encontrado en la cadena: " + num);
                 return null;

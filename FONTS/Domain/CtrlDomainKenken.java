@@ -6,7 +6,7 @@ import java.io.*;
 public class CtrlDomainKenken {
 	private Kenken currentGame;
 	private KenkenCell[][] cells;
-    private HashSet<TypeOperation> opSet;
+    private HashSet<Operation> opSet;
     private ArrayList<KenkenCage> cages;
 
 	public CtrlDomainKenken() {
@@ -21,7 +21,7 @@ public class CtrlDomainKenken {
 		return cells;
 	}
 
-	public HashSet<TypeOperation> getDomainOperations() {
+	public HashSet<Operation> getDomainOperations() {
 		opSet = new HashSet<>();
 		return opSet;
 	}
@@ -31,20 +31,20 @@ public class CtrlDomainKenken {
 		return cages;
 	}
 
-	static TypeOperation getOperation(int num) {
+	static Operation getOperation(int num) {
         switch (num) {
             case 1:
-                return TypeOperation.ADD;
+                return new ADD();
             case 2:
-                return TypeOperation.SUB;
+                return new SUB();
             case 3:
-                return TypeOperation.MULT;
+                return new MULT();
             case 4:
-                return TypeOperation.DIV;
+                return new DIV();
             case 5:
-                return TypeOperation.MOD;
+                return new MOD();
             case 6:
-                return TypeOperation.POW;
+                return new POW();
             default:
                 throw new IllegalArgumentException("Carácter no válido encontrado en la cadena: " + num);
         }
@@ -63,7 +63,7 @@ public class CtrlDomainKenken {
 			KenkenCell[][] cells = new KenkenCell[size][size];
 
 			scanner.nextLine();
-			HashSet<TypeOperation> opSet = new HashSet<>();
+			HashSet<Operation> opSet = new HashSet<>();
 			ArrayList<KenkenCage> cages = new ArrayList<>(numCage);
 
 			int count = 0;
@@ -71,7 +71,7 @@ public class CtrlDomainKenken {
 				String line = scanner.nextLine();
 				String[] numStr = line.split("\\s+");
 
-				TypeOperation op = getOperation(Integer.parseInt(numStr[0]));
+				Operation op = getOperation(Integer.parseInt(numStr[0]));
 				opSet.add(op);
 
 				int result = Integer.parseInt(numStr[1]);
@@ -108,7 +108,7 @@ public class CtrlDomainKenken {
 	}
 
 
-    public boolean generateKenkenByDifficulty(int size, HashSet<TypeOperation> ops, TypeDifficulty difficulty){
+    public boolean generateKenkenByDifficulty(int size, HashSet<Operation> ops, TypeDifficulty difficulty){
         Kenken kenken = new Kenken(size,ops,difficulty);
         KenkenConfig kenkenConfig = new KenkenConfig(kenken);
         kenkenConfig.generateKenkenV1();
@@ -116,7 +116,7 @@ public class CtrlDomainKenken {
 		return currentGame != null;
 	}
 
-    public boolean solveKenkenByUserParameters(int size, HashSet<TypeOperation> operations, TypeDifficulty dificult, ArrayList<KenkenCage> cages, KenkenCell[][] cells) {
+    public boolean solveKenkenByUserParameters(int size, HashSet<Operation> operations, TypeDifficulty dificult, ArrayList<KenkenCage> cages, KenkenCell[][] cells) {
     	Kenken kenken = new Kenken(size, operations, dificult, cages, cells);
     	KenkenConfig kenkenConfig = new KenkenConfig(kenken);
     	if(kenkenConfig.solveKenken()) {
@@ -187,7 +187,7 @@ public class CtrlDomainKenken {
     	return (new KenkenCell(x,y,val,state));
     }
 
-    public KenkenCage getNewKenkenCage(TypeOperation operation, int result, Pos[] posCells) {
+    public KenkenCage getNewKenkenCage(Operation operation, int result, Pos[] posCells) {
     	return (new KenkenCage(operation, result, posCells));
     }
 

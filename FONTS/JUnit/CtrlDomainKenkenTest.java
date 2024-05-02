@@ -5,7 +5,13 @@ import Domain.Kenken;
 import Domain.KenkenCell;
 import Domain.KenkenCage;
 import Domain.TypeDifficulty;
-import Domain.TypeOperation;
+import Domain.Operation;
+import Domain.ADD;
+import Domain.MULT;
+import Domain.SUB;
+import Domain.DIV;
+import Domain.POW;
+import Domain.MOD;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -19,13 +25,13 @@ public class CtrlDomainKenkenTest {
     public void testGenerateKenkenByDifficulty() {
         CtrlDomainKenken ctrlDomainKenken = new CtrlDomainKenken();
         int size = 6;
-        HashSet<TypeOperation> ops = new HashSet<>();
-        ops.add(TypeOperation.ADD);
-        ops.add(TypeOperation.SUB);
-        ops.add(TypeOperation.MULT);
-        ops.add(TypeOperation.DIV);
-        ops.add(TypeOperation.POW);
-        ops.add(TypeOperation.MOD);
+        HashSet<Operation> ops = new HashSet<>();
+        operations.add(new ADD());
+        operations.add(new SUB());
+        operations.add(new MULT());
+        operations.add(new DIV());
+        operations.add(new POW());
+        operations.add(new MOD());
         TypeDifficulty difficulty = TypeDifficulty.MEDIUM;
 
         ctrlDomainKenken.generateKenkenByDifficulty(size, ops, difficulty);
@@ -41,13 +47,13 @@ public class CtrlDomainKenkenTest {
     public void testSolveKenkenByUserParameters() {
         CtrlDomainKenken ctrlDomainKenken = new CtrlDomainKenken();
         int size = 6;
-        HashSet<TypeOperation> ops = new HashSet<>();
-        ops.add(TypeOperation.ADD);
-        ops.add(TypeOperation.SUB);
-        ops.add(TypeOperation.MULT);
-        ops.add(TypeOperation.DIV);
-        ops.add(TypeOperation.POW);
-        ops.add(TypeOperation.MOD);
+        HashSet<Operation> ops = new HashSet<>();
+        operations.add(new ADD());
+        operations.add(new SUB());
+        operations.add(new MULT());
+        operations.add(new DIV());
+        operations.add(new POW());
+        operations.add(new MOD());
         TypeDifficulty difficulty = TypeDifficulty.MEDIUM;
 
         ctrlDomainKenken.generateKenkenByDifficulty(size, ops, difficulty);

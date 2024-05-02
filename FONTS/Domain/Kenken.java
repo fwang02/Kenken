@@ -7,7 +7,7 @@ public class Kenken {
     private final int size;
     private final String name;
     private final TypeDifficulty dificult;
-    private final HashSet<TypeOperation> operations;
+    private final HashSet<Operation> operations;
     private final int numberCages;
     private final int numberIndCells;
     private final ArrayList<KenkenCage> cages;
@@ -46,7 +46,7 @@ public class Kenken {
     }
 
     // PARA GENERAR Y RESOLVER KENKENS v1
-    public Kenken(int size, HashSet<TypeOperation> operations, TypeDifficulty dificult) {
+    public Kenken(int size, HashSet<Operation> operations, TypeDifficulty dificult) {
         this.size = size;
         this.name = null;
         this.dificult = dificult;
@@ -60,7 +60,7 @@ public class Kenken {
     }
 
     // PARA RESOLVER KENKEN DESDE UN FICHERO
-    public Kenken(int size, HashSet<TypeOperation> operations, TypeDifficulty dificult, ArrayList<KenkenCage> cages, KenkenCell[][] cells) {
+    public Kenken(int size, HashSet<Operation> operations, TypeDifficulty dificult, ArrayList<KenkenCage> cages, KenkenCell[][] cells) {
         this.size = size;
         this.name = null;
         this.dificult = dificult;
@@ -85,7 +85,7 @@ public class Kenken {
         return dificult;
     }
 
-    public HashSet<TypeOperation> getOperations() {
+    public HashSet<Operation> getOperations() {
         return operations;
     }
 
@@ -134,7 +134,7 @@ public class Kenken {
         return board;
     }
 
-    public void addCage(TypeOperation operation, int result, Pos[] posCells) {
+    public void addOpCage(Operation operation, int result, Pos[] posCells) {
         cages.add(new KenkenCage(operation, result, posCells));
     }
 

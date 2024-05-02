@@ -34,7 +34,7 @@ public class CtrlDomain {
     public boolean importKenkenByFile(String fileName) {
         return CDK.solveKenkenByFile(fileName);
     }
-    public boolean generateKenkenByDifficulty(int size, HashSet<TypeOperation> operations, TypeDifficulty diff) {
+    public boolean generateKenkenByDifficulty(int size, HashSet<Operation> operations, TypeDifficulty diff) {
         return CDK.generateKenkenByDifficulty(size,operations,diff);
     }
 

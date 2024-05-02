@@ -4,7 +4,13 @@ import Domain.Kenken;
 import Domain.KenkenCage;
 import Domain.KenkenCell;
 import Domain.TypeDifficulty;
-import Domain.TypeOperation;
+import Domain.Operation;
+import Domain.ADD;
+import Domain.MULT;
+import Domain.SUB;
+import Domain.DIV;
+import Domain.POW;
+import Domain.MOD;
 import org.junit.Test;
 import java.util.HashSet;
 import java.util.ArrayList;
@@ -27,13 +33,13 @@ public class KenkenTest {
 
     @Test
     public void kenkenGenConstruct() {
-        HashSet<TypeOperation> operations = new HashSet<>();
-        operations.add(TypeOperation.ADD);
-        operations.add(TypeOperation.SUB);
-        operations.add(TypeOperation.MULT);
-        operations.add(TypeOperation.DIV);
-        operations.add(TypeOperation.POW);
-        operations.add(TypeOperation.MOD);
+        HashSet<Operation> operations = new HashSet<>();
+        operations.add(new ADD());
+        operations.add(new SUB());
+        operations.add(new MULT());
+        operations.add(new DIV());
+        operations.add(new POW());
+        operations.add(new MOD());
 
         Kenken k = new Kenken(6, operations, TypeDifficulty.MEDIUM);
         assertEquals("Kenken size", 6, k.getSize());
@@ -45,13 +51,13 @@ public class KenkenTest {
 
     @Test
     public void kenkenFileConstruct() {
-        HashSet<TypeOperation> operations = new HashSet<>();
-        operations.add(TypeOperation.ADD);
-        operations.add(TypeOperation.SUB);
-        operations.add(TypeOperation.MULT);
-        operations.add(TypeOperation.DIV);
-        operations.add(TypeOperation.POW);
-        operations.add(TypeOperation.MOD);
+        HashSet<Operation> operations = new HashSet<>();
+        operations.add(new ADD());
+        operations.add(new SUB());
+        operations.add(new MULT());
+        operations.add(new DIV());
+        operations.add(new POW());
+        operations.add(new MOD());
 
         ArrayList<KenkenCage> cages = new ArrayList<>();
 

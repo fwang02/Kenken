@@ -1,4 +1,5 @@
-CLASS_INPUT =	./Domain/*.java 
+CLASS_INPUT =	./Domain/*.java \
+					./Domain/Operation/*.java
 
 CLASS_OUTPUT =	../EXE/
 

@@ -11,8 +11,8 @@ public class KenkenConfig  {
 	private int index;
 	private boolean twoCellOperatorBool;
 	private boolean moreCellOperatorBool;
-	private final ArrayList<TypeOperation> twoCellOperator;
-	private final ArrayList<TypeOperation> moreCellOperator;
+	private final ArrayList<String> twoCellOperator;
+	private final ArrayList<String> moreCellOperator;
 	private static final int[] X = {0,1,0,-1};
 	private static final int[] Y = {1,0,-1,0};
 	private static SecureRandom sr;
@@ -35,13 +35,15 @@ public class KenkenConfig  {
 		else return kenken.colCheck(col, val);
 	}
 
-	private void checkOperations(HashSet<TypeOperation> current) {
-		if(current.contains(TypeOperation.ADD)) {moreCellOperator.add(TypeOperation.ADD); twoCellOperator.add(TypeOperation.ADD); moreCellOperatorBool = true; twoCellOperatorBool = true;}
-		if(current.contains(TypeOperation.MULT)) {moreCellOperator.add(TypeOperation.MULT); twoCellOperator.add(TypeOperation.MULT); moreCellOperatorBool = true; twoCellOperatorBool = true;}
-		if(current.contains(TypeOperation.SUB))	{twoCellOperator.add(TypeOperation.SUB); twoCellOperatorBool = true;}
-		if(current.contains(TypeOperation.DIV)) {twoCellOperator.add(TypeOperation.DIV); twoCellOperatorBool = true;}
-		if(current.contains(TypeOperation.POW)) {twoCellOperator.add(TypeOperation.POW); twoCellOperatorBool = true;}
-		if(current.contains(TypeOperation.MOD)) {twoCellOperator.add(TypeOperation.MOD); twoCellOperatorBool = true;}
+	private void checkOperations(HashSet<Operation> current) {
+		for(Operation o: current) {
+			if(o instanceof ADD) {moreCellOperator.add("ADD"); twoCellOperator.add("ADD"); moreCellOperatorBool = true; twoCellOperatorBool = true;}
+			if(o instanceof MULT) {moreCellOperator.add("MULT"); twoCellOperator.add("MULT"); moreCellOperatorBool = true; twoCellOperatorBool = true;}
+			if(o instanceof SUB) {twoCellOperator.add("SUB"); twoCellOperatorBool = true;}
+			if(o instanceof DIV) {twoCellOperator.add("DIV"); twoCellOperatorBool = true;}
+			if(o instanceof POW) {twoCellOperator.add("POW"); twoCellOperatorBool = true;}
+			if(o instanceof MOD) {twoCellOperator.add("MOD"); twoCellOperatorBool = true;}
+		}
 	}
 
 
@@ -97,7 +99,7 @@ public class KenkenConfig  {
 			}
 			Pos[] tmpPos = {new Pos(tmpX, tmpY)};
 			kenken.getCell(tmpX, tmpY).setLocked();
-			kenken.addCage(TypeOperation.ADD, 0, tmpPos);
+			kenken.addOpCage(new ADD(), 0, tmpPos);
 		}
 	}
 
@@ -162,23 +164,23 @@ public class KenkenConfig  {
 		for(int i = 0; i < kenken.getAllCages().size(); ++i) {
 			switch(kenken.getCage(i).getCageSize()) {
 				case 1:
-					kenken.getCage(i).setOperation(TypeOperation.ADD);
+					kenken.getCage(i).setOperation(new ADD());
 					int result_add = kenken.getCell(kenken.getCage(i).getPos(0)).getValue();
 					kenken.getCage(i).setResult(result_add);
 					break;
 				case 2:
 					int pos_2 = sr.nextInt(twoCellOperator.size());
-					TypeOperation operator = twoCellOperator.get(pos_2);
+					String operator = twoCellOperator.get(pos_2);
 					v1 = kenken.getCell(kenken.getCage(i).getPos(0)).getValue();
 					v2 = kenken.getCell(kenken.getCage(i).getPos(1)).getValue();
 					switch(operator) {
-						case SUB:
-							kenken.getCage(i).setOperation(TypeOperation.SUB);
+						case "SUB":
+							kenken.getCage(i).setOperation(new SUB());
 							int result_sub = Math.abs(v1 - v2);
 							kenken.getCage(i).setResult(result_sub);
 							break;
-						case DIV:
-							kenken.getCage(i).setOperation(TypeOperation.DIV);
+						case "DIV":
+							kenken.getCage(i).setOperation(new DIV());
 							int result1_div = v1/v2;
 							int result2_div = v2/v1;
 							if(result1_div >= 1 && (v1%v2)==0) {
@@ -193,13 +195,13 @@ public class KenkenConfig  {
 								}
 							}
 							break;
-						case POW:
-							kenken.getCage(i).setOperation(TypeOperation.POW);
+						case "POW":
+							kenken.getCage(i).setOperation(new POW());
 							int result_pow = (int)Math.pow(v1, v2);
 							kenken.getCage(i).setResult(result_pow);
 							break;
-						case MOD:
-							kenken.getCage(i).setOperation(TypeOperation.MOD);
+						case "MOD":
+							kenken.getCage(i).setOperation(new MOD());
 							int result1_mod = v1%v2;
 							int result2_mod = v2%v1;
 							if(result1_mod != 0) {
@@ -209,13 +211,13 @@ public class KenkenConfig  {
 								kenken.getCage(i).setResult(result2_mod);
 							}
 							break;
-						case ADD:
-							kenken.getCage(i).setOperation(TypeOperation.ADD);
+						case "ADD":
+							kenken.getCage(i).setOperation(new ADD());
 							int result_add_2 = v1+v2;
 							kenken.getCage(i).setResult(result_add_2);
 							break;
-						case MULT:
-							kenken.getCage(i).setOperation(TypeOperation.MULT);
+						case "MULT":
+							kenken.getCage(i).setOperation(new MULT());
 							int result_mult_2 = v1*v2;
 							kenken.getCage(i).setResult(result_mult_2);
 							break;
@@ -225,18 +227,18 @@ public class KenkenConfig  {
 					break; 
 				case 3:
 					int pos_3 = sr.nextInt(moreCellOperator.size());
-					TypeOperation operator_3 = moreCellOperator.get(pos_3);
+					String operator_3 = moreCellOperator.get(pos_3);
 					v1 = kenken.getCell(kenken.getCage(i).getPos(0)).getValue();
 					v2 = kenken.getCell(kenken.getCage(i).getPos(1)).getValue();
 					v3 = kenken.getCell(kenken.getCage(i).getPos(2)).getValue();
 					switch(operator_3) {
-						case ADD:
-							kenken.getCage(i).setOperation(TypeOperation.ADD);
+						case "ADD":
+							kenken.getCage(i).setOperation(new ADD());
 							int result_add_3 = v1+v2+v3;
 							kenken.getCage(i).setResult(result_add_3);
 							break;
-						case MULT:
-							kenken.getCage(i).setOperation(TypeOperation.MULT);
+						case "MULT":
+							kenken.getCage(i).setOperation(new MULT());
 							int result_mult_3 = v1*v2*v3;
 							kenken.getCage(i).setResult(result_mult_3);
 							break;
@@ -244,19 +246,19 @@ public class KenkenConfig  {
 					break;
 				case 4:
 					int pos_4 = sr.nextInt(moreCellOperator.size());
-					TypeOperation operator_4 = moreCellOperator.get(pos_4);
+					String operator_4 = moreCellOperator.get(pos_4);
 					v1 = kenken.getCell(kenken.getCage(i).getPos(0)).getValue();
 					v2 = kenken.getCell(kenken.getCage(i).getPos(1)).getValue();
 					v3 = kenken.getCell(kenken.getCage(i).getPos(2)).getValue();
 					v4 = kenken.getCell(kenken.getCage(i).getPos(3)).getValue();
 					switch(operator_4) {
-						case ADD:
-							kenken.getCage(i).setOperation(TypeOperation.ADD);
+						case "ADD":
+							kenken.getCage(i).setOperation(new ADD());
 							int result_add_4 = v1+v2+v3+v4;
 							kenken.getCage(i).setResult(result_add_4);
 							break;
-						case MULT:
-							kenken.getCage(i).setOperation(TypeOperation.MULT);
+						case "MULT":
+							kenken.getCage(i).setOperation(new MULT());
 							int result_mult_4 = v1*v2*v3*v4;
 							kenken.getCage(i).setResult(result_mult_4);
 							break;

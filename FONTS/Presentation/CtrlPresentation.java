@@ -1,6 +1,6 @@
 package Presentation;
 
-import Domain.CtrlDomain;
+import Domain.Controllers.CtrlDomain;
 
 /**
  * @author feiyang.wang
@@ -18,7 +18,7 @@ public class CtrlPresentation {
     /**
      *
      */
-    public static void initPresentation() {
+    public void initPresentation() {
         viewMainMenu = new ViewMainMenu();
     }
 

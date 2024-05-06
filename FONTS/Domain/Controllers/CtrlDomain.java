@@ -1,9 +1,14 @@
 /**
  * @author Feiyang Wang
  */
-package Domain;
+package Domain.Controllers;
 
+import Domain.KenkenCage;
+import Domain.KenkenCell;
 import Domain.Operation.*;
+import Domain.PlayerScore;
+import Domain.TypeDifficulty;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.PriorityQueue;

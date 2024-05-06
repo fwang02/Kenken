@@ -4,7 +4,7 @@
 
 package JUnit;
 
-import Domain.CtrlDomainKenken;
+import Domain.Controllers.CtrlDomainKenken;
 import Domain.Kenken;
 import Domain.KenkenCell;
 import Domain.KenkenCage;

@@ -23,7 +23,7 @@ public class KenkenConfig  {
 	private static SecureRandom sr;
 	
 
-	KenkenConfig(Kenken kenken) {
+	public KenkenConfig(Kenken kenken) {
 		this.kenken = kenken;
 		this.filled = false;
 		this.index = 0;

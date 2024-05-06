@@ -1,6 +1,7 @@
 package Presentation;
 
 import Domain.*;
+import Domain.Controllers.CtrlDomainKenken;
 import Domain.Operation.*;
 import java.util.ArrayList;
 import java.util.HashSet;

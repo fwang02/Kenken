@@ -1,6 +1,6 @@
 package Presentation;
 
-import Domain.CtrlDomainUser;
+import Domain.Controllers.CtrlDomainUser;
 import Domain.User;
 
 import java.util.HashMap;

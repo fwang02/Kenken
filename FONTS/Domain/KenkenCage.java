@@ -18,7 +18,7 @@ public class KenkenCage {
         result = 0;
     }
 
-    KenkenCage(Operation operation, int result, Pos[] posCells) {
+    public KenkenCage(Operation operation, int result, Pos[] posCells) {
         this.operation = operation;
         this.result = result;
         this.posCells = posCells;

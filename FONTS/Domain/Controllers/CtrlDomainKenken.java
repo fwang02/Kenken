@@ -1,16 +1,16 @@
 /**
  * @author Javier Parcerisas Nisa
  */
-package Domain;
+package Domain.Controllers;
 
+import Domain.*;
 import Domain.Operation.*;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Scanner;
-
-import Domain.Operation.Operation;
 
 public class CtrlDomainKenken {
 	private Kenken currentGame;

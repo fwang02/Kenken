@@ -1,4 +1,8 @@
-package Domain;
+package Domain.Controllers;
+
+import Domain.PlayerScore;
+import Domain.User;
+import Persistence.CtrlUserFile;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,13 +14,15 @@ import java.util.*;
 
 public class CtrlDomainUser {
     private static final CtrlDomainUser CTRL_USER = new CtrlDomainUser();
-    private final HashMap<String,User> users;
+    private CtrlUserFile ctrlUserFile;
+    private final HashMap<String, User> users;
     private final PriorityQueue<PlayerScore> ranking;
     private static User loggedUser;
     private static final String filePath = "../DATA/users.txt";
 
 
     private CtrlDomainUser() {
+        ctrlUserFile.getInstance();
         users = new HashMap<>();
         ranking = new PriorityQueue<>(Comparator.comparingInt(PlayerScore::getMaxScore).reversed());
         loadUserData();

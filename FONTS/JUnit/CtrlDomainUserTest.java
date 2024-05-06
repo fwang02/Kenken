@@ -4,7 +4,7 @@
 
 package JUnit;
 
-import Domain.CtrlDomainUser;
+import Domain.Controllers.CtrlDomainUser;
 import Domain.User;
 import org.junit.Test;
 

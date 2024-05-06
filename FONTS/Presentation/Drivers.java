@@ -1,11 +1,9 @@
 package Presentation;
 
-import Domain.CtrlDomain;
-import Domain.CtrlDomainUser;
+import Domain.Controllers.CtrlDomain;
+import Domain.Controllers.CtrlDomainUser;
 
-import java.util.Map;
 import java.util.Scanner;
-import java.util.TreeMap;
 
 public class Drivers {
     private static CtrlDomain CD;

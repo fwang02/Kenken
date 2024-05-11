@@ -1,11 +1,6 @@
 package Presentation;
 
-import Presentation.CtrlPresentation;
-
 import javax.swing.*;
-import javax.swing.filechooser.FileFilter;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.filechooser.FileSystemView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -97,6 +92,14 @@ public class ViewMainMenu extends JFrame {
             }
         };
 
+        ActionListener Ranking = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new RankingView();
+            }
+        };
+
+        bRanking.addActionListener(Ranking);
         bLogin.addActionListener(Login);
         bRegister.addActionListener(Register);
     }

@@ -1,6 +1,9 @@
 package Presentation;
 
 import Domain.Controllers.CtrlDomain;
+import Domain.PlayerScore;
+
+import java.util.PriorityQueue;
 
 /**
  * @author feiyang.wang
@@ -20,6 +23,10 @@ public class CtrlPresentation {
      */
     public void initPresentation() {
         viewMainMenu = new ViewMainMenu();
+    }
+
+    public PriorityQueue<PlayerScore> getRanking() {
+        return ctrlDomain.getRanking();
     }
 
 }

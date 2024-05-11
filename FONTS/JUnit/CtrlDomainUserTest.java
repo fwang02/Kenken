@@ -26,11 +26,11 @@ public class CtrlDomainUserTest {
         CtrlDomainUser ctrlDomainUser = CtrlDomainUser.getInstance();
         String username = "testuser";
         String password = "password123";
-        if (ctrlDomainUser.isUserExist(username)) {
+        boolean added = ctrlDomainUser.addUser(username, password);
+        if (!added) {
             System.out.println("testuser already exists, test aborted");
             return;
         }
-        ctrlDomainUser.addUser(username, password);
 
         HashMap<String, User> users = ctrlDomainUser.getAllUsers();
         assertTrue("User should be added", users.containsKey(username));

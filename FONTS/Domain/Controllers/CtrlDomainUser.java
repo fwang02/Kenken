@@ -4,9 +4,6 @@ import Domain.PlayerScore;
 import Domain.User;
 import Persistence.CtrlUserFile;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -14,7 +11,7 @@ import java.util.*;
 
 public class CtrlDomainUser {
     private static final CtrlDomainUser CTRL_USER = new CtrlDomainUser();
-    private CtrlUserFile ctrlUserFile;
+    private final CtrlUserFile ctrlUserFile;
     private final HashMap<String, User> users;
     private final PriorityQueue<PlayerScore> ranking;
     private static User loggedUser;
@@ -22,55 +19,36 @@ public class CtrlDomainUser {
 
 
     private CtrlDomainUser() {
-        ctrlUserFile.getInstance();
+        ctrlUserFile = CtrlUserFile.getInstance();
         users = new HashMap<>();
         ranking = new PriorityQueue<>(Comparator.comparingInt(PlayerScore::getMaxScore).reversed());
         loadUserData();
     }
 
     private void loadUserData() {
-        try {
-            File usersFile = new File(filePath);
-            Scanner scanner = new Scanner(usersFile);
-
-            while(scanner.hasNextLine()) {
-                String user = scanner.nextLine();
-                String[] userData = user.split(";");
-                if(userData.length == 3) {
-                    User u = new User(userData[0],userData[1],Integer.parseInt(userData[2]));
-                    users.put(userData[0],u);
-                    ranking.add(new PlayerScore(userData[0],Integer.parseInt(userData[2])));
-                }
-            }
-        } catch (FileNotFoundException e) {
-            System.out.println("Fichero no existe：" +filePath+", los usuarios no están cargados en la memoria");
+        ArrayList<String[]> usersList = ctrlUserFile.allUsers();
+        for(String[] user : usersList) {
+            User u = new User(user[0],user[1],Integer.parseInt(user[2]));
+            users.put(user[0],u);
+            ranking.add(new PlayerScore(user[0],Integer.parseInt(user[2])));
         }
-
     }
 
     private void writeToFile(String username) {
-        try {
-            FileWriter fw = new FileWriter(filePath,true);
-            String password = users.get(username).getPassword();
-            int maxPoint = users.get(username).getMaxPoint();
-            fw.write(username+';'+password+';'+maxPoint+'\n');
-            fw.close();
-        } catch (IOException e) {
-            System.err.println("El usuario no se ha guardado en el fichero");
-        }
+
     }
 
     public static CtrlDomainUser getInstance() {
         return CTRL_USER;
     }
 
-    public void addUser(String username, String password) {
+    public boolean addUser(String username, String password) {
         if (isUserExist(username)) {
             System.out.println("El usuario ya existe");
-            return;
+            return false;
         }
         users.put(username,new User(username,password));
-        writeToFile(username);
+        return ctrlUserFile.writeNewUserToFile(username,password);
     }
 
     public boolean isPasswordCorrect(String username, String password) {

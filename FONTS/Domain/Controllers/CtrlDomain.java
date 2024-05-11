@@ -29,13 +29,11 @@ public class CtrlDomain {
     }
 
     public boolean registerUser(String username, String password) {
-        if(CDU.isUserExist(username)) return false;
-        CDU.addUser(username,password);
-        return true;
+        return CDU.addUser(username,password);
     }
 
     //Para pasar el mapa a la capa de presentación
-    public PriorityQueue<PlayerScore> showRanking() {
+    public PriorityQueue<PlayerScore> getRanking() {
         return CDU.getRanking();
     }
 

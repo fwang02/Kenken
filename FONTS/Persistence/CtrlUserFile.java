@@ -17,7 +17,7 @@ public class CtrlUserFile {
     private CtrlUserFile() {
     }
 
-    public CtrlUserFile getInstance() {
+    public static CtrlUserFile getInstance() {
         return CTRL_USER_FILE;
     }
 
@@ -40,10 +40,10 @@ public class CtrlUserFile {
         return users;
     }
 
-    public boolean writeNewUserToFile(String username, String password, int maxPoint) {
+    public boolean writeNewUserToFile(String username, String password) {
         try {
             FileWriter fw = new FileWriter(filePath,true);
-            fw.write(username+';'+password+';'+maxPoint+'\n');
+            fw.write(username+';'+password+';'+'0'+'\n');
             fw.close();
         } catch (IOException e) {
             return false;

@@ -305,7 +305,7 @@ public class Driver {
                         registerUser();
                         break;
                     case "3":
-                        PriorityQueue<PlayerScore> rk = CD.showRanking();
+                        PriorityQueue<PlayerScore> rk = CD.getRanking();
                         if(rk.isEmpty()) {
                             System.out.println("No hay usuario, el ranking está vacío");
                             break;
@@ -368,7 +368,7 @@ public class Driver {
                         System.out.println("Kenken no disponible");
                         break;
                     case "4":
-                        PriorityQueue<PlayerScore> rk = CD.showRanking();
+                        PriorityQueue<PlayerScore> rk = CD.getRanking();
                         if(rk.isEmpty()) {
                             System.out.println("No hay usuario, el ranking está vacío");
                             break;

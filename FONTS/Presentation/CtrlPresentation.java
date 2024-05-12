@@ -2,6 +2,7 @@ package Presentation;
 
 import Domain.Controllers.CtrlDomain;
 import Domain.PlayerScore;
+import Presentation.Views.ViewMainMenu;
 
 import java.util.PriorityQueue;
 
@@ -15,14 +16,14 @@ public class CtrlPresentation {
 
     public CtrlPresentation (){
         ctrlDomain = new CtrlDomain();
-        //viewMainMenu = new ViewMainMenu();
+        viewMainMenu = new ViewMainMenu();
     }
 
     /**
      *
      */
     public void initPresentation() {
-        viewMainMenu = new ViewMainMenu();
+        viewMainMenu.makeVisible();
     }
 
     public PriorityQueue<PlayerScore> getRanking() {

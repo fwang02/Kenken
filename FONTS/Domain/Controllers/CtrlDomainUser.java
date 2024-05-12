@@ -6,22 +6,21 @@ import Persistence.CtrlUserFile;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
 public class CtrlDomainUser {
-    private static final CtrlDomainUser CTRL_USER = new CtrlDomainUser();
     private final CtrlUserFile ctrlUserFile;
     private final HashMap<String, User> users;
     private final PriorityQueue<PlayerScore> ranking;
     private static User loggedUser;
-    private static final String filePath = "../DATA/users.txt";
 
-
-    private CtrlDomainUser() {
+    public CtrlDomainUser() {
         ctrlUserFile = CtrlUserFile.getInstance();
         users = new HashMap<>();
         ranking = new PriorityQueue<>(Comparator.comparingInt(PlayerScore::getMaxScore).reversed());
+        loggedUser = null;
         loadUserData();
     }
 
@@ -38,13 +37,8 @@ public class CtrlDomainUser {
 
     }
 
-    public static CtrlDomainUser getInstance() {
-        return CTRL_USER;
-    }
-
     public boolean addUser(String username, String password) {
         if (isUserExist(username)) {
-            System.out.println("El usuario ya existe");
             return false;
         }
         users.put(username,new User(username,password));
@@ -94,19 +88,21 @@ public class CtrlDomainUser {
         return true;
     }
 
-    public void deleteUser(String username) {
+    public boolean deleteUser(String username) {
         if (!users.containsKey(username)) {
-            System.out.println("User does not exist.");
-            return;
+            return false;
         }
 
         // Remove user from memory
         users.remove(username);
         ranking.removeIf(playerScore -> playerScore.getName().equals(username));
 
+
+        String userFilePath = CtrlUserFile.getFilePath();
         // Remove user from file
         try {
-            List<String> lines = Files.readAllLines(Paths.get(filePath));
+            Path path = Paths.get(userFilePath);
+            List<String> lines = Files.readAllLines(path);
             Iterator<String> iterator = lines.iterator();
             while (iterator.hasNext()) {
                 String line = iterator.next();
@@ -115,10 +111,10 @@ public class CtrlDomainUser {
                     break;
                 }
             }
-            Files.write(Paths.get(filePath), lines);
+            Files.write(path, lines);
+            return true;
         } catch (IOException e) {
-            System.err.println("Error deleting user from file: " + e.getMessage());
+            return false;
         }
     }
-
 }

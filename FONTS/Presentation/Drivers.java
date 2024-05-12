@@ -1,7 +1,6 @@
 package Presentation;
 
 import Domain.Controllers.CtrlDomain;
-import Domain.Controllers.CtrlDomainUser;
 
 import java.util.Scanner;
 
@@ -10,7 +9,6 @@ public class Drivers {
     private static Scanner sc;
     private static boolean firstPage;
     private static boolean gameCreationPage;
-    private static final CtrlDomainUser CDU = CtrlDomainUser.getInstance();
 
 
     Drivers() {

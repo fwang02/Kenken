@@ -6,70 +6,59 @@ package JUnit;
 
 import Domain.Controllers.CtrlDomainUser;
 import Domain.User;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
-
-import java.util.HashMap;
 
 import static org.junit.Assert.*;
 
 public class CtrlDomainUserTest {
 
+    static CtrlDomainUser ctrlDomainUser;
+    static String username;
+    static String password;
+
+    @BeforeClass
+    public static void initializeTest() {
+        ctrlDomainUser = new CtrlDomainUser();
+        username = "testuser";
+        password = "password123";
+
+    }
+
+    /*
     @Test
     public void testGetInstance() {
-        CtrlDomainUser ctrlDomainUser1 = CtrlDomainUser.getInstance();
         CtrlDomainUser ctrlDomainUser2 = CtrlDomainUser.getInstance();
-        assertSame("Both instances should be the same", ctrlDomainUser1, ctrlDomainUser2);
+        assertSame("Both instances should be the same", ctrlDomainUser, ctrlDomainUser2);
     }
+     */
 
     @Test
     public void testAddUser() {
-        CtrlDomainUser ctrlDomainUser = CtrlDomainUser.getInstance();
-        String username = "testuser";
-        String password = "password123";
         boolean added = ctrlDomainUser.addUser(username, password);
-        if (!added) {
-            System.out.println("testuser already exists, test aborted");
-            return;
-        }
-
-        HashMap<String, User> users = ctrlDomainUser.getAllUsers();
-        assertTrue("User should be added", users.containsKey(username));
-
-        // Clean up by removing the added user from file
-        ctrlDomainUser.deleteUser("testuser");
+        assertTrue("User should be added", added);
     }
 
     @Test
     public void testIsPasswordCorrect() {
-        CtrlDomainUser ctrlDomainUser = CtrlDomainUser.getInstance();
-        String username = "testuser";
-        String password = "password123";
-        ctrlDomainUser.addUser(username, password);
-
         assertTrue("Password should be correct", ctrlDomainUser.isPasswordCorrect(username, password));
-
-        // Clean up by removing the added user from file
-        ctrlDomainUser.deleteUser("testuser");
     }
 
     @Test
     public void testUpdateMaxPoint() {
-        CtrlDomainUser ctrlDomainUser = CtrlDomainUser.getInstance();
-        String username = "testuser";
-        String password = "password123";
-        ctrlDomainUser.addUser(username, password);
-
         ctrlDomainUser.loginUser("testuser");
 
         int newMaxPoint = 100;
         boolean updated = ctrlDomainUser.updateMaxPointCurrUser(newMaxPoint);
         assertTrue("Max point should be updated", updated);
-
         User user = ctrlDomainUser.getUser(username);
         assertNotNull("User should not be null", user);
         assertEquals("Max point should be updated correctly", newMaxPoint, user.getMaxPoint());
+    }
 
-        // Clean up by removing the added user from file
-        ctrlDomainUser.deleteUser("testuser");
+    @AfterClass
+    public static void deleteUserAfterTest() {
+        assertTrue("Test user deleted",ctrlDomainUser.deleteUser("testuser"));
     }
 }

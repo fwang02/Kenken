@@ -1,3 +1,6 @@
+/**
+ * @author Javier Parcerisas
+ */
 package Presentation;
 
 import Domain.Controllers.CtrlDomainUser;
@@ -8,9 +11,9 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class DriverUser {
-    private static final CtrlDomainUser CDU = CtrlDomainUser.getInstance();
 
     public static void main(String[] args) {
+        CtrlDomainUser CDU = new CtrlDomainUser();
         Scanner sc = new Scanner(System.in);
         String op;
         System.out.println("1. Iniciar sesión");

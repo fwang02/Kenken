@@ -1,6 +1,7 @@
-package Presentation;
+package Presentation.Views;
 
 import Domain.PlayerScore;
+import Presentation.CtrlPresentation;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

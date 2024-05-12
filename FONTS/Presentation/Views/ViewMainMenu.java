@@ -1,4 +1,4 @@
-package Presentation;
+package Presentation.Views;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -15,12 +15,10 @@ public class ViewMainMenu extends JFrame {
     private final JButton bRegister = new JButton("Registrarse");
     private final JButton bRanking  = new JButton("Consultar rankings");
 
-
-
     public ViewMainMenu() {
         // Window
         setBounds(500, 300, 500, 300);
-        setResizable(true);
+        setResizable(false);
         setTitle("Kenken PROP");
 
         // Title window
@@ -41,8 +39,11 @@ public class ViewMainMenu extends JFrame {
 
         add(panel);
 
-        setVisible(true);
+        //setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        ImageIcon icon = new ImageIcon("../DATA/resource/kenkenicon.png");
+        setIconImage(icon.getImage());
 
         ActionListener Login = new ActionListener() {
             @Override
@@ -102,5 +103,9 @@ public class ViewMainMenu extends JFrame {
         bRanking.addActionListener(Ranking);
         bLogin.addActionListener(Login);
         bRegister.addActionListener(Register);
+    }
+
+    public void makeVisible() {
+        setVisible(true);
     }
 }

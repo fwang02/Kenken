@@ -14,10 +14,11 @@ import java.util.HashSet;
 import java.util.PriorityQueue;
 
 public class CtrlDomain {
-    private static final CtrlDomainUser CDU = CtrlDomainUser.getInstance();
-    private static CtrlDomainKenken CDK;
+    private final CtrlDomainUser CDU;
+    private final CtrlDomainKenken CDK;
 
     public CtrlDomain() {
+        CDU = new CtrlDomainUser();
         CDK = new CtrlDomainKenken();
     }
 

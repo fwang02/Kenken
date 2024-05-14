@@ -1,11 +1,14 @@
 package Presentation.Views;
 
+import Presentation.CtrlPresentation;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**/
 public class ViewMainMenu extends JFrame {
+
     private final JPanel panel = new JPanel();
 
     private final JLabel title = new JLabel("Kenken PROP");
@@ -15,7 +18,10 @@ public class ViewMainMenu extends JFrame {
     private final JButton bRegister = new JButton("Registrarse");
     private final JButton bRanking  = new JButton("Consultar rankings");
 
-    public ViewMainMenu() {
+    private final CtrlPresentation ctrlPresentation;
+
+    public ViewMainMenu(CtrlPresentation cp) {
+        ctrlPresentation = cp;
         // Window
         setBounds(500, 300, 500, 300);
         setResizable(false);
@@ -42,7 +48,7 @@ public class ViewMainMenu extends JFrame {
         //setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        ImageIcon icon = new ImageIcon("../DATA/resource/kenkenicon.png");
+        ImageIcon icon = new ImageIcon("./DATA/resource/kenkenicon.png");
         setIconImage(icon.getImage());
 
         ActionListener Login = new ActionListener() {
@@ -63,6 +69,7 @@ public class ViewMainMenu extends JFrame {
                 int result = JOptionPane.showConfirmDialog(null, loginMenu,
                         "Log In", JOptionPane.OK_CANCEL_OPTION);
                 if (result == JOptionPane.OK_OPTION) {
+
                     System.out.println("user: " + username.getText());
                     System.out.println("pswrd: " + password.getText());
                 }
@@ -87,6 +94,7 @@ public class ViewMainMenu extends JFrame {
                 int result = JOptionPane.showConfirmDialog(null, registerMenu,
                         "Register", JOptionPane.OK_CANCEL_OPTION);
                 if (result == JOptionPane.OK_OPTION) {
+                    ctrlPresentation.mainViewToPlayOptionView();
                     System.out.println("user: " + username.getText());
                     System.out.println("pswrd: " + password.getText());
                 }
@@ -107,5 +115,9 @@ public class ViewMainMenu extends JFrame {
 
     public void makeVisible() {
         setVisible(true);
+    }
+
+    public void makeInvisible() {
+        setVisible(false);
     }
 }

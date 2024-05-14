@@ -7,7 +7,8 @@ import Domain.Kenken;
 import Domain.KenkenCage;
 
 public class ADD extends Operation {
-	
+
+    @Override
 	public int checkResult(Kenken kk, KenkenCage kkc) {
 		int v = 0;
         for(int i = 0; i < kkc.getCageSize(); ++i) {

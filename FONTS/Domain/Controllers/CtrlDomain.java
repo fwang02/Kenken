@@ -5,10 +5,11 @@ package Domain.Controllers;
 
 import Domain.KenkenCage;
 import Domain.KenkenCell;
-import Domain.Operation.*;
+import Domain.Operation.Operation;
 import Domain.PlayerScore;
 import Domain.TypeDifficulty;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.PriorityQueue;
@@ -41,6 +42,10 @@ public class CtrlDomain {
     public boolean importKenkenByFile(String fileName) {
         return CDK.solveKenkenByFile(fileName);
     }
+    public boolean importKenkenByFile(File file) {
+        return CDK.solveKenkenByFile(file);
+    }
+
     public boolean generateKenkenByDifficulty(int size, HashSet<Operation> operations, TypeDifficulty diff) {
         return CDK.generateKenkenByDifficulty(size,operations,diff);
     }

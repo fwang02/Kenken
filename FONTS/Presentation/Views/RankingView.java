@@ -18,6 +18,9 @@ public class RankingView extends JFrame {
         setSize(500, 500);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
+        ImageIcon icon = new ImageIcon("./DATA/resource/kenkenicon.png");
+        setIconImage(icon.getImage());
+
         DefaultTableModel tableModel = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -43,7 +46,6 @@ public class RankingView extends JFrame {
 
         JScrollPane scrollPane = new JScrollPane(rankingTable);
         add(scrollPane);
-        // Make the JFrame visible
         setVisible(true);
     }
 }

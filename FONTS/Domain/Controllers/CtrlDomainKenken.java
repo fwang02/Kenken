@@ -5,12 +5,13 @@ package Domain.Controllers;
 
 import Domain.*;
 import Domain.Operation.*;
+import Persistence.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Scanner;
+//import java.util.Scanner;
 
 public class CtrlDomainKenken {
 	private Kenken currentGame;
@@ -18,11 +19,14 @@ public class CtrlDomainKenken {
     private HashSet<Operation> opSet;
     private ArrayList<KenkenCage> cages;
 
+	private CtrlKenkenFile CKF;
+
 	public CtrlDomainKenken() {
 		currentGame = null;
         opSet = null;
         cages = null;
         cells = null;
+		CKF = CtrlKenkenFile.getInstance();
 	}
 
 	public KenkenCell[][] getDomainCells(int size) {
@@ -59,77 +63,6 @@ public class CtrlDomainKenken {
         }
     }
 
-	private Kenken readKenkenByFile(String fileName) {
-		try {
-			Scanner scanner = new Scanner(new File("../DATA/" + fileName + ".txt"));
-			return getKenkenByFile(scanner);
-		} catch (FileNotFoundException e) {
-			return null;
-		}
-	}
-
-	private Kenken readKenkenByFile(File file) {
-		try {
-			Scanner scanner = new Scanner(file);
-			return getKenkenByFile(scanner);
-		} catch (FileNotFoundException e) {
-			return null;
-		}
-	}
-
-	private Kenken getKenkenByFile(Scanner scanner) {
-		int size = scanner.nextInt();
-		if (size > 9 || size < 3) {
-			System.out.println("El tamaño indicado en el fichero es incorrecto, debe ser 3-9");
-			return null;
-		}
-		int numCage = scanner.nextInt();
-
-		KenkenCell[][] cells = new KenkenCell[size][size];
-
-		scanner.nextLine();
-		HashSet<Operation> opSet = new HashSet<>();
-		ArrayList<KenkenCage> cages = new ArrayList<>(numCage);
-
-		int count = 0;
-		while (scanner.hasNextLine() && count < numCage) {
-			String line = scanner.nextLine();
-			String[] numStr = line.split("\\s+");
-
-			Operation op = getOperation(Integer.parseInt(numStr[0]));
-			opSet.add(op);
-
-			int result = Integer.parseInt(numStr[1]);
-			int numCells = Integer.parseInt(numStr[2]);
-			Pos[] posCells = new Pos[numCells];
-
-			int offset = 3;
-			for (int i = 0; i < numCells; i++) {
-				int posX = Integer.parseInt(numStr[offset + 2 * i]) - 1;
-				int posY = Integer.parseInt(numStr[offset + 1 + 2 * i]) - 1;
-
-				// cell with [number]
-				if ((offset + 2 + 2 * i < numStr.length) && numStr[offset + 2 + 2 * i].startsWith("[")) {
-					String str = numStr[offset + 2 + 2 * i];
-					int val = Integer.parseInt(str.substring(1, str.length() - 1));
-
-					cells[posX][posY] = new KenkenCell(posX, posY, val, true);
-					System.out.println("pos " + posX + " " + posY + ": " + val);
-					offset++;
-				} else cells[posX][posY] = new KenkenCell(posX, posY, 0, false);
-
-				posCells[i] = new Pos(posX, posY);
-			}
-
-			cages.add(new KenkenCage(op, result, posCells));
-			++count;
-		}
-		scanner.close();
-
-		return new Kenken(size, opSet, TypeDifficulty.EXPERT, cages, cells);
-	}
-
-
 	public boolean generateKenkenByDifficulty(int size, HashSet<Operation> ops, TypeDifficulty difficulty){
         Kenken kenken = new Kenken(size,ops,difficulty);
         KenkenConfig kenkenConfig = new KenkenConfig(kenken);
@@ -151,7 +84,7 @@ public class CtrlDomainKenken {
     }
 
     public boolean solveKenkenByFile(String fileName) {
-    	Kenken kenken = readKenkenByFile(fileName);
+    	Kenken kenken = CKF.readKenkenByFile(fileName);
 		if(kenken == null) return false;
     	KenkenConfig kenkenConfig = new KenkenConfig(kenken);
     	if(kenkenConfig.solveKenken()) {
@@ -164,7 +97,7 @@ public class CtrlDomainKenken {
     }
 
 	public boolean solveKenkenByFile(File file) {
-		Kenken kenken = readKenkenByFile(file);
+		Kenken kenken = CKF.readKenkenByFile(file);
 		if(kenken == null) return false;
 		KenkenConfig kenkenConfig = new KenkenConfig(kenken);
 		if(kenkenConfig.solveKenken()) {

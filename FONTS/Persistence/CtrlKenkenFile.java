@@ -107,11 +107,12 @@ public class CtrlKenkenFile {
 		try {
 			File savedGame = new File("../DATA/GAME.txt");
 			FileWriter myWriter = new FileWriter("../DATA/GAME.txt");
-			char a = (char)(kenken.getSize() + '0');
-			char b = (char)(kenken.getNumberCages() + '0');
-			myWriter.write(a);
-			myWriter.write(" ");
-			myWriter.write(b);
+			String a = Integer.toString(kenken.getSize());
+			String b = Integer.toString(kenken.getNumberCages());
+			myWriter.write(a + " " + b + "\n");
+			myWriter.write("OPA OPA NUEVA LINEA");
+			//myWriter.write(" ");
+			//myWriter.write(b);
 			myWriter.close();
 			return true;
 		}

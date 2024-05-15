@@ -1,13 +1,17 @@
 package Presentation.Views;
 
 import Presentation.CtrlPresentation;
+import Domain.Controllers.CtrlDomainUser;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+
 /**/
 public class ViewMainMenu extends JFrame {
+    // PROVISIONAL
+    CtrlDomainUser CDU = new CtrlDomainUser();
 
     private final JPanel panel = new JPanel();
 
@@ -17,6 +21,8 @@ public class ViewMainMenu extends JFrame {
     private final JButton bLogin    = new JButton("Iniciar sesión");
     private final JButton bRegister = new JButton("Registrarse");
     private final JButton bRanking  = new JButton("Consultar rankings");
+    private final JButton bSalir  = new JButton("Salir");
+
 
     private final CtrlPresentation ctrlPresentation;
 
@@ -43,6 +49,10 @@ public class ViewMainMenu extends JFrame {
         bRanking.setBounds(150, 130, 200, 20);
         add(bRanking);
 
+        // Exit button
+        bSalir.setBounds(150, 235, 200, 20);
+        add(bSalir);
+
         add(panel);
 
         //setVisible(true);
@@ -68,10 +78,17 @@ public class ViewMainMenu extends JFrame {
 
                 int result = JOptionPane.showConfirmDialog(null, loginMenu,
                         "Log In", JOptionPane.OK_CANCEL_OPTION);
+                String usr = username.getText();
+                String pwd = password.getText();
                 if (result == JOptionPane.OK_OPTION) {
-
-                    System.out.println("user: " + username.getText());
-                    System.out.println("pswrd: " + password.getText());
+                    if (CDU.isUserExist(usr) && CDU.isPasswordCorrect(usr, pwd)) {
+                        //System.out.println("CORRECT");
+                        CDU.loginUser(usr);
+                    }
+                    else {
+                        //System.out.println("INCORRECT USR OR PSWD");
+                        JOptionPane.showMessageDialog(null, "Incorrect user or password");
+                    }
                 }
             }
         };
@@ -93,10 +110,22 @@ public class ViewMainMenu extends JFrame {
 
                 int result = JOptionPane.showConfirmDialog(null, registerMenu,
                         "Register", JOptionPane.OK_CANCEL_OPTION);
+                String usr = username.getText();
+                String pwd = password.getText();
                 if (result == JOptionPane.OK_OPTION) {
-                    ctrlPresentation.mainViewToPlayOptionView();
-                    System.out.println("user: " + username.getText());
-                    System.out.println("pswrd: " + password.getText());
+                    if (CDU.isUserExist(usr)) {
+                        JOptionPane.showMessageDialog(null, "Username already in use");
+                    }
+                    else if (pwd.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "Password can't be empty");
+                    }
+                    else {
+                        // Register
+                        CDU.addUser(usr, pwd);
+                        JOptionPane.showMessageDialog(null, "User registered!");
+
+                        ctrlPresentation.mainViewToPlayOptionView();
+                    }
                 }
             }
         };
@@ -108,9 +137,17 @@ public class ViewMainMenu extends JFrame {
             }
         };
 
+        ActionListener Salir = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        };
+
         bRanking.addActionListener(Ranking);
         bLogin.addActionListener(Login);
         bRegister.addActionListener(Register);
+        bSalir.addActionListener(Salir);
     }
 
     public void makeVisible() {

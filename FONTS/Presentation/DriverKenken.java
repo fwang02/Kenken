@@ -14,7 +14,8 @@ public class DriverKenken {
 
     private static void printMethods() {
         System.out.println("1 -> Generar Kenken");
-        System.out.println("15 -> Continuar Kenken");
+        System.out.println("20 -> Guardar Kenken");
+        System.out.println("30 -> Continuar Kenken");
         System.out.println("2 -> Importar Kenken");
         System.out.println("3 -> Crear Kenken");
         System.out.println("4 -> Jugar Kenken ya disponible");
@@ -126,6 +127,15 @@ public class DriverKenken {
         System.out.println("KENKEN GENERADO, YA PUEDES JUGAR");
     }
 
+    private static void saveKenken() {
+        if(!CDK.hasCurrentGame()) {
+            System.out.println("NECESITAS UN KENKEN");
+            return;
+        }
+        else {
+            CDK.saveKenken();
+        }
+    }
     private static void continueKenken() {
         System.out.println("Nombre de la partida que quieres continuar (input)");
         String name = sc.nextLine();
@@ -321,7 +331,10 @@ public class DriverKenken {
                 case "1": 
                     generatekenken();
                     break;
-                case "15":
+                case "20":
+                    saveKenken();
+                    break;
+                case "30":
                     continueKenken();
                     break;
                 case "2": 

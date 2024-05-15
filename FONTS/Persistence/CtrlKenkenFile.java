@@ -103,8 +103,21 @@ public class CtrlKenkenFile {
 	}
 
 	// PARA GUARDAR UNA PARTIDA
-	private boolean saveKenkenGame() {
-		return true;
+	public boolean saveKenkenGame(Kenken kenken) {
+		try {
+			File savedGame = new File("../DATA/GAME.txt");
+			FileWriter myWriter = new FileWriter("../DATA/GAME.txt");
+			char a = (char)(kenken.getSize() + '0');
+			char b = (char)(kenken.getNumberCages() + '0');
+			myWriter.write(a);
+			myWriter.write(" ");
+			myWriter.write(b);
+			myWriter.close();
+			return true;
+		}
+		catch (IOException e) {
+			return false;
+		}
 	}
 
 	// PARA CONTINUAR UNA PARTIDA

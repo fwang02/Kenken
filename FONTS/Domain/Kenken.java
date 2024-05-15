@@ -109,9 +109,10 @@ public class Kenken {
         return operations;
     }
 
+    /*
     public int getNumberCages() {
         return numberCages;
-    }
+    }*/
 
     public int getNumberIndCells() {
         return numberIndCells;
@@ -127,6 +128,10 @@ public class Kenken {
 
     public KenkenCell getCell(Pos p) {
         return cells[p.posX][p.posY];
+    }
+
+    public int getNumberCages() {
+        return cages.size();
     }
 
     public ArrayList<KenkenCage> getAllCages() {
@@ -219,72 +224,6 @@ public class Kenken {
         for (int i = 0; i < getSize(); ++i) {
             for (int j = 0; j < getSize(); ++j) {
                 board[i][j] = 0;
-            }
-        }
-    }
-
-    //actualmente no usado, el equivalente esta en el driver
-    public void showBoard() {
-        System.out.print("Kenken\n");
-        System.out.print("   ");
-        for (int i = 0; i < getSize(); ++i) {
-            System.out.print(i + 1 + "  ");
-        }
-        System.out.print("\n");
-
-        for (int i = 0; i < getSize(); ++i) {
-            System.out.print(i + 1 + " ");
-            for (int j = 0; j < getSize(); ++j) {
-                System.out.print(" " + board[i][j] + " ");
-            }
-            System.out.print("\n");
-        }
-        System.out.print("\n");
-    }
-
-
-    //actualmente no usado, el equivalente esta en el driver
-    public void showCages() {
-        for(int i = 0; i < cages.size(); ++i) {
-            System.out.print("Region " + i + "-> ");
-            System.out.print("Size: " + cages.get(i).getCageSize() + " ");
-            System.out.print("Casilla: ");
-            for(int j = 0; j < cages.get(i).getCageSize(); ++j) {
-                int x = cages.get(i).getPos(j).posX + 1;
-                int y = cages.get(i).getPos(j).posY + 1;
-                System.out.print(x + " ");
-                System.out.print(y + " || ");
-            }
-            System.out.print(cages.get(i).getOperation() + " = ");
-            System.out.print(cages.get(i).getResult() + "\n");
-        }
-    }
-
-    //actualmente no usado, el equivalente esta en el driver
-    public void showSolution() {
-        System.out.println("Solucion del Kenken");
-        for (int i = 0; i < getSize(); ++i) {
-            for (int j = 0; j < getSize(); ++j) {
-                System.out.print(getCell(i, j).getValue() + " ");
-            }
-            System.out.print("\n");
-        }
-        System.out.print("\n");
-    }
-
-    //actualmente no usado, el equivalente esta en el driver
-    public void hint() {
-        boolean hintGived = false;
-        for (int i = 0; i < getSize() && !hintGived; ++i) {
-            for (int j = 0; j < getSize() && !hintGived; ++j) {
-                if (board[i][j] == 0) {
-                    hintGived = true;
-                    int v = getCell(i, j).getValue();
-                    ++hints;
-                    int x = i + 1;
-                    int y = j + 1;
-                    System.out.println("Prueba con poner " + v + " en la casilla x: " + x + " y: " + y + " Puede que funcione");
-                }
             }
         }
     }

@@ -109,6 +109,11 @@ public class CtrlDomainKenken {
 		}
 	}
 
+	public boolean saveKenken() {
+		CKF.saveKenkenGame(currentGame);
+		return true;
+	}
+
 	public boolean continueKenken(String fileName) {
 		Kenken kenken = CKF.loadKenkenByFile(fileName);
 		if(kenken == null) return false;

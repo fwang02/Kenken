@@ -7,7 +7,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.util.PriorityQueue;
 
-public class RankingView extends JFrame {
+public class RankingView extends View {
     private JTable rankingTable;
     private CtrlPresentation ctrlPresentation;
 
@@ -17,9 +17,6 @@ public class RankingView extends JFrame {
         setTitle("Ranking");
         setSize(500, 500);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-        ImageIcon icon = new ImageIcon("./DATA/resource/kenkenicon.png");
-        setIconImage(icon.getImage());
 
         DefaultTableModel tableModel = new DefaultTableModel() {
             @Override

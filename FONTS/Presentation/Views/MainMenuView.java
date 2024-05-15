@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 
 
 /**/
-public class ViewMainMenu extends JFrame {
+public class MainMenuView extends View {
     // PROVISIONAL
     CtrlDomainUser CDU = new CtrlDomainUser();
 
@@ -23,10 +23,12 @@ public class ViewMainMenu extends JFrame {
     private final JButton bRanking  = new JButton("Consultar rankings");
     private final JButton bSalir  = new JButton("Salir");
 
+    private RankingView rankingView;
+
 
     private final CtrlPresentation ctrlPresentation;
 
-    public ViewMainMenu(CtrlPresentation cp) {
+    public MainMenuView(CtrlPresentation cp) {
         ctrlPresentation = cp;
         // Window
         setBounds(500, 300, 500, 300);
@@ -58,15 +60,12 @@ public class ViewMainMenu extends JFrame {
         //setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        ImageIcon icon = new ImageIcon("./DATA/resource/kenkenicon.png");
-        setIconImage(icon.getImage());
-
         ActionListener Login = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
                 JTextField username = new JTextField(1);
-                JTextField password = new JTextField(1);
+                JTextField password = new JPasswordField(1);
 
                 JPanel loginMenu = new JPanel();
                 loginMenu.setLayout(new BoxLayout(loginMenu, BoxLayout.Y_AXIS));
@@ -98,7 +97,7 @@ public class ViewMainMenu extends JFrame {
             public void actionPerformed(ActionEvent e) {
 
                 JTextField username = new JTextField(1);
-                JTextField password = new JTextField(1);
+                JTextField password = new JPasswordField(1);
 
                 JPanel registerMenu = new JPanel();
                 registerMenu.setLayout(new BoxLayout(registerMenu, BoxLayout.Y_AXIS));
@@ -133,7 +132,7 @@ public class ViewMainMenu extends JFrame {
         ActionListener Ranking = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new RankingView();
+                if (rankingView == null) rankingView = new RankingView();
             }
         };
 
@@ -150,11 +149,4 @@ public class ViewMainMenu extends JFrame {
         bSalir.addActionListener(Salir);
     }
 
-    public void makeVisible() {
-        setVisible(true);
-    }
-
-    public void makeInvisible() {
-        setVisible(false);
-    }
 }

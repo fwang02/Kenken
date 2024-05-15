@@ -7,7 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
-public class PlayOptionView extends JFrame {
+public class PlayOptionView extends View {
 
     private final CtrlPresentation ctrlPresentation;
     private final JPanel panel = new JPanel();
@@ -50,11 +50,4 @@ public class PlayOptionView extends JFrame {
 
     }
 
-    public void makeVisible() {
-        setVisible(true);
-    }
-
-    public void makeInvisible() {
-        setVisible(false);
-    }
 }

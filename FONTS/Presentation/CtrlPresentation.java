@@ -4,7 +4,7 @@ import Domain.Controllers.CtrlDomain;
 import Domain.PlayerScore;
 import Presentation.Views.GameView;
 import Presentation.Views.PlayOptionView;
-import Presentation.Views.ViewMainMenu;
+import Presentation.Views.MainMenuView;
 
 import java.io.File;
 import java.util.PriorityQueue;
@@ -15,24 +15,24 @@ import java.util.PriorityQueue;
 public class CtrlPresentation {
 
     private CtrlDomain ctrlDomain;
-    private ViewMainMenu viewMainMenu;
+    private MainMenuView mainMenuView;
     private PlayOptionView playOptionView;
     private GameView gameView;
 
 
     public CtrlPresentation (){
         ctrlDomain = new CtrlDomain();
-        viewMainMenu = new ViewMainMenu(this);
+        mainMenuView = new MainMenuView(this);
         playOptionView = new PlayOptionView(this);
         gameView = new GameView(this);
     }
 
     public void initPresentation() {
-        viewMainMenu.makeVisible();
+        mainMenuView.makeVisible();
     }
 
     public void mainViewToPlayOptionView() {
-        viewMainMenu.makeInvisible();
+        mainMenuView.makeInvisible();
         playOptionView.makeVisible();
     }
 

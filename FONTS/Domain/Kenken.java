@@ -79,6 +79,20 @@ public class Kenken {
         this.solved = false;
     }
 
+    // PARA CONTINUAR UN KENKEN 
+    public Kenken(int size, HashSet<Operation> operations, TypeDifficulty dificult, ArrayList<KenkenCage> cages, KenkenCell[][] cells, int[][] board) {
+        this.size = size;
+        this.name = null;
+        this.dificult = dificult;
+        this.operations = operations;
+        this.numberCages = 0;
+        this.numberIndCells = 0;
+        this.cages = cages;
+        this.cells = cells;
+        this.board = board;
+        this.solved = false;
+    }
+
     public int getSize() {
         return size;
     }

@@ -109,6 +109,32 @@ public class CtrlDomainKenken {
 		}
 	}
 
+	public boolean continueKenken(String fileName) {
+		Kenken kenken = CKF.loadKenkenByFile(fileName);
+		if(kenken == null) return false;
+		KenkenConfig kenkenConfig = new KenkenConfig(kenken);
+		if(kenkenConfig.solveKenken()) {
+			currentGame = kenken;
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	public boolean continueKenken(File file) {
+		Kenken kenken = CKF.loadKenkenByFile(file);
+		if(kenken == null) return false;
+		KenkenConfig kenkenConfig = new KenkenConfig(kenken);
+		if(kenkenConfig.solveKenken()) {
+			currentGame = kenken;
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
     // JUGAR CON EL KENKEN
 
     public boolean insertNumberBoard(int x, int y, int v) {

@@ -19,9 +19,9 @@ import Domain.Operation.*;
 public class CtrlKenkenFile {
     private static final CtrlKenkenFile CTRL_KENKEN_FILE = new CtrlKenkenFile();
     private Kenken currentGame;
-	private KenkenCell[][] cells;
+	/*private KenkenCell[][] cells;
     private HashSet<Operation> opSet;
-    private ArrayList<KenkenCage> cages;
+    private ArrayList<KenkenCage> cages;*/
     //private static final String filePath = "./DATA/";
 
     private CtrlKenkenFile() {
@@ -31,6 +31,7 @@ public class CtrlKenkenFile {
         return CTRL_KENKEN_FILE;
     }
 
+	// PARA JUGAR FICHEROS YA DEFINIDOS (PARTIDAS ESTANDAR)
     public Kenken readKenkenByFile(String fileName) {
 		try {
 			Scanner scanner = new Scanner(new File("../DATA/" + fileName + ".txt"));
@@ -99,6 +100,85 @@ public class CtrlKenkenFile {
 		scanner.close();
 
 		return new Kenken(size, opSet, TypeDifficulty.EXPERT, cages, cells);
+	}
+
+	// PARA GUARDAR UNA PARTIDA
+	private boolean saveKenkenGame() {
+		return true;
+	}
+
+	// PARA CONTINUAR UNA PARTIDA
+	public Kenken loadKenkenByFile(String fileName) {
+		try {
+			Scanner scanner = new Scanner(new File("../DATA/" + fileName + ".txt"));
+			return loadKenkenGame(scanner);
+		} catch (FileNotFoundException e) {
+			return null;
+		}
+	}
+
+    public Kenken loadKenkenByFile(File file) {
+		try {
+			Scanner scanner = new Scanner(file);
+			return loadKenkenGame(scanner);
+		} catch (FileNotFoundException e) {
+			return null;
+		}
+	}
+
+	private Kenken loadKenkenGame(Scanner scanner) {
+		int size = scanner.nextInt();
+		int numCage = scanner.nextInt();
+
+		KenkenCell[][] cells = new KenkenCell[size][size];
+		HashSet<Operation> opSet = new HashSet<>();
+		ArrayList<KenkenCage> cages = new ArrayList<>(numCage);
+		int[][] board = new int[size][size];
+
+		scanner.nextLine();
+		
+		int count = 0;
+		while (scanner.hasNextLine() && count < numCage) {
+			String line = scanner.nextLine();
+			String[] numStr = line.split("\\s+");
+
+			Operation op = getOperation(Integer.parseInt(numStr[0]));
+			opSet.add(op);
+
+			int result = Integer.parseInt(numStr[1]);
+			int numCells = Integer.parseInt(numStr[2]);
+			Pos[] posCells = new Pos[numCells];
+
+			int offset = 3;
+			for (int i = 0; i < numCells; i++) {
+				int posX = Integer.parseInt(numStr[offset + 2 * i]) - 1;
+				int posY = Integer.parseInt(numStr[offset + 1 + 2 * i]) - 1;
+
+				// cell with [number]
+				if ((offset + 2 + 2 * i < numStr.length) && numStr[offset + 2 + 2 * i].startsWith("[")) {
+					String str = numStr[offset + 2 + 2 * i];
+					int val = Integer.parseInt(str.substring(1, str.length() - 1));
+
+					cells[posX][posY] = new KenkenCell(posX, posY, val, true);
+					System.out.println("pos " + posX + " " + posY + ": " + val);
+					offset++;
+				} else cells[posX][posY] = new KenkenCell(posX, posY, 0, false);
+
+				posCells[i] = new Pos(posX, posY);
+			}
+
+			cages.add(new KenkenCage(op, result, posCells));
+			++count;
+		}
+		for(int i = 0; i < size; ++i) {
+			for(int j = 0; j < size; ++j ) {
+				int v = scanner.nextInt();
+				board[i][j] = v;
+			}
+		}
+		scanner.close();
+
+		return new Kenken(size, opSet, TypeDifficulty.EXPERT, cages, cells, board);
 	}
 
     static Operation getOperation(int num) {

@@ -14,6 +14,7 @@ public class DriverKenken {
 
     private static void printMethods() {
         System.out.println("1 -> Generar Kenken");
+        System.out.println("15 -> Continuar Kenken");
         System.out.println("2 -> Importar Kenken");
         System.out.println("3 -> Crear Kenken");
         System.out.println("4 -> Jugar Kenken ya disponible");
@@ -123,6 +124,16 @@ public class DriverKenken {
         HashSet<Operation> operations = chooseOps();
         CDK.generateKenkenByDifficulty(size, operations, dif);
         System.out.println("KENKEN GENERADO, YA PUEDES JUGAR");
+    }
+
+    private static void continueKenken() {
+        System.out.println("Nombre de la partida que quieres continuar (input)");
+        String name = sc.nextLine();
+        if(!CDK.continueKenken(name)) {
+            System.out.println("El Kenken introducido no tiene solucion");
+            return;
+        }
+        System.out.println("KENKEN CARGADO, YA PUEDES CONTINUAR");
     }
 
     private static void importKenken() {
@@ -309,6 +320,9 @@ public class DriverKenken {
             switch(order) {
                 case "1": 
                     generatekenken();
+                    break;
+                case "15":
+                    continueKenken();
                     break;
                 case "2": 
                     importKenken();

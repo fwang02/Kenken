@@ -133,6 +133,10 @@ public class MainMenuView extends View {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (rankingView == null) rankingView = new RankingView();
+                else {
+                    rankingView.dispose();
+                    rankingView = new RankingView();
+                }
             }
         };
 

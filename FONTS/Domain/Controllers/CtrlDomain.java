@@ -90,4 +90,8 @@ public class CtrlDomain {
     public boolean newMaxPoint(int newMaxPoint) {
         return CDU.updateMaxPointCurrUser(newMaxPoint);
     }
+
+    public int getKenkenSize() {
+        return CDK.getCurrentGameSize();
+    }
 }

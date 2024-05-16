@@ -1,8 +1,5 @@
 package Presentation.Views;
 
-import Presentation.CtrlPresentation;
-import Domain.Controllers.CtrlDomainUser;
-
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
 import java.awt.event.ActionEvent;

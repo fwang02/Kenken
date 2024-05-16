@@ -45,6 +45,7 @@ public class CtrlPresentation {
 
     public void playOptionViewToGameView() {
         playOptionView.makeInvisible();
+        gameView.startPlay();
         gameView.makeVisible();
 
     }
@@ -55,5 +56,9 @@ public class CtrlPresentation {
 
     public boolean openKenkenByFile(File file) {
         return ctrlDomain.importKenkenByFile(file);
+    }
+
+    public int getKenkenSize() {
+        return ctrlDomain.getKenkenSize();
     }
 }

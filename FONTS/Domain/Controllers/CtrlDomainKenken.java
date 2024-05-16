@@ -5,10 +5,9 @@ package Domain.Controllers;
 
 import Domain.*;
 import Domain.Operation.*;
-import Persistence.*;
+import Persistence.CtrlKenkenFile;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashSet;
 //import java.util.Scanner;
@@ -196,5 +195,9 @@ public class CtrlDomainKenken {
 
 	public Kenken getCurrentGame() {
 		return currentGame;
+	}
+
+	public int getCurrentGameSize() {
+		return currentGame != null ? currentGame.getSize() : -1;
 	}
 }

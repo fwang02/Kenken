@@ -51,7 +51,16 @@ public class PlayOptionView extends View {
                     File selectedFile = fileChooser.getSelectedFile();
                     System.out.println("Selected file: " + selectedFile.getAbsolutePath());
                     ctrlPresentation.openKenkenByFile(selectedFile);
+                    ctrlPresentation.playOptionViewToGameView();
                 }
+            }
+        });
+
+        playExistButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ctrlPresentation.openKenkenByFile(new File("../DATA/basico3x3.txt"));
+                ctrlPresentation.playOptionViewToGameView();
             }
         });
 

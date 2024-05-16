@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 public class CtrlUserFile {
     private static final CtrlUserFile CTRL_USER_FILE = new CtrlUserFile();
-    private static final String filePath = "./DATA/users.txt";
+    private static final String filePath = "../DATA/users.txt";
 
     private CtrlUserFile() {
     }

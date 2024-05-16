@@ -1,6 +1,8 @@
 CLASS_INPUT =	./Domain/*.java \
 					./Domain/Operation/*.java \
-					./Persistence/*.java
+					./Persistence/*.java \
+					./Presentation/Views/*.java \
+					./Main.java
 
 CLASS_OUTPUT =	../EXE/
 
@@ -28,6 +30,14 @@ jars:
 	jar cvmf ./Presentation/Kenken.mf $(JAR_OUTPUT)DriverKenken.jar -C $(CLASS_OUTPUT) .
 	jar cvmf ./Presentation/User.mf $(JAR_OUTPUT)DriverUser.jar -C $(CLASS_OUTPUT) .
 	jar cvmf ./Presentation/Driver.mf $(JAR_OUTPUT)Driver.jar -C $(CLASS_OUTPUT) .
+
+
+main:
+	javac -d $(CLASS_OUTPUT) $(CLASS_INPUT) ./Main.java
+
+executaMain:
+	java -classpath $(JAR_OUTPUT) Main
+
 
 executaDriver:
 	java -jar $(JAR_OUTPUT)Driver.jar

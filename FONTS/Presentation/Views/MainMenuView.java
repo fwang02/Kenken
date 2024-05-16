@@ -81,11 +81,12 @@ public class MainMenuView extends View {
                 String pwd = password.getText();
                 if (result == JOptionPane.OK_OPTION) {
                     if (CDU.isUserExist(usr) && CDU.isPasswordCorrect(usr, pwd)) {
-                        //System.out.println("CORRECT");
                         CDU.loginUser(usr);
+
+                        // Move to next view
+                        ctrlPresentation.mainViewToPlayOptionView();
                     }
                     else {
-                        //System.out.println("INCORRECT USR OR PSWD");
                         JOptionPane.showMessageDialog(null, "Incorrect user or password");
                     }
                 }
@@ -122,7 +123,9 @@ public class MainMenuView extends View {
                         // Register
                         CDU.addUser(usr, pwd);
                         JOptionPane.showMessageDialog(null, "User registered!");
+                        CDU.loginUser(usr);
 
+                        // Move to next view
                         ctrlPresentation.mainViewToPlayOptionView();
                     }
                 }

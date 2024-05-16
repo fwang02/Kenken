@@ -2,6 +2,7 @@ package Presentation;
 
 import Domain.Controllers.CtrlDomain;
 import Domain.PlayerScore;
+import Presentation.Views.GameCreatorView;
 import Presentation.Views.GameView;
 import Presentation.Views.PlayOptionView;
 import Presentation.Views.MainMenuView;
@@ -19,21 +20,27 @@ public class CtrlPresentation {
     private PlayOptionView playOptionView;
     private GameView gameView;
 
+    private GameCreatorView gameCreatorView;
+
 
     public CtrlPresentation (){
         ctrlDomain = new CtrlDomain();
         mainMenuView = new MainMenuView(this);
         playOptionView = new PlayOptionView(this);
         gameView = new GameView(this);
+        gameCreatorView = new GameCreatorView(this);
     }
 
     public void initPresentation() {
         mainMenuView.makeVisible();
+        //gameView.makeVisible();
+        //gameCreatorView.makeVisible();
     }
 
     public void mainViewToPlayOptionView() {
         mainMenuView.makeInvisible();
         playOptionView.makeVisible();
+        //gameView.makeVisible();
     }
 
     public void playOptionViewToGameView() {

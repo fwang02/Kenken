@@ -107,12 +107,37 @@ public class CtrlKenkenFile {
 		try {
 			File savedGame = new File("../DATA/GAME.txt");
 			FileWriter myWriter = new FileWriter("../DATA/GAME.txt");
-			String a = Integer.toString(kenken.getSize());
-			String b = Integer.toString(kenken.getNumberCages());
-			myWriter.write(a + " " + b + "\n");
-			myWriter.write("OPA OPA NUEVA LINEA");
-			//myWriter.write(" ");
-			//myWriter.write(b);
+
+			int size = kenken.getSize();
+			int ncages = kenken.getNumberCages();
+			myWriter.write(Integer.toString(size) + " " + Integer.toString(ncages) + "\n");
+
+			ArrayList<KenkenCage> cages = kenken.getAllCages();
+			KenkenCage cage;
+			Pos p;
+			int cont;
+
+			for(int i = 0; i < ncages; ++i) {
+				cage = kenken.getCage(i);
+				int op = getOperationNumber(cage.getOperation());
+				int res = cage.getResult();
+				int e = cage.getCageSize();
+				myWriter.write(Integer.toString(op) + " " + Integer.toString(res) + " " + Integer.toString(e));
+				for(int j = 0; j < e; ++j) {
+					p = cage.getPos(j);
+					cont = kenken.getCell(p).getValue();
+					if (j == (e-1)) myWriter.write(" " + Integer.toString(p.posX+1) + " " + Integer.toString(p.posY+1) + " " + "["+Integer.toString(cont)+"]" + "\n"); 
+					else myWriter.write(" " + Integer.toString(p.posX+1) + " " + Integer.toString(p.posY+1) + " " + "["+Integer.toString(cont)+"]");
+				}
+			}
+
+			int[][] board = kenken.getBoard();
+			for(int i = 0; i < size; ++i) {
+				for(int j = 0; j < size; ++j) {
+					if(j == 0 && i == 0) myWriter.write(Integer.toString(board[i][j]));
+					else myWriter.write(" " + Integer.toString(board[i][j]));
+				}
+			}
 			myWriter.close();
 			return true;
 		}
@@ -174,7 +199,6 @@ public class CtrlKenkenFile {
 					int val = Integer.parseInt(str.substring(1, str.length() - 1));
 
 					cells[posX][posY] = new KenkenCell(posX, posY, val, true);
-					System.out.println("pos " + posX + " " + posY + ": " + val);
 					offset++;
 				} else cells[posX][posY] = new KenkenCell(posX, posY, 0, false);
 
@@ -212,6 +236,16 @@ public class CtrlKenkenFile {
             default:
                 throw new IllegalArgumentException("Carácter no válido encontrado en la cadena: " + num);
         }
+    }
+
+	static int getOperationNumber(Operation o) {
+        if (o instanceof ADD) return 1;
+		else if (o instanceof SUB) return 2;
+		else if (o instanceof MULT) return 3;
+		else if (o instanceof DIV) return 4;
+		else if (o instanceof MOD) return 5;
+		else if (o instanceof POW) return 6;
+		return 0;
     }
   
 }

@@ -116,13 +116,17 @@ public class CtrlDomainKenken {
 	public boolean continueKenken(String fileName) {
 		Kenken kenken = CKF.loadKenkenByFile(fileName);
 		if(kenken == null) return false;
-		KenkenConfig kenkenConfig = new KenkenConfig(kenken);
-		if(kenkenConfig.solveKenken()) {
+		//KenkenConfig kenkenConfig = new KenkenConfig(kenken);
+		/*if(kenkenConfig.solveKenken()) {
 			currentGame = kenken;
 			return true;
 		}
 		else {
 			return false;
+		}*/
+		else {
+			currentGame = kenken;
+			return true;
 		}
 	}
 

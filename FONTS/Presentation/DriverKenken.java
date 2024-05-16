@@ -137,7 +137,7 @@ public class DriverKenken {
         }
     }
     private static void continueKenken() {
-        System.out.println("Nombre de la partida que quieres continuar (input)");
+        System.out.println("Nombre de la partida que quieres continuar (GAME)");
         String name = sc.nextLine();
         if(!CDK.continueKenken(name)) {
             System.out.println("El Kenken introducido no tiene solucion");
@@ -271,8 +271,8 @@ public class DriverKenken {
         int v = sc.nextInt();
         sc.nextLine();
         if(!CDK.insertNumberBoard(a,b,v)) {
-            System.out.print("Error: Por favor, inserte valores entre 1 i ");
-            System.out.print("Error: Por favor, inserte coordenadas validas");
+            System.out.println("Error: Por favor, inserte valores entre 1 i ");
+            System.out.println("Error: Por favor, inserte coordenadas validas");
         }
     }
 

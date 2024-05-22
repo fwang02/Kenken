@@ -3,40 +3,57 @@ package Presentation.Views;
 import Presentation.CtrlPresentation;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
+/**
+ * @author Feiyang Wang
+ */
 public class PlayOptionView extends View {
 
     private final CtrlPresentation ctrlPresentation;
     private final JPanel panel = new JPanel();
+    private final JPanel creationPanel = new JPanel();
     private final JButton createNewButton = new JButton("Crear");
     private final JButton openFileButton = new JButton("Abrir desde fichero");
     private final JButton playExistButton = new JButton("Jugar uno existente");
+    private final JScrollBar sizeScrollBar = new JScrollBar(Adjustable.HORIZONTAL,3,1,3,9);
+    private final JCheckBox[] operationSelect = new JCheckBox[6];
+    private final JComboBox<String> difficultySelect = new JComboBox<>(new String[]{"Fácil","Medio","Difícil","Experto"});
+
 
     public PlayOptionView(CtrlPresentation cp) {
         this.ctrlPresentation = cp;
-        // Window
+        // Ventana
         setBounds(500, 300, 500, 300);
         setResizable(false);
         setTitle("Play Options");
+        setLocationRelativeTo(null);
 
-        createNewButton.setBounds(150, 50, 200, 20);
-        openFileButton.setBounds(150, 90, 200, 20);
-        playExistButton.setBounds(150, 130, 200, 20);
+        createNewButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        openFileButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        playExistButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // Add buttons to the view
-        add(createNewButton);
-        add(openFileButton);
-        add(playExistButton);
-        add(panel);
+        panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
+        // Añadir botones a la vista
+        panel.add(Box.createVerticalGlue());
+        panel.add(createNewButton);
+        panel.add(Box.createVerticalStrut(10));
+        panel.add(openFileButton);
+        panel.add(Box.createVerticalStrut(10));
+        panel.add(playExistButton);
+        panel.add(Box.createVerticalGlue());
+
+        add(panel, BorderLayout.CENTER);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         createNewButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
                 ctrlPresentation.playOptionViewToGameView();
             }
         });

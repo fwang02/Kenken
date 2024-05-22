@@ -1,7 +1,6 @@
 package Presentation.Views;
 
 import Presentation.CtrlPresentation;
-import Domain.Controllers.CtrlDomainUser;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -11,7 +10,7 @@ import java.awt.event.ActionListener;
 /**/
 public class MainMenuView extends View {
     // PROVISIONAL
-    CtrlDomainUser CDU = new CtrlDomainUser();
+    //CtrlDomainUser CDU = new CtrlDomainUser();
 
     private final JPanel panel = new JPanel();
 
@@ -22,10 +21,7 @@ public class MainMenuView extends View {
     private final JButton bRegister = new JButton("Registrarse");
     private final JButton bRanking  = new JButton("Consultar rankings");
     private final JButton bSalir  = new JButton("Salir");
-
     private RankingView rankingView;
-
-
     private final CtrlPresentation ctrlPresentation;
 
     public MainMenuView(CtrlPresentation cp) {
@@ -80,9 +76,7 @@ public class MainMenuView extends View {
                 String usr = username.getText();
                 String pwd = password.getText();
                 if (result == JOptionPane.OK_OPTION) {
-                    if (CDU.isUserExist(usr) && CDU.isPasswordCorrect(usr, pwd)) {
-                        CDU.loginUser(usr);
-
+                    if (ctrlPresentation.loginUser(usr,pwd)) {
                         // Move to next view
                         ctrlPresentation.mainViewToPlayOptionView();
                     }
@@ -113,20 +107,14 @@ public class MainMenuView extends View {
                 String usr = username.getText();
                 String pwd = password.getText();
                 if (result == JOptionPane.OK_OPTION) {
-                    if (CDU.isUserExist(usr)) {
+                    if (ctrlPresentation.isUserExist(usr)) {
                         JOptionPane.showMessageDialog(null, "Username already in use");
                     }
                     else if (pwd.isEmpty()) {
                         JOptionPane.showMessageDialog(null, "Password can't be empty");
                     }
                     else {
-                        // Register
-                        CDU.addUser(usr, pwd);
-                        JOptionPane.showMessageDialog(null, "User registered!");
-                        CDU.loginUser(usr);
-
-                        // Move to next view
-                        ctrlPresentation.mainViewToPlayOptionView();
+                        if (ctrlPresentation.registerUser(usr, pwd)) JOptionPane.showMessageDialog(null, "User registered!");
                     }
                 }
             }

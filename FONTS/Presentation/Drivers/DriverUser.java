@@ -1,7 +1,7 @@
 /**
  * @author Javier Parcerisas
  */
-package Presentation;
+package Presentation.Drivers;
 
 import Domain.Controllers.CtrlDomainUser;
 import Domain.User;

@@ -61,4 +61,16 @@ public class CtrlPresentation {
     public int getKenkenSize() {
         return ctrlDomain.getKenkenSize();
     }
+
+    public boolean loginUser(String username, String password) {
+        return ctrlDomain.loginUser(username,password);
+    }
+
+    public boolean isUserExist(String username) {
+        return ctrlDomain.isUserExist(username);
+    }
+
+    public boolean registerUser(String username, String password) {
+        return ctrlDomain.registerUser(username,password);
+    }
 }

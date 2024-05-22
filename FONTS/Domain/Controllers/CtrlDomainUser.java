@@ -38,9 +38,6 @@ public class CtrlDomainUser {
     }
 
     public boolean addUser(String username, String password) {
-        if (isUserExist(username)) {
-            return false;
-        }
         users.put(username,new User(username,password));
         return ctrlUserFile.writeNewUserToFile(username,password);
     }

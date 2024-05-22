@@ -15,83 +15,87 @@ import java.util.HashSet;
 import java.util.PriorityQueue;
 
 public class CtrlDomain {
-    private final CtrlDomainUser CDU;
-    private final CtrlDomainKenken CDK;
+    private final CtrlDomainUser ctrlDomainUser;
+    private final CtrlDomainKenken ctrlDomainKenken;
 
     public CtrlDomain() {
-        CDU = new CtrlDomainUser();
-        CDK = new CtrlDomainKenken();
+        ctrlDomainUser = new CtrlDomainUser();
+        ctrlDomainKenken = new CtrlDomainKenken();
     }
 
     public boolean loginUser(String username, String password) {
-        if(!CDU.isUserExist(username)) return false;
-        if(!CDU.isPasswordCorrect(username,password)) return false;
-        CDU.loginUser(username);
+        if(!ctrlDomainUser.isUserExist(username)) return false;
+        if(!ctrlDomainUser.isPasswordCorrect(username,password)) return false;
+        ctrlDomainUser.loginUser(username);
         return true;
     }
 
     public boolean registerUser(String username, String password) {
-        return CDU.addUser(username,password);
+        return ctrlDomainUser.addUser(username,password);
     }
 
     //Para pasar el mapa a la capa de presentación
     public PriorityQueue<PlayerScore> getRanking() {
-        return CDU.getRanking();
+        return ctrlDomainUser.getRanking();
     }
 
     public boolean importKenkenByFile(String fileName) {
-        return CDK.solveKenkenByFile(fileName);
+        return ctrlDomainKenken.solveKenkenByFile(fileName);
     }
     public boolean importKenkenByFile(File file) {
-        return CDK.solveKenkenByFile(file);
+        return ctrlDomainKenken.solveKenkenByFile(file);
     }
 
     public boolean generateKenkenByDifficulty(int size, HashSet<Operation> operations, TypeDifficulty diff) {
-        return CDK.generateKenkenByDifficulty(size,operations,diff);
+        return ctrlDomainKenken.generateKenkenByDifficulty(size,operations,diff);
     }
 
     public boolean currentGameExist() {
-        return CDK.hasCurrentGame();
+        return ctrlDomainKenken.hasCurrentGame();
     }
 
     public ArrayList<KenkenCage> printRegions() {
-        return CDK.getCages();
+        return ctrlDomainKenken.getCages();
     }
 
     public KenkenCell[][] printSolution() {
-        return CDK.getSolution();
+        return ctrlDomainKenken.getSolution();
     }
 
     public int[][] printBoard() {
-        return CDK.getBoard();
+        return ctrlDomainKenken.getBoard();
     }
 
     public boolean insertNumberBoard(int a, int b, int v) {
-        return CDK.insertNumberBoard(a,b,v);
+        return ctrlDomainKenken.insertNumberBoard(a,b,v);
     }
 
     public boolean deleteNumberBoard(int a, int b) {
-        return CDK.deleteNumberBoard(a,b);
+        return ctrlDomainKenken.deleteNumberBoard(a,b);
     }
 
     public void incrHints() {
-        CDK.incrHintsCurrGame();
+        ctrlDomainKenken.incrHintsCurrGame();
     }
 
     public int checkBoard() {
-        return CDK.check();
+        return ctrlDomainKenken.check();
     }
 
     public void resetBoard() {
-        CDK.resetBoard();
+        ctrlDomainKenken.resetBoard();
     }
 
 
     public boolean newMaxPoint(int newMaxPoint) {
-        return CDU.updateMaxPointCurrUser(newMaxPoint);
+        return ctrlDomainUser.updateMaxPointCurrUser(newMaxPoint);
     }
 
     public int getKenkenSize() {
-        return CDK.getCurrentGameSize();
+        return ctrlDomainKenken.getCurrentGameSize();
+    }
+
+    public boolean isUserExist(String username) {
+        return ctrlDomainUser.isUserExist(username);
     }
 }

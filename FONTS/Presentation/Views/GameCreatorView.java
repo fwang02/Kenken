@@ -2,35 +2,34 @@ package Presentation.Views;
 
 import Presentation.CtrlPresentation;
 import Presentation.DrawCell;
+import Presentation.DrawLayout;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class GameCreatorView extends View {
     private CtrlPresentation ctrlPresentation;
+    final DrawLayout panel;
 
-    /*public void paint(Graphics g) {
-        Graphics2D g2D = (Graphics2D) g;
-        Stroke s = new BasicStroke();
-        g2D.set
-
-        g.drawRect(50, 50, 30, 30);
-    }*/
     public GameCreatorView(CtrlPresentation cp) {
         // Window
-        setBounds(500, 300, 500, 300);
+        setBounds(0, 0, 500, 300);
         setResizable(false);
-        setLayout(null);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Ensure the window can be closed
         setTitle("Kenken PROP");
+        getContentPane().setLayout(new BorderLayout());
 
         ctrlPresentation = cp;
 
-        JPanel cell = new JPanel();
-        cell.setBackground(Color.WHITE);
+        //Draw KenKen
+        int size = 6; // example
+        panel = new DrawLayout(size);
 
+        add(panel, BorderLayout.CENTER);
 
-        add(cell);
-
+        JPanel p2 = new JPanel();
+        add(p2, BorderLayout.EAST);
+        p2.setPreferredSize(new Dimension(200, 300));
     }
 
 }

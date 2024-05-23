@@ -7,6 +7,8 @@ import Presentation.Views.GameView;
 import Presentation.Views.PlayOptionView;
 import Presentation.Views.MainMenuView;
 
+import javax.swing.border.AbstractBorder;
+import java.awt.*;
 import java.io.File;
 import java.util.PriorityQueue;
 
@@ -34,7 +36,7 @@ public class CtrlPresentation {
     public void initPresentation() {
         mainMenuView.makeVisible();
         //gameView.makeVisible();
-        //gameCreatorView.makeVisible();
+        gameCreatorView.makeVisible();
     }
 
     public void mainViewToPlayOptionView() {
@@ -72,5 +74,77 @@ public class CtrlPresentation {
 
     public boolean registerUser(String username, String password) {
         return ctrlDomain.registerUser(username,password);
+    }
+
+    public static class CustomBorder extends AbstractBorder {
+        private final Color topColor;
+        private final Color leftColor;
+        private final Color bottomColor;
+        private final Color rightColor;
+        private final int topWidth;
+        private final int leftWidth;
+        private final int bottomWidth;
+        private final int rightWidth;
+
+        public CustomBorder(Color topColor, int topWidth,
+                            Color leftColor, int leftWidth,
+                            Color bottomColor, int bottomWidth,
+                            Color rightColor, int rightWidth) {
+            this.topColor = topColor;
+            this.topWidth = topWidth;
+            this.leftColor = leftColor;
+            this.leftWidth = leftWidth;
+            this.bottomColor = bottomColor;
+            this.bottomWidth = bottomWidth;
+            this.rightColor = rightColor;
+            this.rightWidth = rightWidth;
+        }
+
+        @Override
+        public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+            Graphics2D g2 = (Graphics2D) g;
+
+            // Draw top border
+            if (topColor != null) {
+                g2.setColor(topColor);
+                g2.setStroke(new BasicStroke(topWidth));
+                g2.drawLine(x, y, x + width - 1, y);
+            }
+
+            // Draw left border
+            if (leftColor != null) {
+                g2.setColor(leftColor);
+                g2.setStroke(new BasicStroke(leftWidth));
+                g2.drawLine(x, y, x, y + height - 1);
+            }
+
+            // Draw bottom border
+            if (bottomColor != null) {
+                g2.setColor(bottomColor);
+                g2.setStroke(new BasicStroke(bottomWidth));
+                g2.drawLine(x, y + height - 1, x + width - 1, y + height - 1);
+            }
+
+            // Draw right border
+            if (rightColor != null) {
+                g2.setColor(rightColor);
+                g2.setStroke(new BasicStroke(rightWidth));
+                g2.drawLine(x + width - 1, y, x + width - 1, y + height - 1);
+            }
+        }
+
+        @Override
+        public Insets getBorderInsets(Component c) {
+            return new Insets(topWidth, leftWidth, bottomWidth, rightWidth);
+        }
+
+        @Override
+        public Insets getBorderInsets(Component c, Insets insets) {
+            insets.top = topWidth;
+            insets.left = leftWidth;
+            insets.bottom = bottomWidth;
+            insets.right = rightWidth;
+            return insets;
+        }
     }
 }

@@ -14,22 +14,22 @@ JUNIT_TESTS =	./JUnit/*.java
 
 
 jarKenken:
-	javac -d $(CLASS_OUTPUT) $(CLASS_INPUT) ./Presentation/DriverKenken.java
-	jar cvmf ./Presentation/Kenken.mf $(JAR_OUTPUT)DriverKenken.jar -C $(CLASS_OUTPUT) .
+	javac -d $(CLASS_OUTPUT) $(CLASS_INPUT) ./Presentation/Drivers/DriverKenken.java
+	jar cvmf ./Presentation/Drivers/Kenken.mf $(JAR_OUTPUT)DriverKenken.jar -C $(CLASS_OUTPUT) .
 	
 jarUser:
-	javac -d $(CLASS_OUTPUT) $(CLASS_INPUT) ./Presentation/DriverUser.java
-	jar cvmf ./Presentation/User.mf $(JAR_OUTPUT)DriverUser.jar -C $(CLASS_OUTPUT) .
+	javac -d $(CLASS_OUTPUT) $(CLASS_INPUT) ./Presentation/Drivers/DriverUser.java
+	jar cvmf ./Presentation/Drivers/User.mf $(JAR_OUTPUT)DriverUser.jar -C $(CLASS_OUTPUT) .
 
 jarDomini:
-	javac -d $(CLASS_OUTPUT) $(CLASS_INPUT) ./Presentation/Driver.java
-	jar cvmf ./Presentation/Driver.mf $(JAR_OUTPUT)Driver.jar -C $(CLASS_OUTPUT) .
+	javac -d $(CLASS_OUTPUT) $(CLASS_INPUT) ./Presentation/Drivers/Driver.java
+	jar cvmf ./Presentation/Drivers/Driver.mf $(JAR_OUTPUT)Driver.jar -C $(CLASS_OUTPUT) .
 
 jars: 
-	javac -d $(CLASS_OUTPUT) $(CLASS_INPUT) ./Presentation/DriverKenken.java ./Presentation/DriverUser.java ./Presentation/Driver.java
-	jar cvmf ./Presentation/Kenken.mf $(JAR_OUTPUT)DriverKenken.jar -C $(CLASS_OUTPUT) .
-	jar cvmf ./Presentation/User.mf $(JAR_OUTPUT)DriverUser.jar -C $(CLASS_OUTPUT) .
-	jar cvmf ./Presentation/Driver.mf $(JAR_OUTPUT)Driver.jar -C $(CLASS_OUTPUT) .
+	javac -d $(CLASS_OUTPUT) $(CLASS_INPUT) ./Presentation/Drivers/DriverKenken.java ./Presentation/Drivers/DriverUser.java ./Presentation/Drivers/Driver.java
+	jar cvmf ./Presentation/Drivers/Kenken.mf $(JAR_OUTPUT)DriverKenken.jar -C $(CLASS_OUTPUT) .
+	jar cvmf ./Presentation/Drivers/User.mf $(JAR_OUTPUT)DriverUser.jar -C $(CLASS_OUTPUT) .
+	jar cvmf ./Presentation/Drivers/Driver.mf $(JAR_OUTPUT)Driver.jar -C $(CLASS_OUTPUT) .
 
 
 main:

@@ -95,6 +95,17 @@ public class CtrlDomain {
         return ctrlDomainKenken.getCurrentGameSize();
     }
 
+    /*public int[][] getKenkenCells() {
+        int s = getKenkenSize();
+        int[][] cells = new int[s][s];
+
+        for (int i = 0; i < s; ++i) {
+            for (int j = 0; j < s; ++j) {
+                cells[i][j] = ctrlDomainKenken.getDomainCells()
+            }
+        }
+    }*/
+
     public boolean isUserExist(String username) {
         return ctrlDomainUser.isUserExist(username);
     }

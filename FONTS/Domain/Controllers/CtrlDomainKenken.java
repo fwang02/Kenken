@@ -204,4 +204,5 @@ public class CtrlDomainKenken {
 	public int getCurrentGameSize() {
 		return currentGame != null ? currentGame.getSize() : 0;
 	}
+
 }

@@ -30,6 +30,18 @@ public class GameCreatorView extends View {
         JPanel p2 = new JPanel();
         add(p2, BorderLayout.EAST);
         p2.setPreferredSize(new Dimension(200, 300));
+        JTextArea txt = new JTextArea(          "Select area with mouse\n" +
+                                                "Use keyboard to input numbers\n" +
+                                                "Use 0 or backspace to delete numbers\n" +
+                                                "Use space to add a cage\n\n" + "Kenken Name:");
+        txt.setAutoscrolls(true);
+        txt.setEditable(false);
+        txt.setBackground(null);
+        txt.setFont(new Font(Font.DIALOG, Font.PLAIN, 10));
+        p2.add(txt);
+
+        JTextField name = new JTextField(10);
+        p2.add(name);
     }
 
 }

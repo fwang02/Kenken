@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 
 public class DrawLayout extends JPanel {
-    private int size;
     DrawCell[][] cells;
 
 
@@ -12,7 +11,6 @@ public class DrawLayout extends JPanel {
         super(new GridLayout(size, size));
 
         cells = new DrawCell[size][size];
-        //cells[0][0].setSize(size);
         for (int i = 0; i < size; ++i) {
             for (int j = 0; j < size; ++j) {
                 cells[i][j] = new DrawCell(i, j);
@@ -27,8 +25,6 @@ public class DrawLayout extends JPanel {
             }
         }
         cells[0][0].setSize(size);
-
-        this.size = size;
     }
 
 }

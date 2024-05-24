@@ -5,7 +5,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
 import javax.swing.*;
 
@@ -24,6 +24,7 @@ public class DrawCell extends JPanel {
     private int y;      // Y position in game.
     private JLabel mainLabel;
     private JLabel smallLabel;
+    private Cage cage;
 
 
 
@@ -96,7 +97,19 @@ public class DrawCell extends JPanel {
                     setBackground(Color.YELLOW);
                     selected = true;
                     leftClickHeld = true;
+
+                    if (hasCage() && e.getClickCount() == 2) {
+                        // select all cells in cage
+                        for (DrawCell c : cage.getCells()) {
+                            c.setBackground(Color.YELLOW);
+                            c.selected = true;
+                        }
+                        cage.cageConfig();
+                    }
                 }
+
+                // If the user is in another field and clicks the editor regains focus
+                requestFocus();
             }
 
             @Override
@@ -122,7 +135,7 @@ public class DrawCell extends JPanel {
                     setNumberInAllYellowCells(0); // set to blank
                 }
                 else if (keyChar == ' ') { //Enter
-                    setCage();
+                    createCage();
                 }
 
             }
@@ -151,8 +164,8 @@ public class DrawCell extends JPanel {
         mainLabel.setText(number > 0 ? number + "" : "");
     }
 
-    public void setOp(String op, int res) {
-        smallLabel.setText(op + res);
+    public void setOp(String op) {
+        smallLabel.setText(op);
     }
 
     /**
@@ -168,51 +181,71 @@ public class DrawCell extends JPanel {
         }
     }
 
+
+    public void setCage(Cage c) {
+        cage = c;
+    }
     /**
      * Sets the borders of selected cells to create a cage.
      */
-    public static void setCage() {
-        System.out.println("SET CAGE");
+    public static void createCage() {
+        // Check it's valid
+        for (DrawCell cell : allCells) {
 
-        DrawCell opCell = findTopLeftCell();
+            if (cell.selected) {
+                if (cell.hasCage()) {
+                    JOptionPane.showMessageDialog(null, "Cell already in a cage.");
+                    return;
+                }
+            }
+        }
+        //DFS to check the cells are connected
+        if (!areYellowCellsConnected()) {
+            JOptionPane.showMessageDialog(null, "Cells are not connected.");
+            return;
+        }
+        // Draw cage
+        Cage cage = new Cage();
+        cage.setOpCell(findTopLeftCell());
 
         for (DrawCell cell : allCells) {
             if (cell.selected) {
-                if (cell == opCell) {
-                    cell.smallLabel.setText("+0");
-                }
-                else {
-                    cell.smallLabel.setText("");
-                }
-                boolean top = true;
-                boolean bottom = true;
-                boolean left = true;
-                boolean right = true;
+                cage.addCell(cell);
 
-                for (DrawCell neighbor : allCells) {
-                    if (neighbor.selected) {
-                        if (neighbor.x == cell.x && neighbor.y == cell.y - 1) {
-                            left = false;
-                        }
-                        if (neighbor.x == cell.x && neighbor.y == cell.y + 1) {
-                            right = false;
-                        }
-                        if (neighbor.x == cell.x - 1 && neighbor.y == cell.y) {
-                            top = false;
-                        }
-                        if (neighbor.x == cell.x + 1 && neighbor.y == cell.y) {
-                            bottom = false;
-                        }
-                    }
-                }
-
-                CustomBorder border = new CustomBorder( top ? Color.BLACK : Color.LIGHT_GRAY, top ? 3 : 0,
-                                                        left ? Color.BLACK : Color.LIGHT_GRAY, left ? 3 : 0,
-                                                        bottom ? Color.BLACK : Color.LIGHT_GRAY, bottom ? 3 : 0,
-                                                        right ? Color.BLACK : Color.LIGHT_GRAY, right ? 3 : 0);
+                CustomBorder border = getCustomBorder(cell);
                 cell.setBorder(border);
             }
         }
+        cage.cageConfig();
+    }
+
+    private static CustomBorder getCustomBorder(DrawCell cell) {
+        boolean top = true;
+        boolean bottom = true;
+        boolean left = true;
+        boolean right = true;
+
+        for (DrawCell neighbor : allCells) {
+            if (neighbor.selected) {
+                if (neighbor.x == cell.x && neighbor.y == cell.y - 1) {
+                    left = false;
+                }
+                if (neighbor.x == cell.x && neighbor.y == cell.y + 1) {
+                    right = false;
+                }
+                if (neighbor.x == cell.x - 1 && neighbor.y == cell.y) {
+                    top = false;
+                }
+                if (neighbor.x == cell.x + 1 && neighbor.y == cell.y) {
+                    bottom = false;
+                }
+            }
+        }
+
+        return new CustomBorder( top ? Color.BLACK : Color.LIGHT_GRAY, top ? 3 : 0,
+                                                left ? Color.BLACK : Color.LIGHT_GRAY, left ? 3 : 0,
+                                                bottom ? Color.BLACK : Color.LIGHT_GRAY, bottom ? 3 : 0,
+                                                right ? Color.BLACK : Color.LIGHT_GRAY, right ? 3 : 0);
     }
 
     private static DrawCell findTopLeftCell() {
@@ -253,5 +286,70 @@ public class DrawCell extends JPanel {
      */
     public int getPosY() {
         return y;
+    }
+
+    public static boolean areYellowCellsConnected() {
+        Set<DrawCell> visited = new HashSet<>();
+        DrawCell startCell = null;
+
+        // Find the starting cell (any yellow cell)
+        for (DrawCell cell : allCells) {
+            if (cell.selected) {
+                startCell = cell;
+                break;
+            }
+        }
+
+        if (startCell == null) {
+            // No yellow cells found
+            return true;
+        }
+
+        // Use a stack for DFS
+        Stack<DrawCell> stack = new Stack<>();
+        stack.push(startCell);
+
+        while (!stack.isEmpty()) {
+            DrawCell current = stack.pop();
+            if (!visited.contains(current)) {
+                visited.add(current);
+
+                // Check neighbors
+                for (DrawCell neighbor : getYellowNeighbors(current)) {
+                    if (!visited.contains(neighbor)) {
+                        stack.push(neighbor);
+                    }
+                }
+            }
+        }
+
+        // Check if all yellow cells are visited
+        for (DrawCell cell : allCells) {
+            if (cell.selected && !visited.contains(cell)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // Helper method to get yellow neighbors
+    private static List<DrawCell> getYellowNeighbors(DrawCell cell) {
+        List<DrawCell> neighbors = new ArrayList<>();
+
+        for (DrawCell neighbor : allCells) {
+            if (neighbor.selected) {
+                if ((neighbor.x == cell.x && (neighbor.y == cell.y - 1 || neighbor.y == cell.y + 1)) ||
+                        (neighbor.y == cell.y && (neighbor.x == cell.x - 1 || neighbor.x == cell.x + 1))) {
+                    neighbors.add(neighbor);
+                }
+            }
+        }
+
+        return neighbors;
+    }
+
+    private boolean hasCage() {
+        return cage != null;
     }
 }

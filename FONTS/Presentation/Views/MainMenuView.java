@@ -82,7 +82,7 @@ public class MainMenuView extends View {
                         ctrlPresentation.mainViewToPlayOptionView();
                     }
                     else {
-                        JOptionPane.showMessageDialog(null, "Incorrect user or password");
+                        JOptionPane.showMessageDialog(null, "Incorrect user or password","Error", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             }
@@ -109,10 +109,10 @@ public class MainMenuView extends View {
                 String pwd = password.getText();
                 if (result == JOptionPane.OK_OPTION) {
                     if (ctrlPresentation.isUserExist(usr)) {
-                        JOptionPane.showMessageDialog(null, "Username already in use");
+                        JOptionPane.showMessageDialog(null, "Username already in use","Error", JOptionPane.ERROR_MESSAGE);
                     }
                     else if (pwd.isEmpty()) {
-                        JOptionPane.showMessageDialog(null, "Password can't be empty");
+                        JOptionPane.showMessageDialog(null, "Password can't be empty","Error", JOptionPane.ERROR_MESSAGE);
                     }
                     else {
                         if (ctrlPresentation.registerUser(usr, pwd)) JOptionPane.showMessageDialog(null, "User registered!");

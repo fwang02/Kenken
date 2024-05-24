@@ -22,7 +22,7 @@ public class GameCreatorView extends View {
         ctrlPresentation = cp;
 
         //Draw KenKen
-        int size = 6; // example
+        int size = 5; // example
         panel = new DrawLayout(size);
 
         add(panel, BorderLayout.CENTER);
@@ -33,7 +33,8 @@ public class GameCreatorView extends View {
         JTextArea txt = new JTextArea(          "Select area with mouse\n" +
                                                 "Use keyboard to input numbers\n" +
                                                 "Use 0 or backspace to delete numbers\n" +
-                                                "Use space to add a cage\n\n" + "Kenken Name:");
+                                                "Use spacebar to add a cage\n" +
+                                                "Double click on a cage to edit\n\n" + "Kenken Name:");
         txt.setAutoscrolls(true);
         txt.setEditable(false);
         txt.setBackground(null);
@@ -42,6 +43,11 @@ public class GameCreatorView extends View {
 
         JTextField name = new JTextField(10);
         p2.add(name);
+
+        JButton play = new JButton("Play");
+        p2.add(play);
+        JButton save = new JButton("Save");
+        p2.add(save);
     }
 
 }

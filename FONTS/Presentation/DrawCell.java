@@ -99,6 +99,7 @@ public class DrawCell extends JPanel {
                     leftClickHeld = true;
 
                     if (hasCage() && e.getClickCount() == 2) {
+                        leftClickHeld = false;
                         // select all cells in cage
                         for (DrawCell c : cage.getCells()) {
                             c.setBackground(Color.YELLOW);

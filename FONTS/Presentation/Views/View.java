@@ -1,13 +1,11 @@
 package Presentation.Views;
 
 import javax.swing.*;
-import javax.swing.plaf.FontUIResource;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 
 /**
 * Class to define common attributes within views
+ * @author Romeu Esteve
  */
 public class View extends JFrame {
     private final ImageIcon icon = new ImageIcon("../DATA/resource/kenkenicon.png");
@@ -26,6 +24,7 @@ public class View extends JFrame {
         // Set logo in all views
         setIconImage(icon.getImage());
         setUIFont (new javax.swing.plaf.FontUIResource("Corbel", 1, 14));
+        setTitle("Kenken PROP");
     }
 
     public void makeVisible() {

@@ -34,7 +34,7 @@ public class GameView extends View {
         gbc.fill = GridBagConstraints.NONE;
         gbc.weightx = 1.0;
         gbc.weighty = 1.0;
-        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.insets = new Insets(5, 5, 5, 5);
 
         //Un filtro para que solo se puede poner valores permitidos
         DocumentFilter filter = new DocumentFilter() {

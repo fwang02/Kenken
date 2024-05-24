@@ -1,7 +1,6 @@
 package Presentation.Views;
 
 import Presentation.CtrlPresentation;
-import Presentation.DrawCell;
 import Presentation.DrawLayout;
 
 import javax.swing.*;
@@ -16,7 +15,7 @@ public class GameCreatorView extends View {
         setBounds(0, 0, 500, 300);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Ensure the window can be closed
-        setTitle("Kenken PROP");
+        //setTitle("Kenken PROP");
         getContentPane().setLayout(new BorderLayout());
 
         ctrlPresentation = cp;

@@ -1,7 +1,6 @@
 package Presentation.Views;
 
 import Presentation.CtrlPresentation;
-import Presentation.DrawCell;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -10,9 +9,6 @@ import java.awt.event.ActionListener;
 
 /**/
 public class MainMenuView extends View {
-    // PROVISIONAL
-    //CtrlDomainUser CDU = new CtrlDomainUser();
-
     private final JPanel panel = new JPanel();
 
     private final JLabel title = new JLabel("Kenken PROP");

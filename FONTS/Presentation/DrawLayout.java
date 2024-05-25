@@ -6,7 +6,7 @@ import java.awt.*;
 public class DrawLayout extends JPanel {
     DrawCell[][] cells;
 
-
+    // Constructora para panel editable
     public DrawLayout (int size) {
         super(new GridLayout(size, size));
 
@@ -27,4 +27,21 @@ public class DrawLayout extends JPanel {
         cells[0][0].setSize(size);
     }
 
+    // Constructora para panel jugable
+    public DrawLayout(String file) {
+
+    }
+
+    public DrawCell[][] getCells() {
+        return cells;
+    }
+
+    /*public <String, int> a() {
+
+    }*/
+
+    public String convertGridToString() {
+        //System.out.print(DrawCell.convertGridToString());
+        return DrawCell.convertGridToString();
+    }
 }

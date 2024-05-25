@@ -109,4 +109,8 @@ public class CtrlDomain {
     public boolean isUserExist(String username) {
         return ctrlDomainUser.isUserExist(username);
     }
+
+    /*public boolean isKenkenFileValid(String path) {
+
+    }*/
 }

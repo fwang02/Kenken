@@ -17,13 +17,14 @@ import javax.swing.*;
 public class DrawCell extends JPanel {
     private static boolean leftClickHeld = false;
     private boolean selected = false;
-    private static List<DrawCell> allCells = new ArrayList<DrawCell>();
+    private static final List<DrawCell> allCells = new ArrayList<>();
 
     private static int size;
-    private int x;      // X position in game.
-    private int y;      // Y position in game.
-    private JLabel mainLabel;
-    private JLabel smallLabel;
+    //private static int cages = 0;
+    private final int x;      // X position in game.
+    private final int y;      // Y position in game.
+    private final JLabel mainLabel;
+    private final JLabel smallLabel;
     private Cage cage;
 
 
@@ -115,8 +116,6 @@ public class DrawCell extends JPanel {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                //setBackground(Color.WHITE); // Reset color when mouse is released
-                //setLeftClickHeld(false);
                 if (SwingUtilities.isLeftMouseButton(e)) {
                     leftClickHeld = false;
                 }
@@ -128,7 +127,6 @@ public class DrawCell extends JPanel {
             @Override
             public void keyTyped(KeyEvent e) {
                 char keyChar = e.getKeyChar();
-                int keyCode = e.getKeyCode();
                 if (Character.isDigit(keyChar) && keyChar - '0' <= size) {
                     setNumberInAllYellowCells(Character.getNumericValue(keyChar));
                 }
@@ -267,8 +265,8 @@ public class DrawCell extends JPanel {
         return topLeftCell;
     }
 
-    public void setSize(int size) {
-        this.size = size;
+    public void setSize(int s) {
+        size = s;
     }
 
     /**
@@ -352,5 +350,38 @@ public class DrawCell extends JPanel {
 
     private boolean hasCage() {
         return cage != null;
+    }
+
+    static String convertGridToString() {
+        List<Cage> allCages = new ArrayList<>();
+        for (DrawCell c : allCells) {
+            if (c.cage == null) continue; // POSAR Q SALTI ERROR
+            if (!allCages.contains(c.cage)) allCages.add(c.cage);
+        }
+
+        StringBuilder sb = new StringBuilder();
+        int cagesCount = allCages.size();
+
+        sb.append(size).append(" ").append(cagesCount).append("\n");
+
+        // Iterate over regions
+        for (Cage c : allCages) {
+            int operation = c.getOperatorAsNum();
+            int result = c.getResult();
+            int elementCount = c.countCells();
+            sb.append(operation).append(" ").append(result).append(" ").append(elementCount).append(" ");
+
+            for (DrawCell cell : c.getCells()) {
+                sb.append(cell.getPosX() + 1).append(" ").append(cell.getPosY() + 1);
+                String content = cell.mainLabel.getText();
+                if (!content.isEmpty()) {
+                    sb.append(" [").append(content).append("]");
+                }
+                sb.append(" ");
+            }
+            sb.append("\n");
+        }
+
+        return sb.toString();
     }
 }

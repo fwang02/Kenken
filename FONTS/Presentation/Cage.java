@@ -27,7 +27,6 @@ public class Cage {
     public Cage() {
         this.cells = new ArrayList<>();
         initButtons();
-        //cageConfig();
     }
 
     private void initButtons() {
@@ -137,6 +136,25 @@ public class Cage {
         return operator;
     }
 
+    public int getOperatorAsNum() {
+        switch (operator) {
+            case "+":
+                return 1;
+            case "-":
+                return 2;
+            case "*":
+                return 3;
+            case "/":
+                return 4;
+            case "%":
+                return 5;
+            case "^":
+                return 6;
+        }
+        return 0;
+    }
+
+
     public int getResult() {
         return number;
     }
@@ -152,4 +170,6 @@ public class Cage {
     public void setOpCell(DrawCell opCell) {
         this.opCell = opCell;
     }
+
+    public int countCells() {return cells.size();}
 }

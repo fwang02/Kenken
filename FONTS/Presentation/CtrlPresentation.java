@@ -1,6 +1,7 @@
 package Presentation;
 
 import Domain.Controllers.CtrlDomain;
+import Domain.Controllers.CtrlDomainKenken;
 import Domain.PlayerScore;
 import Presentation.Views.GameCreatorView;
 import Presentation.Views.GameView;
@@ -9,7 +10,10 @@ import Presentation.Views.MainMenuView;
 
 import javax.swing.border.AbstractBorder;
 import java.awt.*;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.PriorityQueue;
 
 /**
@@ -17,7 +21,7 @@ import java.util.PriorityQueue;
  */
 public class CtrlPresentation {
 
-    private CtrlDomain ctrlDomain;
+    private static CtrlDomain ctrlDomain;
     private MainMenuView mainMenuView;
     private PlayOptionView playOptionView;
     private GameView gameView;
@@ -32,6 +36,31 @@ public class CtrlPresentation {
         gameView = new GameView(this);
         gameCreatorView = new GameCreatorView(this);
     }
+
+    // TO DO: PASSAR FUNCIONALITAT A CAPA DOMINI
+    public static void saveGridToFile(String fileName, String gridString) {
+        File savedKenken = new File("../DATA/" + fileName + ".txt");
+
+        try {
+            if (!savedKenken.exists()) {
+                savedKenken.createNewFile();
+            }
+            BufferedWriter writer = new BufferedWriter(new FileWriter(savedKenken));
+            writer.write(gridString);
+            writer.close();
+
+            // Validar kenken
+            if (ctrlDomain.importKenkenByFile(savedKenken)) {
+                System.out.println("KENKEN VALIDO");
+            }
+            else {
+                System.out.println("KENKEN NO VALIDO");
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     public void initPresentation() {
         mainMenuView.makeVisible();
@@ -78,6 +107,10 @@ public class CtrlPresentation {
 
     /*public getKenken() {
         return ctrlDomain.getKenken();
+    }*/
+
+    /*public boolean checkKenken() {
+
     }*/
 
 }

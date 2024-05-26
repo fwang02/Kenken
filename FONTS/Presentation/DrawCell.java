@@ -7,6 +7,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.*;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.*;
 
 /**
@@ -16,6 +18,8 @@ import javax.swing.*;
  */
 public class DrawCell extends JPanel {
     private static boolean leftClickHeld = false;
+
+    private static boolean playing;
     private boolean selected = false;
     private static final List<DrawCell> allCells = new ArrayList<>();
 
@@ -99,7 +103,7 @@ public class DrawCell extends JPanel {
                     selected = true;
                     leftClickHeld = true;
 
-                    if (hasCage() && e.getClickCount() == 2) {
+                    if (!playing && hasCage() && e.getClickCount() == 2) {
                         leftClickHeld = false;
                         // select all cells in cage
                         for (DrawCell c : cage.getCells()) {
@@ -133,8 +137,8 @@ public class DrawCell extends JPanel {
                 else if (keyChar == '\b') { //Backspace
                     setNumberInAllYellowCells(0); // set to blank
                 }
-                else if (keyChar == ' ') { //Enter
-                    createCage();
+                else if (!playing && keyChar == ' ') { //Spacebar
+                    createCage(0, 0);
                 }
 
             }
@@ -143,7 +147,7 @@ public class DrawCell extends JPanel {
         setFocusable(true);
     }
 
-    public static void resetYellowCells() {
+    private static void resetYellowCells() {
         for (DrawCell c : allCells) {
             if (c.selected) {
                 c.setBackground(Color.WHITE);
@@ -175,7 +179,9 @@ public class DrawCell extends JPanel {
     public static void setNumberInAllYellowCells(int number) {
         for (DrawCell cell : allCells) {
             if (cell.selected) {
-                cell.mainLabel.setText(number > 0 ? number + "" : "");
+                // Skip black cells if in playing mode
+                if (playing && cell.mainLabel.getForeground() == Color.BLACK && cell.mainLabel.getText() != "") continue;
+                cell.setNumber(number, playing);
             }
         }
     }
@@ -187,7 +193,7 @@ public class DrawCell extends JPanel {
     /**
      * Sets the borders of selected cells to create a cage.
      */
-    public static void createCage() {
+    public static void createCage(int op, int res) {
         // Check it's valid
         for (DrawCell cell : allCells) {
 
@@ -215,7 +221,10 @@ public class DrawCell extends JPanel {
                 cell.setBorder(border);
             }
         }
-        cage.cageConfig();
+        if (op == 0) cage.cageConfig();
+        else {
+            cage.setCage(op, res);
+        }
     }
 
     private static CustomBorder getCustomBorder(DrawCell cell) {
@@ -265,7 +274,7 @@ public class DrawCell extends JPanel {
         return topLeftCell;
     }
 
-    public void setSize(int s) {
+    public static void setSize(int s) {
         size = s;
     }
 
@@ -287,7 +296,7 @@ public class DrawCell extends JPanel {
         return y;
     }
 
-    public static boolean areYellowCellsConnected() {
+    private static boolean areYellowCellsConnected() {
         Set<DrawCell> visited = new HashSet<>();
         DrawCell startCell = null;
 
@@ -352,7 +361,7 @@ public class DrawCell extends JPanel {
         return cage != null;
     }
 
-    static String convertGridToString() {
+    public static String convertGridToString() {
         List<Cage> allCages = new ArrayList<>();
         for (DrawCell c : allCells) {
             if (c.cage == null) continue; // POSAR Q SALTI ERROR
@@ -383,5 +392,17 @@ public class DrawCell extends JPanel {
         }
 
         return sb.toString();
+    }
+
+     public static void setPlaying(boolean b) {
+        playing = b;
+        System.out.println(playing);
+    }
+
+    public static void selectCells(DrawCell[] cells) {
+        resetYellowCells();
+        for (DrawCell c : cells) {
+            c.selected = true;
+        }
     }
 }

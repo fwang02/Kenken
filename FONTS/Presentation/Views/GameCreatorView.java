@@ -12,6 +12,24 @@ public class GameCreatorView extends View {
     private final CtrlPresentation ctrlPresentation;
     final DrawLayout panel;
 
+    final String exampleKenken = "6 15\n" +
+            "1 11 2 1 1 2 1\n" +
+            "4 2 2 1 2 1 3\n" +
+            "3 20 2 1 4 2 4\n" +
+            "3 6 4 1 5 1 6 2 6 3 6\n" +
+            "2 3 2 2 2 2 3\n" +
+            "4 3 2 2 5 3 5\n" +
+            "3 240 4 3 1 3 2 4 1 4 2\n" +
+            "3 6 2 3 3 3 4\n" +
+            "3 6 2 4 3 5 3\n" +
+            "1 7 3 4 4 5 4 5 5\n" +
+            "3 30 2 4 5 4 6\n" +
+            "3 6 2 5 1 5 2\n" +
+            "1 9 2 5 6 6 6\n" +
+            "1 8 3 6 1 6 2 6 3\n" +
+            "4 2 2 6 4 6 5\n" +
+            "5 6 3 4 1 2 6 1 4 5 2 3 4 5 2 3 6 1 3 4 1 2 5 6 2 3 6 1 4 5 1 2 5 6 3 4\n";
+
     public GameCreatorView(CtrlPresentation cp) {
         // Window
         setBounds(0, 0, 500, 300);
@@ -22,8 +40,10 @@ public class GameCreatorView extends View {
         ctrlPresentation = cp;
 
         //Draw KenKen
-        int size = 5; // example
-        panel = new DrawLayout(size);
+        /*int size = 5; // example
+        panel = new DrawLayout(size);*/
+
+        panel = new DrawLayout(exampleKenken);
 
         add(panel, BorderLayout.CENTER);
 
@@ -82,7 +102,7 @@ public class GameCreatorView extends View {
             return;
         }
 
-        CtrlPresentation.saveGridToFile(gameName, panel.convertGridToString());
+        //CtrlPresentation.saveGridToFile(gameName, panel.convertGridToString());
 
         //System.out.println("Save button clicked with name: " + gameName);
         // You can add more logic here to save the game

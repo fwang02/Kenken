@@ -172,4 +172,12 @@ public class Cage {
     }
 
     public int countCells() {return cells.size();}
+
+    public void setCage(int op, int res) {
+        String[] operators = {"+", "-", "*", "/", "%", "^"};
+        operator = operators[op - 1];
+        number = res;
+
+        opCell.setOp(operator + number);
+    }
 }

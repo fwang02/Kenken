@@ -25,6 +25,8 @@ public class View extends JFrame {
         setIconImage(icon.getImage());
         setUIFont (new javax.swing.plaf.FontUIResource("Corbel", 1, 14));
         setTitle("Kenken PROP");
+
+        setBounds(0, 0, 500, 300);
     }
 
     public void makeVisible() {

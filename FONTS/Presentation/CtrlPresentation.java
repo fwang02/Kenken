@@ -25,7 +25,7 @@ public class CtrlPresentation {
     private GameView gameView;
     private GameCreatorView gameCreatorView;
 
-    public CtrlPresentation (){
+    public CtrlPresentation () {
         ctrlDomain = new CtrlDomain();
         mainMenuView = new MainMenuView(this);
         playOptionView = new PlayOptionView(this);
@@ -58,6 +58,11 @@ public class CtrlPresentation {
         }
     }
      */
+
+    /*public static String getCurrentGame() {
+        // Returns path of current game
+        return ctrlDomain.getCurrentGame();
+    }*/
 
 
     public void initPresentation() {

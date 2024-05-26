@@ -3,6 +3,7 @@ package Presentation.Views;
 import Presentation.CtrlPresentation;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -18,7 +19,10 @@ public class MainMenuView extends View {
     private final JButton bRegister = new JButton("Registrarse");
     private final JButton bRanking  = new JButton("Consultar rankings");
     private final JButton bSalir  = new JButton("Salir");
-    private RankingView rankingView;
+    private JButton bExitRanking = new JButton("Salir");
+    private RankingPanel rankingPanel;
+    private JPanel pExitRanking = new JPanel(new FlowLayout());
+
     private final CtrlPresentation ctrlPresentation;
 
     public MainMenuView(CtrlPresentation cp) {
@@ -27,28 +31,24 @@ public class MainMenuView extends View {
         setBounds(500, 300, 500, 300);
         setResizable(false);
         setTitle("Kenken PROP");
+        setLayout(new BorderLayout());
 
         // Title window
         title.setBounds(10, 5, 120, 30);
-        add(title);
 
         // Iniciar sesión button
         bLogin.setBounds(150, 50, 200, 20);
-        add(bLogin);
 
         // Registrarse button
         bRegister.setBounds(150, 90, 200, 20);
-        add(bRegister);
 
         // Ranking button
         bRanking.setBounds(150, 130, 200, 20);
-        add(bRanking);
 
         // Exit button
         bSalir.setBounds(150, 235, 200, 20);
-        add(bSalir);
 
-        add(panel);
+        addCompLogMenu();
 
         //setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -105,13 +105,13 @@ public class MainMenuView extends View {
                 String pwd = password.getText();
                 if (result == JOptionPane.OK_OPTION) {
                     if (ctrlPresentation.isUserExist(usr)) {
-                        JOptionPane.showMessageDialog(null, "Username already in use","Error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "El nombre del usuario ya existe","Error", JOptionPane.ERROR_MESSAGE);
                     }
                     else if (pwd.isEmpty()) {
-                        JOptionPane.showMessageDialog(null, "Password can't be empty","Error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "La contraseña no puede ser vacía","Error", JOptionPane.ERROR_MESSAGE);
                     }
                     else {
-                        if (ctrlPresentation.registerUser(usr, pwd)) JOptionPane.showMessageDialog(null, "User registered!");
+                        if (ctrlPresentation.registerUser(usr, pwd)) JOptionPane.showMessageDialog(null, "¡Se ha registrado con éxito!");
                     }
                 }
             }
@@ -120,11 +120,29 @@ public class MainMenuView extends View {
         ActionListener Ranking = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (rankingView == null) rankingView = new RankingView();
-                else {
-                    rankingView.dispose();
-                    rankingView = new RankingView();
-                }
+                rankingPanel = new RankingPanel(ctrlPresentation);
+                remove(title);
+                remove(bLogin);
+                remove(bRanking);
+                remove(bRegister);
+                remove(bSalir);
+                remove(panel);
+                pExitRanking.add(bExitRanking);
+                add(rankingPanel,BorderLayout.CENTER);
+                add(pExitRanking,BorderLayout.SOUTH);
+                revalidate();
+                repaint();
+            }
+        };
+
+        ActionListener ExitRanking = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                remove(rankingPanel);
+                remove(pExitRanking);
+                addCompLogMenu();
+                revalidate();
+                repaint();
             }
         };
 
@@ -139,6 +157,16 @@ public class MainMenuView extends View {
         bLogin.addActionListener(Login);
         bRegister.addActionListener(Register);
         bSalir.addActionListener(Salir);
+        bExitRanking.addActionListener(ExitRanking);
+    }
+
+    private void addCompLogMenu() {
+        add(title);
+        add(bLogin);
+        add(bRegister);
+        add(bRanking);
+        add(bSalir);
+        add(panel);
     }
 
 }

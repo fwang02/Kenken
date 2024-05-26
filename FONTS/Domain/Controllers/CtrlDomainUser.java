@@ -114,4 +114,8 @@ public class CtrlDomainUser {
             return false;
         }
     }
+
+    public void logoutCurrentUser() {
+        loggedUser = null;
+    }
 }

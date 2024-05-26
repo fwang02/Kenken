@@ -39,10 +39,10 @@ public class CtrlDomain {
         return ctrlDomainUser.getRanking();
     }
 
-    public boolean importKenkenByFile(String fileName) {
+    public boolean openKenkenByFile(String fileName) {
         return ctrlDomainKenken.solveKenkenByFile(fileName);
     }
-    public boolean importKenkenByFile(File file) {
+    public boolean openKenkenByFile(File file) {
         return ctrlDomainKenken.solveKenkenByFile(file);
     }
 
@@ -110,7 +110,11 @@ public class CtrlDomain {
         return ctrlDomainUser.isUserExist(username);
     }
 
-    /*public boolean isKenkenFileValid(String path) {
+    public String getLoggedUserName() {
+        return ctrlDomainUser.getLoggedUser().getUsername();
+    }
 
-    }*/
+    public void logoutCurrentUser() {
+        ctrlDomainUser.logoutCurrentUser();
+    }
 }

@@ -1,6 +1,3 @@
-/**
- * @author Javier Parcerisas Nisa
- */
 package Domain.Controllers;
 
 import Domain.*;
@@ -12,6 +9,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 //import java.util.Scanner;
 
+/**
+ * @author Javier Parcerisas
+ */
 public class CtrlDomainKenken {
 	private Kenken currentGame;
 	private KenkenCell[][] cells;
@@ -183,7 +183,7 @@ public class CtrlDomainKenken {
     	return currentGame.getPoints();
     }
 
-    // Geters y seters
+    // Getters y setters
 
     public KenkenCell getNewKenkenCell(int x, int y, int val, boolean state) {
     	return (new KenkenCell(x,y,val,state));

@@ -3,19 +3,18 @@
  */
 package Persistence;
 
+import Domain.*;
+import Domain.Operation.*;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.*;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-
-import Domain.*;
-import Domain.Operation.*;
-
+/**
+ * @author Javier Parcerisas
+ */
 public class CtrlKenkenFile {
     private static final CtrlKenkenFile CTRL_KENKEN_FILE = new CtrlKenkenFile();
     private Kenken currentGame;
@@ -51,53 +50,62 @@ public class CtrlKenkenFile {
 	}
 
     private Kenken getKenkenByFile(Scanner scanner) {
-		int size = scanner.nextInt();
-		if (size > 9 || size < 3) {
-			System.out.println("El tamaño indicado en el fichero es incorrecto, debe ser 3-9");
+		int size;
+		KenkenCell[][] cells;
+		HashSet<Operation> opSet;
+		ArrayList<KenkenCage> cages;
+
+		try {
+			size = scanner.nextInt();
+			if (size > 9 || size < 3) {
+				return null;
+			}
+			int numCage = scanner.nextInt();
+			if (numCage > size * size) return null;
+
+			cells = new KenkenCell[size][size];
+
+			scanner.nextLine();
+			opSet = new HashSet<>();
+			cages = new ArrayList<>(numCage);
+
+			int count = 0;
+			while (scanner.hasNextLine() && count < numCage) {
+				String line = scanner.nextLine();
+				String[] numStr = line.split("\\s+");
+
+				Operation op = getOperation(Integer.parseInt(numStr[0]));
+				opSet.add(op);
+
+				int result = Integer.parseInt(numStr[1]);
+				int numCells = Integer.parseInt(numStr[2]);
+				Pos[] posCells = new Pos[numCells];
+
+				int offset = 3;
+				for (int i = 0; i < numCells; i++) {
+					int posX = Integer.parseInt(numStr[offset + 2 * i]) - 1;
+					int posY = Integer.parseInt(numStr[offset + 1 + 2 * i]) - 1;
+
+					// cell with [number]
+					if ((offset + 2 + 2 * i < numStr.length) && numStr[offset + 2 + 2 * i].startsWith("[")) {
+						String str = numStr[offset + 2 + 2 * i];
+						int val = Integer.parseInt(str.substring(1, str.length() - 1));
+
+						cells[posX][posY] = new KenkenCell(posX, posY, val, true);
+						System.out.println("pos " + posX + " " + posY + ": " + val);
+						offset++;
+					} else cells[posX][posY] = new KenkenCell(posX, posY, 0, false);
+
+					posCells[i] = new Pos(posX, posY);
+				}
+
+				cages.add(new KenkenCage(op, result, posCells));
+				++count;
+			}
+			scanner.close();
+		} catch (Exception e) {
 			return null;
 		}
-		int numCage = scanner.nextInt();
-
-		KenkenCell[][] cells = new KenkenCell[size][size];
-
-		scanner.nextLine();
-		HashSet<Operation> opSet = new HashSet<>();
-		ArrayList<KenkenCage> cages = new ArrayList<>(numCage);
-
-		int count = 0;
-		while (scanner.hasNextLine() && count < numCage) {
-			String line = scanner.nextLine();
-			String[] numStr = line.split("\\s+");
-
-			Operation op = getOperation(Integer.parseInt(numStr[0]));
-			opSet.add(op);
-
-			int result = Integer.parseInt(numStr[1]);
-			int numCells = Integer.parseInt(numStr[2]);
-			Pos[] posCells = new Pos[numCells];
-
-			int offset = 3;
-			for (int i = 0; i < numCells; i++) {
-				int posX = Integer.parseInt(numStr[offset + 2 * i]) - 1;
-				int posY = Integer.parseInt(numStr[offset + 1 + 2 * i]) - 1;
-
-				// cell with [number]
-				if ((offset + 2 + 2 * i < numStr.length) && numStr[offset + 2 + 2 * i].startsWith("[")) {
-					String str = numStr[offset + 2 + 2 * i];
-					int val = Integer.parseInt(str.substring(1, str.length() - 1));
-
-					cells[posX][posY] = new KenkenCell(posX, posY, val, true);
-					System.out.println("pos " + posX + " " + posY + ": " + val);
-					offset++;
-				} else cells[posX][posY] = new KenkenCell(posX, posY, 0, false);
-
-				posCells[i] = new Pos(posX, posY);
-			}
-
-			cages.add(new KenkenCage(op, result, posCells));
-			++count;
-		}
-		scanner.close();
 
 		return new Kenken(size, opSet, TypeDifficulty.EXPERT, cages, cells);
 	}

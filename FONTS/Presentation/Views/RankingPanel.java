@@ -7,17 +7,14 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.util.PriorityQueue;
 
-public class RankingView extends View {
+public class RankingPanel extends JPanel {
     private JTable rankingTable;
     private CtrlPresentation ctrlPresentation;
 
-    public RankingView() {
-        // Create a new JFrame to represent the ranking view
-        ctrlPresentation = new CtrlPresentation();
-        setTitle("Ranking");
-        setSize(500, 500);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
+    public RankingPanel(CtrlPresentation ctrlPresentation) {
+        this.ctrlPresentation = ctrlPresentation;
+        //setPreferredSize(new Dimension(500, 500));
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         DefaultTableModel tableModel = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {

@@ -347,7 +347,7 @@ public class Driver {
                     case "2":
                         System.out.println("Escribe el nombre del fichero:");
                         String fileName = sc.nextLine();
-                        boolean imported = CD.importKenkenByFile(fileName);
+                        boolean imported = CD.openKenkenByFile(fileName);
                         if (!imported) {
                             System.out.println("No se ha podido encontrar el fichero o el fichero no existe");
                             break;
@@ -359,7 +359,7 @@ public class Driver {
                         System.out.println("Kenken disponibles: ");
                         System.out.println("BASICOS: basico3x3 - basico4x4 - basico5x5 - basico6x6 - basico7x7 - basico8x8 - basico9x9");
                         String name = sc.nextLine();
-                        if(CD.importKenkenByFile(name)) {
+                        if(CD.openKenkenByFile(name)) {
                             System.out.println("KENKEN GENERADO, YA PUEDES JUGAR");
                             gameCreationPage = false;
                             playOption = true;

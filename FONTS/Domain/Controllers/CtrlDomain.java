@@ -111,7 +111,7 @@ public class CtrlDomain {
     }
 
     public String getLoggedUserName() {
-        return ctrlDomainUser.getLoggedUser().getUsername();
+        return ctrlDomainUser.getLoggedUser();
     }
 
     public void logoutCurrentUser() {

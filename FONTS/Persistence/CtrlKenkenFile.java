@@ -92,7 +92,6 @@ public class CtrlKenkenFile {
 						int val = Integer.parseInt(str.substring(1, str.length() - 1));
 
 						cells[posX][posY] = new KenkenCell(posX, posY, val, true);
-						System.out.println("pos " + posX + " " + posY + ": " + val);
 						offset++;
 					} else cells[posX][posY] = new KenkenCell(posX, posY, 0, false);
 

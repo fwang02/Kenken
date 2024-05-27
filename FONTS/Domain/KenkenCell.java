@@ -23,7 +23,6 @@ public class KenkenCell {
 
     public void setValue(int val) {
         valor = val;
-        //System.out.println(val);
     }
 
     public int getValue() {

@@ -14,7 +14,7 @@ public class CtrlDomainUser {
     private final CtrlUserFile ctrlUserFile;
     private final HashMap<String, User> users;
     private final PriorityQueue<PlayerScore> ranking;
-    private static User loggedUser;
+    private String loggedUser;
 
     public CtrlDomainUser() {
         ctrlUserFile = CtrlUserFile.getInstance();
@@ -39,6 +39,7 @@ public class CtrlDomainUser {
 
     public boolean addUser(String username, String password) {
         users.put(username,new User(username,password));
+        ranking.add(new PlayerScore(username,0));
         return ctrlUserFile.writeNewUserToFile(username,password);
     }
 
@@ -50,8 +51,12 @@ public class CtrlDomainUser {
         return Objects.equals(u.getPassword(), password);
     }
 
+    /**
+     *
+     * @param username Nombre usuario
+     */
     public void loginUser(String username) {
-        loggedUser = getUser(username);
+        loggedUser = username;
     }
 
     public boolean isUserExist(String username) {
@@ -62,7 +67,9 @@ public class CtrlDomainUser {
         return users.get(username);
     }
 
-    public User getLoggedUser() {return loggedUser;}
+    public String getLoggedUser() {
+        return loggedUser;
+    }
 
     public HashMap<String,User> getAllUsers() {
         return users;
@@ -74,14 +81,13 @@ public class CtrlDomainUser {
     }
 
     public boolean updateMaxPointCurrUser(int newMaxPoint) {
-        String username = loggedUser.getUsername();
-        if(loggedUser.getMaxPoint() > newMaxPoint) {
+        if(users.get(loggedUser).getMaxPoint() > newMaxPoint) {
             return false;
         }
-        ranking.removeIf(playerScore -> playerScore.getName().equals(username));
-        ranking.add(new PlayerScore(username,newMaxPoint));
+        ranking.removeIf(playerScore -> playerScore.getName().equals(loggedUser));
+        ranking.add(new PlayerScore(loggedUser,newMaxPoint));
 
-        users.get(username).setMaxPoint(newMaxPoint);
+        users.get(loggedUser).setMaxPoint(newMaxPoint);
         return true;
     }
 

@@ -8,8 +8,4 @@ public class Pos {
         posX = x;
         posY = y;
     }
-
-    public void print() {
-        System.out.println("X:"+posX+" Y:"+posY);
-    }
 }

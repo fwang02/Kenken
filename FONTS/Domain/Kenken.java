@@ -14,8 +14,6 @@ public class Kenken {
     private final String name;
     private final TypeDifficulty dificult;
     private final HashSet<Operation> operations;
-    private final int numberCages;
-    private final int numberIndCells;
     private final ArrayList<KenkenCage> cages;
     private KenkenCell[][] cells;
     private int[][] board;
@@ -28,8 +26,6 @@ public class Kenken {
         this.name = null;
         this.dificult = TypeDifficulty.EASY;
         this.operations = new HashSet<>();
-        this.numberCages = 0;
-        this.numberIndCells = 0;
         this.cages = new ArrayList<>();
         iniCells();
         this.solved = false;
@@ -43,8 +39,6 @@ public class Kenken {
         this.name = k.getName();
         this.dificult = k.getDificult();
         this.operations = k.getOperations();
-        this.numberCages = k.numberCages;
-        this.numberIndCells = k.numberIndCells;
         this.cages = new ArrayList<>(k.getAllCages());
         iniCells();
         this.board = new int[this.size][this.size];
@@ -57,8 +51,6 @@ public class Kenken {
         this.name = null;
         this.dificult = dificult;
         this.operations = operations;
-        this.numberCages = 0;
-        this.numberIndCells = 0;
         this.cages = new ArrayList<>();
         iniCells();
         this.board = new int[this.size][this.size];
@@ -71,8 +63,6 @@ public class Kenken {
         this.name = null;
         this.dificult = dificult;
         this.operations = operations;
-        this.numberCages = 0;
-        this.numberIndCells = 0;
         this.cages = cages;
         this.cells = cells;
         this.board = new int[this.size][this.size];
@@ -85,8 +75,6 @@ public class Kenken {
         this.name = null;
         this.dificult = dificult;
         this.operations = operations;
-        this.numberCages = 0;
-        this.numberIndCells = 0;
         this.cages = cages;
         this.cells = cells;
         this.board = board;
@@ -109,14 +97,6 @@ public class Kenken {
         return operations;
     }
 
-    /*
-    public int getNumberCages() {
-        return numberCages;
-    }*/
-
-    public int getNumberIndCells() {
-        return numberIndCells;
-    }
 
     public KenkenCell[][] getAllCells() {
         return cells;

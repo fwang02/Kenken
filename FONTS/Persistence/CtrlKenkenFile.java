@@ -111,10 +111,10 @@ public class CtrlKenkenFile {
 	}
 
 	// PARA GUARDAR UNA PARTIDA
-	public boolean saveKenkenGame(Kenken kenken) {
+	public boolean saveKenkenGame(Kenken kenken, String  UserFileName) {
 		try {
-			File savedGame = new File("../DATA/GAME.txt");
-			FileWriter myWriter = new FileWriter("../DATA/GAME.txt");
+			File savedGame = new File("../DATA/" + UserFileName + ".txt");
+			FileWriter myWriter = new FileWriter("../DATA/" + UserFileName + ".txt");
 
 			int size = kenken.getSize();
 			int ncages = kenken.getNumberCages();

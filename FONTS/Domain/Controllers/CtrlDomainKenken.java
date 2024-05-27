@@ -109,21 +109,13 @@ public class CtrlDomainKenken {
 	}
 
 	public boolean saveKenken() {
-		CKF.saveKenkenGame(currentGame);
-		return true;
+		if(CKF.saveKenkenGame(currentGame, "cacatua")) return true;
+		else return false;
 	}
 
 	public boolean continueKenken(String fileName) {
 		Kenken kenken = CKF.loadKenkenByFile(fileName);
 		if(kenken == null) return false;
-		//KenkenConfig kenkenConfig = new KenkenConfig(kenken);
-		/*if(kenkenConfig.solveKenken()) {
-			currentGame = kenken;
-			return true;
-		}
-		else {
-			return false;
-		}*/
 		else {
 			currentGame = kenken;
 			return true;
@@ -133,13 +125,9 @@ public class CtrlDomainKenken {
 	public boolean continueKenken(File file) {
 		Kenken kenken = CKF.loadKenkenByFile(file);
 		if(kenken == null) return false;
-		KenkenConfig kenkenConfig = new KenkenConfig(kenken);
-		if(kenkenConfig.solveKenken()) {
+		else {
 			currentGame = kenken;
 			return true;
-		}
-		else {
-			return false;
 		}
 	}
 

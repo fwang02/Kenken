@@ -133,7 +133,8 @@ public class DriverKenken {
             return;
         }
         else {
-            CDK.saveKenken();
+            if(CDK.saveKenken()) System.out.println("KENKEN GUARDADO");
+            else System.out.println("NO SE HA PODIDO GUARDAR EL KENKEN");
         }
     }
     private static void continueKenken() {

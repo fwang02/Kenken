@@ -22,10 +22,6 @@ public class GameCreatorView extends View {
 
         ctrlPresentation = cp;
 
-        //Draw KenKen
-        /*int size = 5; // example
-        panel = new DrawLayout(size);*/
-
         JPanel p2 = new JPanel(new BorderLayout());
         add(p2, BorderLayout.EAST);
         p2.setPreferredSize(new Dimension(200, 300));
@@ -98,14 +94,6 @@ public class GameCreatorView extends View {
 
         // Checks it's valid
         if (CtrlPresentation.isValid());
-        // Save
-        CtrlPresentation.saveGridToFile(gameName, panel.convertGridToString());
-        //CtrlPresentation.setCurrentGame(panel.convertGridToString());
-
-        //System.out.println("Save button clicked with name: " + gameName);
-        // You can add more logic here to save the game
-        //ctrlPresentation.checkKenken(panel.getCells());
-        //ctrlPresentation.saveGame(gameName, panel.getKenKenGrid());
     }
 
     private void onExitButtonClicked() {
@@ -130,9 +118,9 @@ public class GameCreatorView extends View {
 
             if (gameName != null && !gameName.trim().isEmpty()) {
                 if (CtrlPresentation.isValid()) {
-                    CtrlPresentation.saveGridToFile(gameName, panel.convertGridToString());
+                    //CtrlPresentation.saveGridToFile(gameName, panel.convertGridToString());
                     JOptionPane.showMessageDialog(this, "Game saved successfully.", "Save", JOptionPane.INFORMATION_MESSAGE);
-                    ctrlPresentation.gameCreatorViewToMainMenuView();
+                    ctrlPresentation.gameCreatorViewToPlayOptionView();
                 } else {
                     JOptionPane.showMessageDialog(this, "The game is not valid and cannot be saved.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -142,33 +130,8 @@ public class GameCreatorView extends View {
         }
         else {
             remove(panel);
-            ctrlPresentation.gameCreatorViewToMainMenuView();
+            ctrlPresentation.gameCreatorViewToPlayOptionView();
         }
 
-    }
-
-    /**
-     * load kenken from currentGame in Domain layer
-     */
-    private void loadKenken() {
-        int ncages = ctrlPresentation.getNCages();
-        for (int i = 0; i < ncages; ++i) { // i = index de cages de currentGame
-            int[] cellsX = ctrlPresentation.getCageCellsX(i);
-            int[] cellsY = ctrlPresentation.getCageCellsY(i);
-            char op = ctrlPresentation.getCageOp(i);
-            System.out.println(op);
-            int res = ctrlPresentation.getCageRes(i);
-
-            DrawLayout.setCage(cellsX, cellsY, op, res);
-        }
-    }
-
-    public void startPlay() {
-        int size = ctrlPresentation.getKenkenSize();
-        System.out.println("size = " + size);
-        panel = new DrawLayout(size, true);
-        loadKenken();
-
-        add(panel, BorderLayout.CENTER);
     }
 }

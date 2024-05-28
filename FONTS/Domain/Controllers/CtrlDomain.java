@@ -131,7 +131,6 @@ public class CtrlDomain {
     }
 
     public int getNCages() {
-        System.out.println("getNCages = " + ctrlDomainKenken.getCurrentGame().getNumberCages());
         return ctrlDomainKenken.getCurrentGame().getNumberCages();
     }
 

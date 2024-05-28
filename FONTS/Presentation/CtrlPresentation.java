@@ -9,10 +9,7 @@ import Presentation.Views.GameView;
 import Presentation.Views.MainMenuView;
 import Presentation.Views.PlayOptionView;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.PriorityQueue;
 
@@ -36,31 +33,6 @@ public class CtrlPresentation {
         gameCreatorView = new GameCreatorView(this);
     }
 
-
-    // TO DO: PASSAR FUNCIONALITAT A CAPA DOMINI
-    public static void saveGridToFile(String fileName, String gridString) {
-        File savedKenken = new File("../DATA/" + fileName + ".txt");
-
-        try {
-            if (!savedKenken.exists()) {
-                savedKenken.createNewFile();
-            }
-            BufferedWriter writer = new BufferedWriter(new FileWriter(savedKenken));
-            writer.write(gridString);
-            writer.close();
-
-            // Validar kenken
-            if (ctrlDomain.openKenkenByFile(savedKenken)) {
-                System.out.println("KENKEN VALIDO");
-            }
-            else {
-                System.out.println("KENKEN NO VALIDO");
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public static boolean isValid() {
 
         if (ctrlDomain.openKenkenByFile("../DATA/input.txt")) {
@@ -72,19 +44,6 @@ public class CtrlPresentation {
             return false;
         }
     }
-
-    /*public static void setCurrentGame(String content) {
-        CtrlDomain.setCurrentGame(content);
-    }
-
-    public static String getCurrentGame() {
-        return CtrlDomain.getCurrentGame();
-    }*/
-
-    /*public static String getCurrentGame() {
-        // Returns path of current game
-        return ctrlDomain.getCurrentGame();
-    }*/
 
 
     public void initPresentation() {
@@ -109,18 +68,21 @@ public class CtrlPresentation {
 
     public void playOptionViewToGameView() {
         playOptionView.makeInvisible();
-        //gameView.startPlay();
-        //gameView.makeVisible();
-        gameCreatorView.startPlay();
-        gameCreatorView.makeVisible();
+        gameView.startPlay();
+        gameView.makeVisible();
+        //gameCreatorView.startPlay();
+        //gameCreatorView.makeVisible();
 
     }
 
-    public void gameCreatorViewToMainMenuView() {
+    public void gameViewToPlayOptionView() {
+        gameView.makeInvisible();
+        playOptionView.makeVisible();
+    }
+
+    public void gameCreatorViewToPlayOptionView() {
         gameCreatorView.makeInvisible();
         playOptionView.makeVisible();
-        //mainMenuView.makeVisible();
-        //ctrlDomain.logoutCurrentUser();
     }
 
     //Llamadas a la capa dominio
@@ -175,14 +137,4 @@ public class CtrlPresentation {
     public int getCageRes(int index) {
         return ctrlDomain.getCageRes(index);
     }
-
-
-    /*public getKenken() {
-        return ctrlDomain.getKenken();
-    }*/
-
-    /*public boolean checkKenken() {
-
-    }*/
-
 }

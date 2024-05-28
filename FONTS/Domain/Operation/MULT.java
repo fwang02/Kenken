@@ -18,5 +18,8 @@ public class MULT extends Operation {
                 v *= kk.getCell(p).getValue();
         }
         return v;
-	}	
+	}
+
+    @Override
+    public char getChar() {return '*';}
 }

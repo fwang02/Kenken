@@ -10,25 +10,8 @@ import java.awt.event.ActionListener;
 
 public class GameCreatorView extends View {
     private final CtrlPresentation ctrlPresentation;
-    final DrawLayout panel;
+    DrawLayout panel;
 
-    final String exampleKenken = "6 15\n" +
-            "1 11 2 1 1 2 1\n" +
-            "4 2 2 1 2 1 3\n" +
-            "3 20 2 1 4 2 4\n" +
-            "3 6 4 1 5 1 6 2 6 3 6\n" +
-            "2 3 2 2 2 2 3\n" +
-            "4 3 2 2 5 3 5\n" +
-            "3 240 4 3 1 3 2 4 1 4 2\n" +
-            "3 6 2 3 3 3 4\n" +
-            "3 6 2 4 3 5 3\n" +
-            "1 7 3 4 4 5 4 5 5\n" +
-            "3 30 2 4 5 4 6\n" +
-            "3 6 2 5 1 5 2\n" +
-            "1 9 2 5 6 6 6\n" +
-            "1 8 3 6 1 6 2 6 3\n" +
-            "4 2 2 6 4 6 5\n" +
-            "5 6 3 4 1 2 6 1 4 5 2 3 4 5 2 3 6 1 3 4 1 2 5 6 2 3 6 1 4 5 1 2 5 6 3 4\n";
 
     public GameCreatorView(CtrlPresentation cp) {
         // Window
@@ -43,11 +26,7 @@ public class GameCreatorView extends View {
         /*int size = 5; // example
         panel = new DrawLayout(size);*/
 
-        panel = new DrawLayout(exampleKenken);
-
-        add(panel, BorderLayout.CENTER);
-
-        JPanel p2 = new JPanel();
+        JPanel p2 = new JPanel(new BorderLayout());
         add(p2, BorderLayout.EAST);
         p2.setPreferredSize(new Dimension(200, 300));
         JTextArea txt = new JTextArea(
@@ -62,15 +41,23 @@ public class GameCreatorView extends View {
         txt.setEditable(false);
         txt.setBackground(null);
         txt.setFont(new Font(Font.DIALOG, Font.PLAIN, 10));
-        p2.add(txt);
+        p2.add(txt, BorderLayout.NORTH);
+
+        JPanel centerPanel = new JPanel();
+        p2.add(centerPanel, BorderLayout.CENTER);
 
         JTextField name = new JTextField(10);
-        p2.add(name);
+        centerPanel.add(name);
 
         JButton play = new JButton("Play");
-        p2.add(play);
+        centerPanel.add(play);
         JButton save = new JButton("Save");
-        p2.add(save);
+        centerPanel.add(save);
+
+        JButton exit = new JButton("Exit");
+        JPanel southPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        southPanel.add(exit);
+        p2.add(southPanel, BorderLayout.SOUTH);
 
         // Add action listeners for buttons
         play.addActionListener(new ActionListener() {
@@ -84,6 +71,13 @@ public class GameCreatorView extends View {
             @Override
             public void actionPerformed(ActionEvent e) {
                 onSaveButtonClicked(name.getText());
+            }
+        });
+
+        exit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onExitButtonClicked();
             }
         });
     }
@@ -102,11 +96,79 @@ public class GameCreatorView extends View {
             return;
         }
 
-        //CtrlPresentation.saveGridToFile(gameName, panel.convertGridToString());
+        // Checks it's valid
+        if (CtrlPresentation.isValid());
+        // Save
+        CtrlPresentation.saveGridToFile(gameName, panel.convertGridToString());
+        //CtrlPresentation.setCurrentGame(panel.convertGridToString());
 
         //System.out.println("Save button clicked with name: " + gameName);
         // You can add more logic here to save the game
         //ctrlPresentation.checkKenken(panel.getCells());
         //ctrlPresentation.saveGame(gameName, panel.getKenKenGrid());
+    }
+
+    private void onExitButtonClicked() {
+        // Handle exit button click
+        int response = JOptionPane.showConfirmDialog(
+                this,
+                "Do you want to save before exiting?",
+                "Exit",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE
+        );
+
+        // Handle the user's response
+        if (response == JOptionPane.OK_OPTION) {
+            // User chose to save, show save dialog and handle saving
+            String gameName = JOptionPane.showInputDialog(
+                    this,
+                    "Enter the game name to save:",
+                    "Save Game",
+                    JOptionPane.PLAIN_MESSAGE
+            );
+
+            if (gameName != null && !gameName.trim().isEmpty()) {
+                if (CtrlPresentation.isValid()) {
+                    CtrlPresentation.saveGridToFile(gameName, panel.convertGridToString());
+                    JOptionPane.showMessageDialog(this, "Game saved successfully.", "Save", JOptionPane.INFORMATION_MESSAGE);
+                    ctrlPresentation.gameCreatorViewToMainMenuView();
+                } else {
+                    JOptionPane.showMessageDialog(this, "The game is not valid and cannot be saved.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } else if (gameName != null) {
+                JOptionPane.showMessageDialog(this, "The game name cannot be blank.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        else {
+            remove(panel);
+            ctrlPresentation.gameCreatorViewToMainMenuView();
+        }
+
+    }
+
+    /**
+     * load kenken from currentGame in Domain layer
+     */
+    private void loadKenken() {
+        int ncages = ctrlPresentation.getNCages();
+        for (int i = 0; i < ncages; ++i) { // i = index de cages de currentGame
+            int[] cellsX = ctrlPresentation.getCageCellsX(i);
+            int[] cellsY = ctrlPresentation.getCageCellsY(i);
+            char op = ctrlPresentation.getCageOp(i);
+            System.out.println(op);
+            int res = ctrlPresentation.getCageRes(i);
+
+            DrawLayout.setCage(cellsX, cellsY, op, res);
+        }
+    }
+
+    public void startPlay() {
+        int size = ctrlPresentation.getKenkenSize();
+        System.out.println("size = " + size);
+        panel = new DrawLayout(size, true);
+        loadKenken();
+
+        add(panel, BorderLayout.CENTER);
     }
 }

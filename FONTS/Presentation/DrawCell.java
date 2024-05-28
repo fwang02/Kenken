@@ -138,7 +138,7 @@ public class DrawCell extends JPanel {
                     setNumberInAllYellowCells(0); // set to blank
                 }
                 else if (!playing && keyChar == ' ') { //Spacebar
-                    createCage(0, 0);
+                    createCage(' ', 0);
                 }
 
             }
@@ -193,7 +193,7 @@ public class DrawCell extends JPanel {
     /**
      * Sets the borders of selected cells to create a cage.
      */
-    public static void createCage(int op, int res) {
+    public static void createCage(char op, int res) {
         // Check it's valid
         for (DrawCell cell : allCells) {
 
@@ -221,7 +221,7 @@ public class DrawCell extends JPanel {
                 cell.setBorder(border);
             }
         }
-        if (op == 0) cage.cageConfig();
+        if (op == ' ') cage.cageConfig();
         else {
             cage.setCage(op, res);
         }

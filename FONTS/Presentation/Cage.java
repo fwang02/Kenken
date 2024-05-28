@@ -16,9 +16,9 @@ public class Cage {
     static private JRadioButton[] opButtons = new JRadioButton[6];
     private ButtonGroup buttonGroup;
 
-    public Cage(String operator, int result) {
+    public Cage(char operator, int result) {
         this.cells = new ArrayList<>();
-        this.operator = operator;
+        this.operator = String.valueOf(operator);
         this.number = result;
 
         initButtons();
@@ -97,7 +97,7 @@ public class Cage {
             public void actionPerformed(ActionEvent e) {
                 try {
                     number = Integer.parseInt(numberField.getText());
-                    opCell.setOp(operator + number);
+                    opCell.setOp(operator + number + "");
                 } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(panel, "Please enter a valid number.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -116,7 +116,7 @@ public class Cage {
                 }
             }
 
-            opCell.setOp(operator + number);
+            opCell.setOp(operator + number + "");
 
         } else {
             cageErase();
@@ -132,8 +132,8 @@ public class Cage {
         return cells;
     }
 
-    public String getOperator() {
-        return operator;
+    public char getOperator() {
+        return operator.charAt(0);
     }
 
     public int getOperatorAsNum() {
@@ -173,9 +173,8 @@ public class Cage {
 
     public int countCells() {return cells.size();}
 
-    public void setCage(int op, int res) {
-        String[] operators = {"+", "-", "*", "/", "%", "^"};
-        operator = operators[op - 1];
+    public void setCage(char op, int res) {
+        operator = String.valueOf(op);
         number = res;
 
         opCell.setOp(operator + number);

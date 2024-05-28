@@ -213,7 +213,7 @@ public class PlayOptionView extends View {
         playExistButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ctrlPresentation.openKenkenByFile(new File("../DATA/basico3x3.txt"));
+                ctrlPresentation.openKenkenByFile(new File("../DATA/input.txt"));
                 ctrlPresentation.playOptionViewToGameView();
             }
         });

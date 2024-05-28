@@ -12,5 +12,8 @@ public class DIV extends Operation {
         int v2 = kk.getCell(kkc.getPos(1)).getValue();
         if((v1/v2) >= 1 && (v1%v2)==0) {return v1/v2;}
         else {return v2/v1;}
-	}	
+	}
+
+    @Override
+    public char getChar() {return '/';}
 }

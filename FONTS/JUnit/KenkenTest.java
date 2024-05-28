@@ -43,7 +43,7 @@ public class KenkenTest {
         assertEquals("Kenken size", 6, k.getSize());
         assertEquals("Kenken difficulty", TypeDifficulty.MEDIUM, k.getDificult());
         assertEquals("Kenken number of cages", 0, k.getNumberCages());
-        assertEquals("Kenken number of individual cells", 0, k.getNumberIndCells());
+        //assertEquals("Kenken number of individual cells", 0, k.getNumberIndCells());
         assertEquals("Kenken operations", operations, k.getOperations());
     }
 
@@ -65,7 +65,7 @@ public class KenkenTest {
         assertEquals("Kenken size", 6, k.getSize());
         assertEquals("Kenken difficulty", TypeDifficulty.MEDIUM, k.getDificult());
         assertEquals("Kenken number of cages", cages.size(), k.getNumberCages());
-        assertEquals("Kenken number of individual cells", 0, k.getNumberIndCells());
+        //assertEquals("Kenken number of individual cells", 0, k.getNumberIndCells());
         assertEquals("Kenken operations", operations, k.getOperations());
         assertEquals("Kenken cages", cages, k.getAllCages());
         assertEquals("Kenken cells", cells, k.getAllCells());

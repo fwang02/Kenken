@@ -23,6 +23,18 @@ public class CtrlDomain {
         ctrlDomainKenken = new CtrlDomainKenken();
     }
 
+    /*public static void setCurrentGame(String content) {
+        //ctrlDomainKenken.
+
+    }
+
+    public static String getCurrentGame() {
+        //ctrlDomainKenken.getCurrentGame().;
+        File gameFile = "../DATA/GAME.txt";
+
+    }*/
+
+
     public boolean loginUser(String username, String password) {
         if(!ctrlDomainUser.isUserExist(username)) return false;
         if(!ctrlDomainUser.isPasswordCorrect(username,password)) return false;
@@ -116,5 +128,48 @@ public class CtrlDomain {
 
     public void logoutCurrentUser() {
         ctrlDomainUser.logoutCurrentUser();
+    }
+
+    public int getNCages() {
+        System.out.println("getNCages = " + ctrlDomainKenken.getCurrentGame().getNumberCages());
+        return ctrlDomainKenken.getCurrentGame().getNumberCages();
+    }
+
+    public int[] getCageCellsX(int index) {
+        KenkenCage cage = ctrlDomainKenken.getCages().get(index);
+
+        int ncells = cage.getCageSize();
+        int[] cellsX = new int[ncells];
+
+        for (int i = 0; i < ncells; ++i) {
+            cellsX[i] = cage.getPos(i).posX;
+        }
+
+        return cellsX;
+    }
+
+    public int[] getCageCellsY(int index) {
+        KenkenCage cage = ctrlDomainKenken.getCages().get(index);
+
+        int ncells = cage.getCageSize();
+        int[] cellsY = new int[ncells];
+
+        for (int i = 0; i < ncells; ++i) {
+            cellsY[i] = cage.getPos(i).posY;
+        }
+
+        return cellsY;
+    }
+
+    public char getCageOp(int index) {
+        KenkenCage cage = ctrlDomainKenken.getCages().get(index);
+
+        return cage.getOperationAsChar();
+    }
+
+    public int getCageRes(int index) {
+        KenkenCage cage = ctrlDomainKenken.getCages().get(index);
+
+        return cage.getResult();
     }
 }

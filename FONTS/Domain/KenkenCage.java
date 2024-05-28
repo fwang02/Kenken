@@ -58,6 +58,10 @@ public class KenkenCage {
         return operation;
     }
 
+    public char getOperationAsChar() {
+        return operation.getChar();
+    }
+
     public void clearCage(Kenken kk) {
         for(int i = 0; i < getCageSize(); ++i) {
             Pos pos = getPos(i);

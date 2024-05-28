@@ -8,7 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
-/**/
 public class MainMenuView extends View {
     private final JPanel panel = new JPanel();
 

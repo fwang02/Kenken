@@ -17,5 +17,8 @@ public class ADD extends Operation {
             v += kk.getCell(x, y).getValue();
         }
         return v;
-	}	
+	}
+
+    @Override
+    public char getChar() {return '+';}
 }

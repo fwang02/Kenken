@@ -279,35 +279,34 @@ public class KenkenConfig  {
 	}
 
 	// esta funcion es un backtracking que resuelve el kenken importado desde fichero u otros lados
-   private void solveKenkenByCages(KenkenCage cage, int ii) {
-        if (cage.isCageComplete(kenken)) {
-            if (cage.checkValueCage(kenken)) {
-            	++index;
-            	if(index == kenken.getAllCages().size()) filled = true;
-                if(!filled) solveKenkenByCages(kenken.getCage(index), 0);
-                --index; 
-            }
-            else {
-            	Pos pos = cage.getPos(cage.getCageSize()-1);
-            	kenken.getCell(pos).setValue(0);
-            }
-        } 
-        else {
-            for (int i = ii; i < cage.getCageSize(); ++i) {
-                int x = cage.getPos(i).posX;
-                int y = cage.getPos(i).posY;
-                for (int v = 1; v <= kenken.getSize(); ++v) {
-                    if (check(v, x, y)) {
-                        kenken.getCell(x, y).setValue(v);
-                        solveKenkenByCages(cage, i + 1);
-                    }
-                }
+	private void solveKenkenByCages(KenkenCage cage, int ii) {
+		if (cage.isCageComplete(kenken)) {
+			if (cage.checkValueCage(kenken)) {
+				++index;
+				if (index == kenken.getAllCages().size()) filled = true;
+				if (!filled) solveKenkenByCages(kenken.getCage(index), 0);
+				--index;
+			} else {
+				Pos pos = cage.getPos(cage.getCageSize() - 1);
+				kenken.getCell(pos).setValue(0);
+			}
+		} else {
+			for (int i = ii; i < cage.getCageSize(); ++i) {
+				int x = cage.getPos(i).posX;
+				int y = cage.getPos(i).posY;
+				for (int v = 1; v <= kenken.getSize(); ++v) {
+					if (check(v, x, y)) {
+						kenken.getCell(x, y).setValue(v);
+						solveKenkenByCages(cage, i + 1);
+						if (filled) return; // Add this to exit if solution is found
+						kenken.getCell(x, y).setValue(0); // Backtrack
+					}
+				}
+				return; // Return only after all values are tried for current cell
+			}
+		}
+	}
 
-                if(!filled) kenken.getCell(x,y).setValue(0);
-                return;
-            }
-        }
-    }
 
 
 	// GENERAR/RESOLVER UN KENKEN //

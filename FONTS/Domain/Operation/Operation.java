@@ -11,4 +11,6 @@ public abstract class Operation {
 
 	public abstract int checkResult(Kenken kk, KenkenCage kkc);
 
+	public abstract char getChar();
+
 }

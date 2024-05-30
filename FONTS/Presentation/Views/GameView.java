@@ -7,10 +7,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.concurrent.TimeUnit;
 
 public class GameView extends View {
     private CtrlPresentation ctrlPresentation;
     private DrawLayout panel;
+    private JLabel timerLabel;
+    private Timer timer;
+    private long startTime;
 
     public GameView(CtrlPresentation cp) {
         // Window
@@ -38,17 +42,24 @@ public class GameView extends View {
         JPanel centerPanel = new JPanel();
         p2.add(centerPanel, BorderLayout.CENTER);
 
+        // Timer label
+        timerLabel = new JLabel("Time: 00:00:00");
+        timerLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        p2.add(timerLabel, BorderLayout.CENTER);
+
         // South panel to hold the buttons
         JPanel southPanel = new JPanel(new GridLayout(4, 1, 5, 5));
         p2.add(southPanel, BorderLayout.SOUTH);
 
         // Create buttons
+        JButton submitButton = new JButton("Submit");
         JButton saveButton = new JButton("Save");
-        JButton showSolutionButton = new JButton("Show Solution");
+        JButton showSolutionButton = new JButton("Solve");
         JButton hintButton = new JButton("Hint");
         JButton exitButton = new JButton("Exit");
 
         // Add buttons to the south panel
+        southPanel.add(submitButton);
         southPanel.add(saveButton);
         southPanel.add(showSolutionButton);
         southPanel.add(hintButton);
@@ -59,6 +70,13 @@ public class GameView extends View {
             @Override
             public void actionPerformed(ActionEvent e) {
                 onExitButtonClicked();
+            }
+        });
+
+        submitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onSubmitButtonClicked();
             }
         });
 
@@ -82,6 +100,16 @@ public class GameView extends View {
                 onHintButtonClicked();
             }
         });
+
+        // Initialize and start the timer
+        startTime = System.currentTimeMillis();
+        timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateTimer();
+            }
+        });
+        timer.start();
     }
 
     private void onExitButtonClicked() {
@@ -142,6 +170,15 @@ public class GameView extends View {
         }
     }
 
+    private void onSubmitButtonClicked() {
+        // Handle submit button click
+        if (/*ctrlPresentation.()*/true) {
+            JOptionPane.showMessageDialog(this, "Congratulations! The solution is correct.", "Success", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "The solution is incorrect. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
     private void onShowSolutionButtonClicked() {
         // Handle show solution button click
         showSolution();
@@ -185,5 +222,17 @@ public class GameView extends View {
             int y = i % size;
             panel.setCell(x, y, cells[i]);
         }
+    }
+
+    private void updateTimer() {
+        long currentTime = System.currentTimeMillis();
+        long elapsedTime = currentTime - startTime;
+
+        long hours = TimeUnit.MILLISECONDS.toHours(elapsedTime);
+        long minutes = TimeUnit.MILLISECONDS.toMinutes(elapsedTime) % 60;
+        long seconds = TimeUnit.MILLISECONDS.toSeconds(elapsedTime) % 60;
+
+        String timeString = String.format("Time: %02d:%02d:%02d", hours, minutes, seconds);
+        timerLabel.setText(timeString);
     }
 }

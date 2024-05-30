@@ -181,8 +181,8 @@ public class GameView extends View {
         int size = ctrlPresentation.getKenkenSize();
 
         for (int i = 0; i < cells.length; ++i) {
-            int x = i % size;
-            int y = i / size;
+            int x = i / size;
+            int y = i % size;
             panel.setCell(x, y, cells[i]);
         }
     }

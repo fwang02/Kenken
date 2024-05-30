@@ -97,6 +97,10 @@ public class CtrlPresentation {
         return ctrlDomain.openKenkenByFile(file);
     }
 
+    public boolean openKenkenByFile(String fileName) {
+        return ctrlDomain.openKenkenByFile(fileName);
+    }
+
     public int getKenkenSize() {
         return ctrlDomain.getKenkenSize();
     }

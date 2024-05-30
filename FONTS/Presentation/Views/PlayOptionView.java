@@ -46,13 +46,8 @@ public class PlayOptionView extends View {
 
     //componentes para la vista de jugar juegos predefinidos
     private JPanel defaultGamesPanel = new JPanel();
-    private JButton basic3But = new JButton("Básico 3x3");
-    private JButton basic4But = new JButton("Básico 4x4");
-    private JButton basic5But = new JButton("Básico 5x5");
-    private JButton basic6But = new JButton("Básico 6x6");
-    private JButton basic7But = new JButton("Básico 7x7");
-    private JButton basic8But = new JButton("Básico 8x8");
-    private JButton basic9But = new JButton("Básico 9x9");
+    private JButton[] basicGamesB = new JButton[7];
+    private JButton[] specialGamesB = new JButton[2];
     private JButton exitDef = new JButton("Salir");
 
     public PlayOptionView(CtrlPresentation cp) {
@@ -99,6 +94,7 @@ public class PlayOptionView extends View {
 
         textPanel.add(logoutButton,BorderLayout.EAST);
         add(textPanel,BorderLayout.NORTH);
+
     }
 
     private void initButtonsPanel() {
@@ -194,19 +190,31 @@ public class PlayOptionView extends View {
 
     private void initDefaultGamesPanel() {
         defaultGamesPanel.setLayout(new BorderLayout());
+
         JPanel basicPanel = new JPanel(new GridLayout(2,0));
         Border titledBorder = BorderFactory.createTitledBorder("Básicos");
-        defaultGamesPanel.setBorder(titledBorder);
-        basicPanel.add(basic3But);
-        basicPanel.add(basic4But);
-        basicPanel.add(basic5But);
-        basicPanel.add(basic6But);
-        basicPanel.add(basic7But);
-        basicPanel.add(basic8But);
-        basicPanel.add(basic9But);
+        basicPanel.setBorder(titledBorder);
+        String textBut;
+        for(int i = 3; i <= 9; ++i) {
+            textBut = i + " x " + i;
+            basicGamesB[i-3] = new JButton(textBut);
+            basicPanel.add(basicGamesB[i-3]);
+        }
+
+        JPanel specialGamesPanel = new JPanel(new GridLayout());
+        titledBorder = BorderFactory.createTitledBorder("Especiales");
+        specialGamesPanel.setBorder(titledBorder);
+        String[] specialNames = {"Brick Wall", "Cacatua"};
+        for(int i = 0; i < 2; i++) {
+            specialGamesB[i] = new JButton(specialNames[i]);
+            specialGamesPanel.add(specialGamesB[i]);
+        }
+
         JPanel exitPanel = new JPanel(new BorderLayout());
+
         exitPanel.add(exitDef,BorderLayout.EAST);
         defaultGamesPanel.add(basicPanel,BorderLayout.CENTER);
+        defaultGamesPanel.add(specialGamesPanel,BorderLayout.NORTH);
         defaultGamesPanel.add(exitPanel,BorderLayout.SOUTH);
     }
 
@@ -333,7 +341,7 @@ public class PlayOptionView extends View {
                 }
                 System.out.println("Has seleccionado la dificultad: " + diff);
 
-                if(ctrlPresentation.createKenken(size, selectedOp, diff)) {
+                if(ctrlPresentation.createKenken(size,selectedOp, diff)) {
                     int result = JOptionPane.showConfirmDialog(null, "¿Quieres jugarlo ahora?",
                             "Opción de jugar", JOptionPane.OK_CANCEL_OPTION);
                     if (result == JOptionPane.OK_OPTION) {
@@ -348,6 +356,29 @@ public class PlayOptionView extends View {
                 }
             }
         });
+
+        exitDef.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Has clicado el botón "+ ((JButton) e.getSource()).getText());
+                defGamesToPlayOption();
+            }
+        });
+
+        //añadir actionListener para los botones de juegos básicos
+        for(int i = 0; i < 7; ++i) {
+            int finalI = i+3;
+            basicGamesB[i].addActionListener(e -> {
+                System.out.println("Has clicado el botón "+ ((JButton) e.getSource()).getText());
+                String fileName = "/defaultGames/basico"+ finalI + "x" + finalI;
+                if(ctrlPresentation.openKenkenByFile(fileName)) {
+                    ctrlPresentation.playOptionViewToGameView();
+                }
+                else {
+                    JOptionPane.showMessageDialog(null,"El juego no existe","Error de lectura de fichero",JOptionPane.ERROR_MESSAGE);
+                }
+            });
+        }
     }
 
     private void playOptionToCreation() {
@@ -373,6 +404,15 @@ public class PlayOptionView extends View {
         add(defaultGamesPanel);
         revalidate();
         repaint();
+    }
+
+    private void defGamesToPlayOption() {
+        remove(defaultGamesPanel);
+        add(textPanel,BorderLayout.NORTH);
+        add(playOptionPanel,BorderLayout.CENTER);
+        revalidate();
+        repaint();
+
     }
 
     private void resetCreation() {

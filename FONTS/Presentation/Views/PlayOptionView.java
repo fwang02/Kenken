@@ -1,12 +1,11 @@
 package Presentation.Views;
 
-import Domain.Operation.*;
-import Domain.TypeDifficulty;
 import Presentation.CtrlPresentation;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -44,6 +43,18 @@ public class PlayOptionView extends View {
     private JButton bConfirmCreation = new JButton("Confirmar");
     private JButton exitButton = new JButton("Salir");
 
+    //componentes para la vista de jugar juegos predefinidos
+    private JPanel defaultGamesPanel = new JPanel();
+    private JButton basic3But = new JButton("Básico 3x3");
+    private JButton basic4But = new JButton("Básico 4x4");
+    private JButton basic5But = new JButton("Básico 5x5");
+    private JButton basic6But = new JButton("Básico 6x6");
+    private JButton basic7But = new JButton("Básico 7x7");
+    private JButton basic8But = new JButton("Básico 8x8");
+    private JButton basic9But = new JButton("Básico 9x9");
+    private JButton exitDef = new JButton("Salir");
+
+
 
 
     public PlayOptionView(CtrlPresentation cp) {
@@ -60,13 +71,15 @@ public class PlayOptionView extends View {
         initButtonsPanel();
         initCreationPanel();
 
+        initDefaultGamesPanel();
+
         initActionListener();
     }
 
     private void initTextPanel() {
         textPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
         textPanel.setLayout(new BorderLayout());
-        textPanel.add(title,BorderLayout.SOUTH);
+        //textPanel.add(title,BorderLayout.SOUTH);
         textPanel.add(loginWelcome,BorderLayout.WEST);
 
         logoutButton.setForeground(Color.BLUE);
@@ -177,25 +190,40 @@ public class PlayOptionView extends View {
         add(playOptionPanel, BorderLayout.CENTER);
     }
 
+    private void initDefaultGamesPanel() {
+        defaultGamesPanel.setLayout(new BorderLayout());
+        JPanel basicPanel = new JPanel(new GridLayout(2,0));
+        Border titledBorder = BorderFactory.createTitledBorder("Básicos");
+        defaultGamesPanel.setBorder(titledBorder);
+        basicPanel.add(basic3But);
+        basicPanel.add(basic4But);
+        basicPanel.add(basic5But);
+        basicPanel.add(basic6But);
+        basicPanel.add(basic7But);
+        basicPanel.add(basic8But);
+        basicPanel.add(basic9But);
+        JPanel exitPanel = new JPanel(new BorderLayout());
+        exitPanel.add(exitDef,BorderLayout.EAST);
+        defaultGamesPanel.add(basicPanel,BorderLayout.CENTER);
+        defaultGamesPanel.add(exitPanel,BorderLayout.SOUTH);
+
+    }
+
     private void initActionListener() {
         createNewButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                remove(playOptionPanel);
-                remove(textPanel);
-                add(creationPanel);
-                revalidate();
-                repaint();
-
-                //ctrlPresentation.playOptionViewToGameView();
+                System.out.println("Has clicado el botón "+ ((JButton) e.getSource()).getText());
+                playOptionToCreation();
             }
         });
 
         openFileButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                System.out.println("Has clicado el botón "+ ((JButton) e.getSource()).getText());
                 JFileChooser fileChooser = new JFileChooser("../DATA");
-                fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("TXT files", "txt"));
+                fileChooser.setFileFilter(new FileNameExtensionFilter("TXT files", "txt"));
                 int returnValue = fileChooser.showOpenDialog(null);
                 if (returnValue == JFileChooser.APPROVE_OPTION) {
                     File selectedFile = fileChooser.getSelectedFile();
@@ -213,21 +241,23 @@ public class PlayOptionView extends View {
         playExistButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ctrlPresentation.openKenkenByFile(new File("../DATA/input.txt"));
-                ctrlPresentation.playOptionViewToGameView();
+                System.out.println("Has clicado el botón "+ ((JButton) e.getSource()).getText());
+                playOptionToDefGames();
             }
         });
 
         exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                changeToPlayOptionPanel();
+                System.out.println("Has clicado el botón "+ ((JButton) e.getSource()).getText());
+                creationToPlayOption();
             }
         });
 
         logoutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                System.out.println("Has clicado el botón "+ ((JButton) e.getSource()).getText());
                 ctrlPresentation.playOptionViewToMainMenuView();
             }
         });
@@ -235,39 +265,48 @@ public class PlayOptionView extends View {
         bConfirmCreation.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                HashSet<Operation> selectedOp = new HashSet<>();
+                System.out.println("Has clicado el botón "+ ((JButton) e.getSource()).getText());
+                HashSet<String> selectedOp = new HashSet<>();
+
+                System.out.println("Has seleccionado las siguientes operaciones: ");
+
                 for(JCheckBox op : operationSelect) {
                     if(op.isSelected()) {
-                        addOpSet(op, selectedOp);
+                        System.out.println(op.getText());
+                        selectedOp.add(op.getText());
                     }
                 }
+                System.out.println();
+
                 if(selectedOp.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "No has seleccionado ninguna operación", "Error de creación", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
                 int size = (int) sizeSpinner.getValue();
+                System.out.println("Has seleccionado el tamaño: "+size);
 
                 String nameDiff = (String) difficultySelect.getSelectedItem();
                 if (nameDiff == null) {
                     JOptionPane.showMessageDialog(null, "No has seleccionado ninguna dificultad", "Error de creación", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                TypeDifficulty diff = null;
+                String diff = "";
                 switch (nameDiff) {
                     case "Fácil":
-                        diff = TypeDifficulty.EASY;
+                        diff = "EASY";
                         break;
                     case "Medio":
-                        diff = TypeDifficulty.MEDIUM;
+                        diff = "MEDIUM";
                         break;
                     case "Difícil":
-                        diff = TypeDifficulty.HARD;
+                        diff = "HARD";
                         break;
                     case "Experto":
-                        diff = TypeDifficulty.EXPERT;
+                        diff = "EXPERT";
                         break;
                 }
+                System.out.println("Has seleccionado la dificultad: " + diff);
 
                 if(ctrlPresentation.createKenken(size,selectedOp,diff)) {
                     int result = JOptionPane.showConfirmDialog(null, "¿Quieres jugarlo ahora?",
@@ -276,12 +315,11 @@ public class PlayOptionView extends View {
                         ctrlPresentation.playOptionViewToGameView();
                     }
                     else {
-                        changeToPlayOptionPanel();
+                        creationToPlayOption();
                     }
                 }
                 else {
                     JOptionPane.showMessageDialog(null, "Se ha producido algún error", "Error de creación", JOptionPane.ERROR_MESSAGE);
-                    return;
                 }
             }
         });
@@ -289,7 +327,15 @@ public class PlayOptionView extends View {
 
     }
 
-    private void changeToPlayOptionPanel() {
+    private void playOptionToCreation() {
+        remove(playOptionPanel);
+        remove(textPanel);
+        add(creationPanel);
+        revalidate();
+        repaint();
+    }
+
+    private void creationToPlayOption() {
         resetCreation();
         remove(creationPanel);
         add(textPanel,BorderLayout.NORTH);
@@ -298,27 +344,12 @@ public class PlayOptionView extends View {
         repaint();
     }
 
-    private void addOpSet(JCheckBox op, HashSet<Operation> selectedOp) {
-        switch (op.getText()) {
-            case "ADD":
-                selectedOp.add(new ADD());
-                break;
-            case "SUB":
-                selectedOp.add(new SUB());
-                break;
-            case "MULT":
-                selectedOp.add(new MULT());
-                break;
-            case "DIV":
-                selectedOp.add(new DIV());
-                break;
-            case "POW":
-                selectedOp.add(new POW());
-                break;
-            case "MOD":
-                selectedOp.add(new MOD());
-                break;
-        }
+    private void playOptionToDefGames() {
+        remove(playOptionPanel);
+        remove(textPanel);
+        add(defaultGamesPanel);
+        revalidate();
+        repaint();
     }
 
     private void resetCreation() {

@@ -1,9 +1,7 @@
 package Presentation;
 
 import Domain.Controllers.CtrlDomain;
-import Domain.Operation.Operation;
 import Domain.PlayerScore;
-import Domain.TypeDifficulty;
 import Presentation.Views.GameCreatorView;
 import Presentation.Views.GameView;
 import Presentation.Views.MainMenuView;
@@ -28,8 +26,6 @@ public class CtrlPresentation {
     public CtrlPresentation () {
         ctrlDomain = new CtrlDomain();
         mainMenuView = new MainMenuView(this);
-        playOptionView = new PlayOptionView(this);
-        gameView = new GameView(this);
         gameCreatorView = new GameCreatorView(this);
     }
 
@@ -55,6 +51,7 @@ public class CtrlPresentation {
     /////Gestion de vistas
     public void mainViewToPlayOptionView() {
         mainMenuView.makeInvisible();
+        if(playOptionView == null) playOptionView = new PlayOptionView(this);
         playOptionView.makeVisible();
         playOptionView.addLoggedUser();
         //gameView.makeVisible();
@@ -68,6 +65,7 @@ public class CtrlPresentation {
 
     public void playOptionViewToGameView() {
         playOptionView.makeInvisible();
+        if(gameView == null) gameView = new GameView(this);
         gameView.startPlay();
         gameView.makeVisible();
         //gameCreatorView.startPlay();
@@ -114,8 +112,8 @@ public class CtrlPresentation {
         return ctrlDomain.getLoggedUserName();
     }
 
-    public boolean createKenken(int size, HashSet<Operation> operations, TypeDifficulty diff) {
-        return ctrlDomain.generateKenkenByDifficulty(size,operations,diff);
+    public boolean createKenken(int size, HashSet<String> operations, String diff) {
+        return ctrlDomain.generateKenkenFromView(size,operations,diff);
     }
 
     public int getNCages() {

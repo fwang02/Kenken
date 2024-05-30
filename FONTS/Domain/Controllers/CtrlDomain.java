@@ -1,10 +1,8 @@
-/**
- * @author Feiyang Wang
- */
 package Domain.Controllers;
 
 import Domain.KenkenCage;
 import Domain.KenkenCell;
+import Domain.Operation.*;
 import Domain.Operation.Operation;
 import Domain.PlayerScore;
 import Domain.TypeDifficulty;
@@ -14,6 +12,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.PriorityQueue;
 
+/**
+ * @author Feiyang Wang
+ */
 public class CtrlDomain {
     private final CtrlDomainUser ctrlDomainUser;
     private final CtrlDomainKenken ctrlDomainKenken;
@@ -60,6 +61,33 @@ public class CtrlDomain {
 
     public boolean generateKenkenByDifficulty(int size, HashSet<Operation> operations, TypeDifficulty diff) {
         return ctrlDomainKenken.generateKenkenByDifficulty(size,operations,diff);
+    }
+
+    public boolean generateKenkenFromView(int size, HashSet<String> operations, String diff) {
+        HashSet<Operation> opSets = new HashSet<>();
+        for(String op : operations) {
+            switch (op) {
+                case "ADD":
+                    opSets.add(new ADD());
+                    break;
+                case "SUB":
+                    opSets.add(new SUB());
+                    break;
+                case "MULT":
+                    opSets.add(new MULT());
+                    break;
+                case "DIV":
+                    opSets.add(new DIV());
+                    break;
+                case "POW":
+                    opSets.add(new POW());
+                    break;
+                case "MOD":
+                    opSets.add(new MOD());
+                    break;
+            }
+        }
+        return ctrlDomainKenken.generateKenkenByDifficulty(size,opSets,TypeDifficulty.valueOf(diff));
     }
 
     public boolean currentGameExist() {

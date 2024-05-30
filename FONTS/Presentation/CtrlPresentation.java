@@ -63,6 +63,11 @@ public class CtrlPresentation {
         ctrlDomain.logoutCurrentUser();
     }
 
+    public void playOptionViewToGameCreatorView() {
+        playOptionView.makeInvisible();
+        gameCreatorView.makeVisible();
+    }
+
     public void playOptionViewToGameView() {
         playOptionView.makeInvisible();
         if(gameView == null) gameView = new GameView(this);
@@ -134,5 +139,10 @@ public class CtrlPresentation {
 
     public int getCageRes(int index) {
         return ctrlDomain.getCageRes(index);
+    }
+
+
+    public void setGameCreatorSize(int selectedSize) {
+        gameCreatorView.initGameCreator(selectedSize);
     }
 }

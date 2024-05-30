@@ -22,9 +22,10 @@ public class PlayOptionView extends View {
     private CtrlPresentation ctrlPresentation;
     //Componentes de opciones para jugar
     private JPanel playOptionPanel = new JPanel();
-    private JButton createNewButton = new JButton("Crear");
+    private JButton generateNewButton = new JButton("Generar");
     private JButton openFileButton = new JButton("<html>Abrir desde<br>fichero</html>");
     private JButton playExistButton = new JButton("<html>Jugar uno<br>existente</html>");
+    private JButton createButton = new JButton("Crear");
     private JPanel textPanel = new JPanel();
     private JLabel title = new JLabel("Opciones para jugar",SwingConstants.CENTER);
     private JLabel loginWelcome = new JLabel();
@@ -53,9 +54,6 @@ public class PlayOptionView extends View {
     private JButton basic8But = new JButton("Básico 8x8");
     private JButton basic9But = new JButton("Básico 9x9");
     private JButton exitDef = new JButton("Salir");
-
-
-
 
     public PlayOptionView(CtrlPresentation cp) {
         this.ctrlPresentation = cp;
@@ -101,7 +99,6 @@ public class PlayOptionView extends View {
 
         textPanel.add(logoutButton,BorderLayout.EAST);
         add(textPanel,BorderLayout.NORTH);
-
     }
 
     private void initButtonsPanel() {
@@ -126,7 +123,6 @@ public class PlayOptionView extends View {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
     }
 
     private void initOperationPanel() {
@@ -138,7 +134,6 @@ public class PlayOptionView extends View {
             operationSelect[i] = new JCheckBox(operations[i]);
             operationPanel.add(operationSelect[i]);
         }
-
     }
 
     private void initSizePanel() {
@@ -165,10 +160,10 @@ public class PlayOptionView extends View {
     private void initPlayOptionPanel() {
         Dimension buttonSize = new Dimension(100, 100);
 
-        createNewButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        createNewButton.setMinimumSize(buttonSize);
-        createNewButton.setMaximumSize(buttonSize);
-        createNewButton.setPreferredSize(buttonSize);
+        generateNewButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        generateNewButton.setMinimumSize(buttonSize);
+        generateNewButton.setMaximumSize(buttonSize);
+        generateNewButton.setPreferredSize(buttonSize);
 
         openFileButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         openFileButton.setMaximumSize(buttonSize);
@@ -178,14 +173,21 @@ public class PlayOptionView extends View {
         playExistButton.setMaximumSize(buttonSize);
         playExistButton.setPreferredSize(buttonSize);
 
+        createButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        createButton.setMinimumSize(buttonSize);
+        createButton.setMaximumSize(buttonSize);
+        createButton.setPreferredSize(buttonSize);
+
         playOptionPanel.setLayout(new BoxLayout(playOptionPanel,BoxLayout.X_AXIS));
         // Añadir botones a la vista
         playOptionPanel.add(Box.createHorizontalGlue());
-        playOptionPanel.add(createNewButton);
+        playOptionPanel.add(generateNewButton);
         playOptionPanel.add(Box.createHorizontalStrut(10));
         playOptionPanel.add(openFileButton);
         playOptionPanel.add(Box.createHorizontalStrut(10));
         playOptionPanel.add(playExistButton);
+        playOptionPanel.add(Box.createHorizontalStrut(10));
+        playOptionPanel.add(createButton);
         playOptionPanel.add(Box.createHorizontalGlue());
         add(playOptionPanel, BorderLayout.CENTER);
     }
@@ -206,11 +208,10 @@ public class PlayOptionView extends View {
         exitPanel.add(exitDef,BorderLayout.EAST);
         defaultGamesPanel.add(basicPanel,BorderLayout.CENTER);
         defaultGamesPanel.add(exitPanel,BorderLayout.SOUTH);
-
     }
 
     private void initActionListener() {
-        createNewButton.addActionListener(new ActionListener() {
+        generateNewButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Has clicado el botón "+ ((JButton) e.getSource()).getText());
@@ -243,6 +244,30 @@ public class PlayOptionView extends View {
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Has clicado el botón "+ ((JButton) e.getSource()).getText());
                 playOptionToDefGames();
+            }
+        });
+
+        createButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Has clicado el botón 'Crear'");
+                Integer[] sizes = {3, 4, 5, 6, 7, 8, 9};
+                Integer selectedSize = (Integer) JOptionPane.showInputDialog(
+                        null,
+                        "Seleccione el tamaño del KenKen:",
+                        "Seleccionar Tamaño",
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        sizes,
+                        sizes[0]
+                );
+
+                if (selectedSize != null) {
+                    System.out.println("Tamaño seleccionado: " + selectedSize);
+                    // Proceed with the selected size
+                    ctrlPresentation.setGameCreatorSize(selectedSize);
+                    ctrlPresentation.playOptionViewToGameCreatorView();
+                }
             }
         });
 
@@ -308,14 +333,14 @@ public class PlayOptionView extends View {
                 }
                 System.out.println("Has seleccionado la dificultad: " + diff);
 
-                if(ctrlPresentation.createKenken(size,selectedOp,diff)) {
+                if(ctrlPresentation.createKenken(size, selectedOp, diff)) {
                     int result = JOptionPane.showConfirmDialog(null, "¿Quieres jugarlo ahora?",
                             "Opción de jugar", JOptionPane.OK_CANCEL_OPTION);
                     if (result == JOptionPane.OK_OPTION) {
                         ctrlPresentation.playOptionViewToGameView();
                     }
                     else {
-                        creationToPlayOption();
+                        // creationToPlayOption();
                     }
                 }
                 else {
@@ -323,8 +348,6 @@ public class PlayOptionView extends View {
                 }
             }
         });
-
-
     }
 
     private void playOptionToCreation() {

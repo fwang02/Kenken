@@ -15,9 +15,6 @@ public class GameCreatorView extends View {
 
     public GameCreatorView(CtrlPresentation cp) {
         // Window
-        setBounds(0, 0, 500, 300);
-        setResizable(false);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Ensure the window can be closed
         getContentPane().setLayout(new BorderLayout());
 
         ctrlPresentation = cp;
@@ -133,5 +130,50 @@ public class GameCreatorView extends View {
             ctrlPresentation.gameCreatorViewToPlayOptionView();
         }
 
+    }
+
+    private int setGridSize() {
+        // Create a JLabel
+        JLabel label = new JLabel("Choose grid size:");
+
+        // Create a SpinnerNumberModel with the grid sizes
+        SpinnerNumberModel model = new SpinnerNumberModel(3, 3, 9, 1);
+        JSpinner spinner = new JSpinner(model);
+
+        // Create a JPanel and add the label and spinner to it
+        JPanel panel = new JPanel(new FlowLayout());
+        panel.add(label);
+        panel.add(spinner);
+
+        // Create options for JOptionPane
+        Object[] options = {"OK", "Cancel"};
+
+        // Show the JOptionPane
+        int option = JOptionPane.showOptionDialog(
+                null,
+                panel,
+                "Grid Size Chooser",
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                options,
+                options[0]
+        );
+
+        // Handle the user's choice
+        if (option == JOptionPane.OK_OPTION) {
+            // Return the selected grid size
+            System.out.println("GRID " + (int) spinner.getValue());
+            return (int) spinner.getValue();
+        } else {
+            System.out.println("User cancelled the dialog.");
+            remove(panel);
+            return 0;
+        }
+    }
+
+    public void initGameCreator(int gridSize) {
+        panel = new DrawLayout(gridSize, false);
+        add(panel);
     }
 }

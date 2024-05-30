@@ -145,4 +145,8 @@ public class CtrlPresentation {
     public void setGameCreatorSize(int selectedSize) {
         gameCreatorView.initGameCreator(selectedSize);
     }
+
+    public int[] getSolutionCells() {
+        return ctrlDomain.getSolutionCells();
+    }
 }

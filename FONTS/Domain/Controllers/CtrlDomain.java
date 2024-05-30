@@ -199,4 +199,19 @@ public class CtrlDomain {
 
         return cage.getResult();
     }
+
+    public int[] getSolutionCells() {
+        KenkenCell[][] kCells = ctrlDomainKenken.getSolution();
+
+        int s = ctrlDomainKenken.getCurrentGameSize();
+        int[] cells = new int[s*s];
+
+        for (int i = 0; i < s; i++) {
+            for (int j = 0; j < s; j++) {
+                cells[i * s + j] = kCells[i][j].getValue();
+            }
+        }
+
+        return cells;
+    }
 }

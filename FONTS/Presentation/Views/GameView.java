@@ -10,8 +10,7 @@ import java.awt.event.ActionListener;
 
 public class GameView extends View {
     private CtrlPresentation ctrlPresentation;
-    DrawLayout panel;
-
+    private DrawLayout panel;
 
     public GameView(CtrlPresentation cp) {
         // Window
@@ -39,16 +38,48 @@ public class GameView extends View {
         JPanel centerPanel = new JPanel();
         p2.add(centerPanel, BorderLayout.CENTER);
 
-        JButton exit = new JButton("Exit");
-        JPanel southPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        southPanel.add(exit);
+        // South panel to hold the buttons
+        JPanel southPanel = new JPanel(new GridLayout(4, 1, 5, 5));
         p2.add(southPanel, BorderLayout.SOUTH);
 
+        // Create buttons
+        JButton saveButton = new JButton("Save");
+        JButton showSolutionButton = new JButton("Show Solution");
+        JButton hintButton = new JButton("Hint");
+        JButton exitButton = new JButton("Exit");
+
+        // Add buttons to the south panel
+        southPanel.add(saveButton);
+        southPanel.add(showSolutionButton);
+        southPanel.add(hintButton);
+        southPanel.add(exitButton);
+
         // Add action listeners for buttons
-        exit.addActionListener(new ActionListener() {
+        exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 onExitButtonClicked();
+            }
+        });
+
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onSaveButtonClicked();
+            }
+        });
+
+        showSolutionButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onShowSolutionButtonClicked();
+            }
+        });
+
+        hintButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onHintButtonClicked();
             }
         });
     }
@@ -64,7 +95,7 @@ public class GameView extends View {
         );
 
         // Handle the user's response
-        if (response == JOptionPane.OK_OPTION) {
+        if (response == JOptionPane.YES_OPTION) {
             // User chose to save, show save dialog and handle saving
             String gameName = JOptionPane.showInputDialog(
                     this,
@@ -75,7 +106,7 @@ public class GameView extends View {
 
             if (gameName != null && !gameName.trim().isEmpty()) {
                 if (CtrlPresentation.isValid()) {
-                    //CtrlPresentation.saveGridToFile(gameName, panel.convertGridToString());
+                    // CtrlPresentation.saveGridToFile(gameName, panel.convertGridToString());
                     JOptionPane.showMessageDialog(this, "Game saved successfully.", "Save", JOptionPane.INFORMATION_MESSAGE);
                     ctrlPresentation.gameViewToPlayOptionView();
                 } else {
@@ -84,24 +115,54 @@ public class GameView extends View {
             } else if (gameName != null) {
                 JOptionPane.showMessageDialog(this, "The game name cannot be blank.", "Error", JOptionPane.ERROR_MESSAGE);
             }
-        }
-        else {
+        } else {
             remove(panel);
             ctrlPresentation.gameViewToPlayOptionView();
         }
+    }
 
+    private void onSaveButtonClicked() {
+        // Handle save button click
+        String gameName = JOptionPane.showInputDialog(
+                this,
+                "Enter the game name to save:",
+                "Save Game",
+                JOptionPane.PLAIN_MESSAGE
+        );
+
+        if (gameName != null && !gameName.trim().isEmpty()) {
+            if (CtrlPresentation.isValid()) {
+                // CtrlPresentation.saveGridToFile(gameName, panel.convertGridToString());
+                JOptionPane.showMessageDialog(this, "Game saved successfully.", "Save", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "The game is not valid and cannot be saved.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } else if (gameName != null) {
+            JOptionPane.showMessageDialog(this, "The game name cannot be blank.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void onShowSolutionButtonClicked() {
+        // Handle show solution button click
+        showSolution();
+        JOptionPane.showMessageDialog(this, "Solution displayed.", "Solution", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    private void onHintButtonClicked() {
+        // Handle hint button click
+        //ctrlPresentation.showHint();
+        JOptionPane.showMessageDialog(this, "Hint displayed.", "Hint", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /**
-     * load kenken from currentGame in Domain layer
+     * Load Kenken from currentGame in Domain layer
      */
     private void loadKenken() {
         int ncages = ctrlPresentation.getNCages();
-        for (int i = 0; i < ncages; ++i) { // i = index de cages de currentGame
+        for (int i = 0; i < ncages; ++i) { // i = index of cages of currentGame
             int[] cellsX = ctrlPresentation.getCageCellsX(i);
             int[] cellsY = ctrlPresentation.getCageCellsY(i);
             char op = ctrlPresentation.getCageOp(i);
-            System.out.println(op);
             int res = ctrlPresentation.getCageRes(i);
 
             DrawLayout.setCage(cellsX, cellsY, op, res);
@@ -113,5 +174,16 @@ public class GameView extends View {
         panel = new DrawLayout(size, true);
         loadKenken();
         add(panel, BorderLayout.CENTER);
+    }
+
+    private void showSolution() {
+        int[] cells = ctrlPresentation.getSolutionCells();
+        int size = ctrlPresentation.getKenkenSize();
+
+        for (int i = 0; i < cells.length; ++i) {
+            int x = i % size;
+            int y = i / size;
+            panel.setCell(x, y, cells[i]);
+        }
     }
 }

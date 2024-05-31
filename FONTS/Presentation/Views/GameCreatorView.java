@@ -79,7 +79,9 @@ public class GameCreatorView extends View {
         // Handle play button click
         System.out.println("Play button clicked");
         // You can add more logic here to start the game or switch to game play view
-        //ctrlPresentation.startGame(panel.getKenKenGrid());
+
+        loadToCurrentGame();
+        ctrlPresentation.gameCreatorViewToGameView();
     }
 
     private void onSaveButtonClicked(String gameName) {
@@ -175,5 +177,14 @@ public class GameCreatorView extends View {
     public void initGameCreator(int gridSize) {
         panel = new DrawLayout(gridSize, false);
         add(panel);
+
+        ctrlPresentation.initCurrentGame(gridSize);
+    }
+
+    private void loadToCurrentGame() {
+        for (int i = 0; i < panel.getNCages(); ++i) {
+            Object[] cage = panel.getCage(i);
+            ctrlPresentation.setCage((int[]) cage[0], (int[]) cage[1], (int) cage[2], (int) cage[3]);
+        }
     }
 }

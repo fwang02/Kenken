@@ -27,6 +27,7 @@ public class CtrlPresentation {
         ctrlDomain = new CtrlDomain();
         mainMenuView = new MainMenuView(this);
         gameCreatorView = new GameCreatorView(this);
+        gameView = new GameView(this);
     }
 
     public static boolean isValid() {
@@ -86,6 +87,12 @@ public class CtrlPresentation {
     public void gameCreatorViewToPlayOptionView() {
         gameCreatorView.makeInvisible();
         playOptionView.makeVisible();
+    }
+
+    public void gameCreatorViewToGameView() {
+        gameCreatorView.makeInvisible();
+        gameView.startPlay();
+        gameView.makeVisible();
     }
 
     //Llamadas a la capa dominio
@@ -153,4 +160,14 @@ public class CtrlPresentation {
     public int[] getSolutionCells() {
         return ctrlDomain.getSolutionCells();
     }
+
+    public void setCage(int[] cellsX, int[] cellsY, int op, int res) {
+        ctrlDomain.setCage(cellsX, cellsY, op, res);
+    }
+
+    public void initCurrentGame(int size) {
+        ctrlDomain.initCurrentGame(size);
+    }
+
+
 }

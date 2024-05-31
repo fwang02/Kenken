@@ -1,11 +1,8 @@
 package Domain.Controllers;
 
-import Domain.KenkenCage;
-import Domain.KenkenCell;
+import Domain.*;
 import Domain.Operation.*;
 import Domain.Operation.Operation;
-import Domain.PlayerScore;
-import Domain.TypeDifficulty;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -166,6 +163,7 @@ public class CtrlDomain {
         KenkenCage cage = ctrlDomainKenken.getCages().get(index);
 
         int ncells = cage.getCageSize();
+        System.out.println(ncells);
         int[] cellsX = new int[ncells];
 
         for (int i = 0; i < ncells; ++i) {
@@ -213,5 +211,32 @@ public class CtrlDomain {
         }
 
         return cells;
+    }
+
+    public void setCage(int[] cellsX, int[] cellsY, int op, int res) {
+        Pos[] cells = new Pos[cellsX.length];
+
+        for (int i = 0; i < cellsX.length; ++i) {
+            cells[i] = new Pos(cellsX[i], cellsY[i]);
+        }
+        Operation o = CtrlDomainKenken.getOperation(op);
+        ctrlDomainKenken.getCurrentGame().addOpCage(o, res, cells);
+
+        //System.out.println(ctrlDomainKenken.saveKenken());
+    }
+
+    public void initCurrentGame(int size) {
+        if (ctrlDomainKenken.hasCurrentGame()) ctrlDomainKenken.resetBoard();
+
+        HashSet<Operation> opSets = new HashSet<>();
+        opSets.add(new ADD());
+        opSets.add(new SUB());
+        opSets.add(new MULT());
+        opSets.add(new DIV());
+        opSets.add(new MOD());
+        opSets.add(new POW());
+
+        ctrlDomainKenken.setCurrentGame(new Kenken(size, opSets, TypeDifficulty.CUSTOM));
+        ctrlDomainKenken.getDomainCells(size);
     }
 }

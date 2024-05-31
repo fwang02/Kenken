@@ -207,6 +207,7 @@ public class GameView extends View {
     }
 
     public void startPlay() {
+        System.out.println("ENTERS StartPlay");
         int size = ctrlPresentation.getKenkenSize();
         panel = new DrawLayout(size, true);
         loadKenken();

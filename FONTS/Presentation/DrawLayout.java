@@ -2,16 +2,6 @@ package Presentation;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 
 public class DrawLayout extends JPanel {
     private static DrawCell[][] cells;
@@ -40,11 +30,6 @@ public class DrawLayout extends JPanel {
         }
     }
 
-    public String convertGridToString() {
-        System.out.print(DrawCell.convertGridToString());
-        return DrawCell.convertGridToString();
-    }
-
     public void setCell(int x, int y, int num) {
         cells[x][y].setNumber(num, false);
     }
@@ -57,5 +42,18 @@ public class DrawLayout extends JPanel {
         }
         DrawCell.selectCells(selected);
         DrawCell.createCage(op, res);
+    }
+
+    public Object[] getCage(int index) {
+        Object[] r = new Object[4];
+        r[0] = DrawCell.getCageCellsX(index);
+        r[1] = DrawCell.getCageCellsY(index);
+        r[2] = DrawCell.getCageOp(index);
+        r[3] = DrawCell.getCageRes(index);
+        return r;
+    }
+
+    public int getNCages() {
+        return DrawCell.getNCages();
     }
 }

@@ -7,8 +7,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.*;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.swing.*;
 
 /**
@@ -22,9 +20,9 @@ public class DrawCell extends JPanel {
     private static boolean playing;
     private boolean selected = false;
     private static final List<DrawCell> allCells = new ArrayList<>();
+    private static final ArrayList<Cage> cages = new ArrayList<>();
 
     private static int size;
-    //private static int cages = 0;
     private final int x;      // X position in game.
     private final int y;      // Y position in game.
     private final JLabel mainLabel;
@@ -75,8 +73,6 @@ public class DrawCell extends JPanel {
         gbc.insets = new Insets(2, 2, 0, 0);
         add(mainLabel, gbc);
 
-        //setBorder(new CustomBorder(Color.GRAY, 1, Color.GRAY, 1, Color.GRAY, 1, Color.GRAY, 1));
-
         // Add mouse listener
         addMouseListener(new MouseAdapter() {
             @Override
@@ -87,7 +83,6 @@ public class DrawCell extends JPanel {
                     setBackground(Color.YELLOW);
                     selected = true;
                 }
-
             }
 
             @Override
@@ -156,6 +151,10 @@ public class DrawCell extends JPanel {
         }
     }
 
+    public static void eraseCage(Cage cage) {
+        cages.remove(cage);
+    }
+
     /**
      * Sets number and foreground color according to userInput
      *
@@ -176,7 +175,7 @@ public class DrawCell extends JPanel {
      *
      * @param number Number to set in all yellow cells.
      */
-    public static void setNumberInAllYellowCells(int number) {
+    private static void setNumberInAllYellowCells(int number) {
         for (DrawCell cell : allCells) {
             if (cell.selected) {
                 // Skip black cells if in playing mode
@@ -211,6 +210,7 @@ public class DrawCell extends JPanel {
         }
         // Draw cage
         Cage cage = new Cage();
+        cages.add(cage);
         cage.setOpCell(findTopLeftCell());
 
         for (DrawCell cell : allCells) {
@@ -361,39 +361,6 @@ public class DrawCell extends JPanel {
         return cage != null;
     }
 
-    public static String convertGridToString() {
-        List<Cage> allCages = new ArrayList<>();
-        for (DrawCell c : allCells) {
-            if (c.cage == null) continue; // POSAR Q SALTI ERROR
-            if (!allCages.contains(c.cage)) allCages.add(c.cage);
-        }
-
-        StringBuilder sb = new StringBuilder();
-        int cagesCount = allCages.size();
-
-        sb.append(size).append(" ").append(cagesCount).append("\n");
-
-        // Iterate over regions
-        for (Cage c : allCages) {
-            int operation = c.getOperatorAsNum();
-            int result = c.getResult();
-            int elementCount = c.countCells();
-            sb.append(operation).append(" ").append(result).append(" ").append(elementCount).append(" ");
-
-            for (DrawCell cell : c.getCells()) {
-                sb.append(cell.getPosX() + 1).append(" ").append(cell.getPosY() + 1);
-                String content = cell.mainLabel.getText();
-                if (!content.isEmpty()) {
-                    sb.append(" [").append(content).append("]");
-                }
-                sb.append(" ");
-            }
-            sb.append("\n");
-        }
-
-        return sb.toString();
-    }
-
      public static void setPlaying(boolean b) {
         playing = b;
         System.out.println(playing);
@@ -404,5 +371,38 @@ public class DrawCell extends JPanel {
         for (DrawCell c : cells) {
             c.selected = true;
         }
+    }
+
+    public static int getNCages() {
+        return cages.size();
+    }
+    public static int[] getCageCellsX(int index) {
+        List<DrawCell> cells = cages.get(index).getCells();
+        int s = cells.size();
+        int[] cellsX = new int[s];
+        for (int i = 0; i < s; ++i) {
+            cellsX[i] = cells.get(i).x;
+        }
+
+        return cellsX;
+    }
+
+    public static int[] getCageCellsY(int index) {
+        List<DrawCell> cells = cages.get(index).getCells();
+        int s = cells.size();
+        int[] cellsY = new int[s];
+        for (int i = 0; i < s; ++i) {
+            cellsY[i] = cells.get(i).y;
+        }
+
+        return cellsY;
+    }
+
+    public static int getCageOp(int index) {
+        return cages.get(index).getOperatorAsNum();
+    }
+
+    public static int getCageRes(int index) {
+        return cages.get(index).getResult();
     }
 }

@@ -109,7 +109,7 @@ public class CtrlDomainKenken {
 	}
 
 	public boolean saveKenken() {
-		if(CKF.saveKenkenGame(currentGame, "cacatua")) return true;
+		if (CKF.saveKenkenGame(currentGame, "cacatua")) return true;
 		else return false;
 	}
 
@@ -193,4 +193,7 @@ public class CtrlDomainKenken {
 		return currentGame != null ? currentGame.getSize() : 0;
 	}
 
+	public void setCurrentGame(Kenken k) {
+		currentGame = k;
+	}
 }

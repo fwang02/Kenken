@@ -164,6 +164,7 @@ public class Cage {
             c.setCage(null);
             c.setBorder(new CustomBorder(Color.LIGHT_GRAY, 1, Color.LIGHT_GRAY, 1, Color.LIGHT_GRAY, 1, Color.LIGHT_GRAY, 1));
         }
+        DrawCell.eraseCage(this);
         opCell.setOp("");
     }
 

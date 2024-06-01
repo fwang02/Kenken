@@ -230,7 +230,12 @@ public class CtrlDomain {
     }
 
     public void initCurrentGame(int size) {
-        if (ctrlDomainKenken.hasCurrentGame()) ctrlDomainKenken.resetBoard();
+        if (ctrlDomainKenken.hasCurrentGame()) {
+            ctrlDomainKenken.resetBoard();
+            ctrlDomainKenken.resetCages();
+
+            System.out.println("Reset Current Game");
+        }
 
         HashSet<Operation> opSets = new HashSet<>();
         opSets.add(new ADD());
@@ -242,5 +247,9 @@ public class CtrlDomain {
 
         ctrlDomainKenken.setCurrentGame(new Kenken(size, opSets, TypeDifficulty.CUSTOM));
         ctrlDomainKenken.getDomainCells(size);
+    }
+
+    public boolean solveCurrentGame() {
+        return ctrlDomainKenken.solveCurrentGame();
     }
 }

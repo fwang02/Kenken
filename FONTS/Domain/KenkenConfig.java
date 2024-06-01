@@ -322,7 +322,12 @@ public class KenkenConfig  {
 
 	// Esta funcion resuelve un kenken con las regiones previamente definidas
 	public boolean solveKenken() {
-		solveKenkenByCages(kenken.getCage(0), 0);
+		try {
+			solveKenkenByCages(kenken.getCage(0), 0);
+		}
+		catch (IndexOutOfBoundsException e) {
+			return false;
+		}
 		return filled;
 	}
 }

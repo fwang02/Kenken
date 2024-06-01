@@ -8,12 +8,10 @@ public class DrawLayout extends JPanel {
     private int lenght;
     GridLayout grid;
 
-    // Constructora para panel editable
     public DrawLayout(int size, boolean playing) {
         super(new GridLayout(size, size));
         this.lenght = size;
         initLayout(size, playing);
-
     }
 
     public void initLayout(int size, boolean playing) {
@@ -74,5 +72,9 @@ public class DrawLayout extends JPanel {
         }
 
         return values;
+    }
+
+    public void reset() {
+        DrawCell.resetDrawCells();
     }
 }

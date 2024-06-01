@@ -197,7 +197,7 @@ public class DriverKenken {
             return;
         }
         else {
-            boolean generated = CDK.solveKenkenByUserParameters(size, opSet, TypeDifficulty.EXPERT, cages, cells);
+            boolean generated = true;//CDK.solveKenkenByUserParameters(size, opSet, TypeDifficulty.EXPERT, cages, cells);
             if(generated) {
                 System.out.println("KENKEN GENERADO, YA PUEDES JUGAR");
             }
@@ -308,11 +308,11 @@ public class DriverKenken {
     }
 
     private static void askCheck() {
-        int p = CDK.check();
+        int p = 0;//CDK.check();
         if(p >= 1) {
             System.out.println("HAS RESUELTO EL KENKEN, ENHORABUENA, PUNTUACION: " + p);
         }
-        else if (CDK.check() == -1){
+        else if (/*CDK.check() == -1*/true){
             System.out.println("ALGUNA CASILLA QUE HAS COLOCADO ES INCORRECTA");
         }
         else {

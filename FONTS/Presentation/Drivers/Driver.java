@@ -260,7 +260,7 @@ public class Driver {
     }
 
     private static void askCheck() {
-        int p = CD.checkBoard();
+        /*int p = CD.checkBoard();
         if(p >= 1) {
             System.out.println("HAS RESUELTO EL KENKEN, ENHORABUENA, PUNTUACION: " + p);
             if(CD.newMaxPoint(p)) {
@@ -273,7 +273,7 @@ public class Driver {
         }
         else {
             System.out.println("ESTA TODO MUY VACIO");
-        }
+        }*/
     }
 
     public static void main(String[] args) {

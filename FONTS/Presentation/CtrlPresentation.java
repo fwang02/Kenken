@@ -177,4 +177,7 @@ public class CtrlPresentation {
         return ctrlDomain.checkCurrent(values);
     }
 
+    public boolean solveCurrentGame() {
+        return ctrlDomain.solveCurrentGame();
+    }
 }

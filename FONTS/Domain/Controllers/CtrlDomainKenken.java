@@ -143,6 +143,10 @@ public class CtrlDomainKenken {
     	currentGame.resetBoard();
     }
 
+	public void resetCages() {
+		currentGame.resetCages();
+	}
+
     public int[][] getBoard() {
 		//currentGame.showBoard();
 		return currentGame.getBoard();

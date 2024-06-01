@@ -32,7 +32,7 @@ public class GameView extends View {
 
         JPanel p2 = new JPanel(new BorderLayout());
         add(p2, BorderLayout.EAST);
-        p2.setPreferredSize(new Dimension(200, 300));
+        p2.setPreferredSize(new Dimension(300, 450));
         JTextArea txt = new JTextArea(
                 "Selecciona el area con el raton\n" +
                 "Utiliza el teclado para insertar numeros\n" +
@@ -178,11 +178,6 @@ public class GameView extends View {
     private void onSubmitButtonClicked() {
         // Handle submit button click
         int[] values = panel.getValCells();
-        /*
-        for(int i = 0; i < val.length; ++i) {
-            System.out.println(val[i]);
-        }
-        */
 
         if (ctrlPresentation.check(values)) {
             JOptionPane.showMessageDialog(this, "Congratulations! The solution is correct.", "Success", JOptionPane.INFORMATION_MESSAGE);
@@ -208,6 +203,7 @@ public class GameView extends View {
      */
     private void loadKenken() {
         int ncages = ctrlPresentation.getNCages();
+        System.out.println(ncages + " cages");
         for (int i = 0; i < ncages; ++i) { // i = index of cages of currentGame
             int[] cellsX = ctrlPresentation.getCageCellsX(i);
             int[] cellsY = ctrlPresentation.getCageCellsY(i);
@@ -219,6 +215,10 @@ public class GameView extends View {
     }
 
     public void startPlay() {
+        if (panel != null) {
+            panel.reset();
+            remove(panel);
+        }
         System.out.println("ENTERS StartPlay");
         int size = ctrlPresentation.getKenkenSize();
         panel = new DrawLayout(size, true);

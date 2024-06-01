@@ -208,6 +208,12 @@ public class Kenken {
         }
     }
 
+    public void resetCages() {
+        System.out.println("ArrayList before clear: "+cages);
+        cages.clear();
+        System.out.println("ArrayList after clear: "+cages);
+    }
+
     public boolean check(int[] values) {
         int s = getSize();
         for (int i = 0; i < s; ++i) {
@@ -245,5 +251,4 @@ public class Kenken {
             return points;
         }
     }
-
 }

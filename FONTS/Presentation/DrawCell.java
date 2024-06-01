@@ -411,4 +411,9 @@ public class DrawCell extends JPanel {
     public static int getCageRes(int index) {
         return cages.get(index).getResult();
     }
+
+    public static void resetDrawCells() {
+        allCells.clear();
+        cages.clear();
+    }
 }

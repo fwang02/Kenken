@@ -23,7 +23,7 @@ public class GameCreatorView extends View {
 
         JPanel p2 = new JPanel(new BorderLayout());
         add(p2, BorderLayout.EAST);
-        p2.setPreferredSize(new Dimension(200, 300));
+        p2.setPreferredSize(new Dimension(300, 450));
         JTextArea txt = new JTextArea(
                 "Select area with mouse\n" +
                         "Use keyboard to input numbers\n" +
@@ -82,7 +82,7 @@ public class GameCreatorView extends View {
         System.out.println("Play button clicked");
         // You can add more logic here to start the game or switch to game play view
 
-        if(loadToCurrentGame()) {
+        if (loadToCurrentGame()) {
             ctrlPresentation.gameCreatorViewToGameView();
         }
         else {
@@ -181,6 +181,8 @@ public class GameCreatorView extends View {
     }
 
     public void initGameCreator(int gridSize) {
+        if (panel != null) remove(panel);
+
         panel = new DrawLayout(gridSize, false);
         add(panel);
 

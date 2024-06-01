@@ -248,6 +248,8 @@ public class CtrlDomain {
         opSets.add(new MOD());
         opSets.add(new POW());
 
+        Kenken k = ctrlDomainKenken.getCurrentGame();
+
         ctrlDomainKenken.setCurrentGame(new Kenken(size, opSets, TypeDifficulty.CUSTOM));
         ctrlDomainKenken.getDomainCells(size);
     }

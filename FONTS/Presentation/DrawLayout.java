@@ -15,6 +15,7 @@ public class DrawLayout extends JPanel {
     }
 
     public void initLayout(int size, boolean playing) {
+        reset();
         grid = new GridLayout(size, size);
         cells = new DrawCell[size][size];
         DrawCell.setPlaying(playing);

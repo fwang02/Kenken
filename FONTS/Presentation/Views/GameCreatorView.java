@@ -79,8 +79,6 @@ public class GameCreatorView extends View {
 
     private void onPlayButtonClicked() {
         // Handle play button click
-        System.out.println("Play button clicked");
-
         if (loadToCurrentGame()) {
             ctrlPresentation.gameCreatorViewToGameView();
         }
@@ -95,9 +93,6 @@ public class GameCreatorView extends View {
             JOptionPane.showMessageDialog(this, "The game name cannot be blank.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
-        // Checks it's valid
-        if (CtrlPresentation.isValid());
     }
 
     private void onExitButtonClicked() {
@@ -189,6 +184,7 @@ public class GameCreatorView extends View {
     }
 
     private boolean loadToCurrentGame() {
+        ctrlPresentation.initCurrentGame(panel.getLenght());
         for (int i = 0; i < panel.getNCages(); ++i) {
             Object[] cage = panel.getCage(i);
             ctrlPresentation.setCage((int[]) cage[0], (int[]) cage[1], (int) cage[2], (int) cage[3]);

@@ -214,7 +214,6 @@ public class GameView extends View {
      */
     private void loadKenken() {
         int ncages = ctrlPresentation.getNCages();
-        System.out.println(ncages + " cages");
         for (int i = 0; i < ncages; ++i) { // i = index of cages of currentGame
             int[] cellsX = ctrlPresentation.getCageCellsX(i);
             int[] cellsY = ctrlPresentation.getCageCellsY(i);
@@ -230,7 +229,6 @@ public class GameView extends View {
             panel.reset();
             remove(panel);
         }
-        System.out.println("ENTERS StartPlay");
         int size = ctrlPresentation.getKenkenSize();
         panel = new DrawLayout(size, true);
         loadKenken();

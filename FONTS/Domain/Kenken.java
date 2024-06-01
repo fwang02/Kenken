@@ -111,6 +111,7 @@ public class Kenken {
     }
 
     public int getNumberCages() {
+        System.out.println(cages);
         return cages.size();
     }
 
@@ -209,9 +210,9 @@ public class Kenken {
     }
 
     public void resetCages() {
-        System.out.println("ArrayList before clear: "+cages);
+        System.out.println("ArrayList before clear: " + cages);
         cages.clear();
-        System.out.println("ArrayList after clear: "+cages);
+        System.out.println("ArrayList after clear: " + cages);
     }
     /*
     public boolean check(int[] values) {

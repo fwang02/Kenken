@@ -369,7 +369,6 @@ public class DrawCell extends JPanel {
 
      public static void setPlaying(boolean b) {
         playing = b;
-        System.out.println(playing);
     }
 
     public static void selectCells(DrawCell[] cells) {
@@ -413,7 +412,7 @@ public class DrawCell extends JPanel {
     }
 
     public static void resetDrawCells() {
-        allCells.clear();
-        cages.clear();
+        if (!allCells.isEmpty()) allCells.clear();
+        if (!cages.isEmpty()) cages.clear();
     }
 }

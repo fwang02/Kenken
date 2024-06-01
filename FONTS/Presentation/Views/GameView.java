@@ -34,9 +34,13 @@ public class GameView extends View {
         add(p2, BorderLayout.EAST);
         p2.setPreferredSize(new Dimension(300, 450));
         JTextArea txt = new JTextArea(
-                "Selecciona el area con el raton\n" +
-                "Utiliza el teclado para insertar numeros\n" +
-                "Utiliza 0 o delete para eliminar los numeros\n"
+                "·Selecciona la casilla con el cursor\n" +
+                "·Utiliza el teclado para insertar numeros\n" +
+                "·Utiliza 0 o delete para eliminar los numeros\n" +
+                "\n" +
+                "·Pulsa SUBMIT para comprobar la respuesta\n" +
+                "·Pulsa HINT para recibir una pista\n" +
+                "·Pulsa SOLVE para ver la solución\n"
         );
         txt.setAutoscrolls(true);
         txt.setEditable(false);
@@ -178,11 +182,6 @@ public class GameView extends View {
     private void onSubmitButtonClicked() {
         // Handle submit button click
         int[] values = panel.getValCells();
-
-        System.out.println("VALORES DEL TABLERO");
-        for(int i = 0; i < values.length; ++i) {
-            System.out.println(values[i]);
-        }
 
         if (ctrlPresentation.check(values)) {
             JOptionPane.showMessageDialog(this, "Congratulations! The solution is correct.", "Success", JOptionPane.INFORMATION_MESSAGE);

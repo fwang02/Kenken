@@ -16,7 +16,7 @@ public class MainMenuView extends View {
 
     private final JButton bLogin    = new JButton("Iniciar sesión");
     private final JButton bRegister = new JButton("Registrarse");
-    private final JButton bRanking  = new JButton("Consultar rankings");
+    private final JButton bRanking  = new JButton("Consultar ranking");
     private final JButton bSalir  = new JButton("Salir");
     private JButton bExitRanking = new JButton("Salir");
     private RankingPanel rankingPanel;
@@ -63,9 +63,9 @@ public class MainMenuView extends View {
                 JPanel loginMenu = new JPanel();
                 loginMenu.setLayout(new BoxLayout(loginMenu, BoxLayout.Y_AXIS));
 
-                loginMenu.add(new JLabel("Username"));
+                loginMenu.add(new JLabel("Nombre de usuario"));
                 loginMenu.add(username);
-                loginMenu.add(new JLabel("Password"));
+                loginMenu.add(new JLabel("Contraseña"));
                 loginMenu.add(password);
 
                 int result = JOptionPane.showConfirmDialog(null, loginMenu,
@@ -78,7 +78,7 @@ public class MainMenuView extends View {
                         ctrlPresentation.mainViewToPlayOptionView();
                     }
                     else {
-                        JOptionPane.showMessageDialog(null, "Incorrect user or password","Error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Contraseña incorrecta","Error", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             }
@@ -94,9 +94,9 @@ public class MainMenuView extends View {
                 JPanel registerMenu = new JPanel();
                 registerMenu.setLayout(new BoxLayout(registerMenu, BoxLayout.Y_AXIS));
 
-                registerMenu.add(new JLabel("Username"));
+                registerMenu.add(new JLabel("Nombre de usuario"));
                 registerMenu.add(username);
-                registerMenu.add(new JLabel("Password"));
+                registerMenu.add(new JLabel("Contraseña"));
                 registerMenu.add(password);
 
                 int result = JOptionPane.showConfirmDialog(null, registerMenu,

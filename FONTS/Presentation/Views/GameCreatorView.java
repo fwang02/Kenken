@@ -86,7 +86,7 @@ public class GameCreatorView extends View {
             ctrlPresentation.gameCreatorViewToGameView();
         }
         else {
-            JOptionPane.showMessageDialog(null, "NO SE HA ENCONTRADO UNA SOLUCIÓN POSIBLE, PRUEVA DE NUEVO");
+            JOptionPane.showMessageDialog(this, "No se ha encontrado solución posible, intentalo de nuevo");
         }
     }
 

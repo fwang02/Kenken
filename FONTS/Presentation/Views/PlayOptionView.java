@@ -48,13 +48,13 @@ public class PlayOptionView extends View {
     private JPanel upPanel = new JPanel();
     private JPanel buttonsPanel = new JPanel();
     private JButton bConfirmCreation = new JButton("Confirmar");
-    private JButton exitButton = new JButton("Salir");
+    private JButton exitButton = new JButton("Volver");
 
     //componentes para la vista de jugar juegos predefinidos
     private JPanel defaultGamesPanel = new JPanel();
     private JButton[] basicGamesB = new JButton[7];
     private JButton[] specialGamesB = new JButton[2];
-    private JButton exitDef = new JButton("Salir");
+    private JButton exitDef = new JButton("Volver");
 
     public PlayOptionView(CtrlPresentation cp) {
         this.ctrlPresentation = cp;

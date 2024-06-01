@@ -15,8 +15,10 @@ public class GameCreatorView extends View {
 
     public GameCreatorView(CtrlPresentation cp) {
         // Window
+        setBounds(750, 450, 750, 450);
+        setResizable(false);
         getContentPane().setLayout(new BorderLayout());
-
+        setLocationRelativeTo(null);
         ctrlPresentation = cp;
 
         JPanel p2 = new JPanel(new BorderLayout());
@@ -82,6 +84,9 @@ public class GameCreatorView extends View {
 
         if(loadToCurrentGame()) {
             ctrlPresentation.gameCreatorViewToGameView();
+        }
+        else {
+            JOptionPane.showMessageDialog(null, "NO SE HA ENCONTRADO UNA SOLUCIÓN POSIBLE, PRUEVA DE NUEVO");
         }
     }
 

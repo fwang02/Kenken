@@ -21,10 +21,11 @@ public class GameView extends View {
 
     public GameView(CtrlPresentation cp) {
         // Window
-        setBounds(0, 0, 500, 300);
+        setBounds(750, 450, 750, 450);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Ensure the window can be closed
         getContentPane().setLayout(new BorderLayout());
+        setLocationRelativeTo(null);
 
         ctrlPresentation = cp;
 

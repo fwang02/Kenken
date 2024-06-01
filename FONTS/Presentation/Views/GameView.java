@@ -9,6 +9,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * @author Romeu Esteve
+ */
 public class GameView extends View {
     private CtrlPresentation ctrlPresentation;
     private DrawLayout panel;

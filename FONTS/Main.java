@@ -2,12 +2,9 @@ import Presentation.CtrlPresentation;
 
 public class Main {
     public static void main(String[] args) {
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                CtrlPresentation CP = new CtrlPresentation();
-                CP.initPresentation();
-            }
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            CtrlPresentation CP = new CtrlPresentation();
+            CP.initPresentation();
         });
 
     }

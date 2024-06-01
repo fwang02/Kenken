@@ -104,11 +104,14 @@ public class MainMenuView extends View {
                 String usr = username.getText();
                 String pwd = password.getText();
                 if (result == JOptionPane.OK_OPTION) {
-                    if (ctrlPresentation.isUserExist(usr)) {
-                        JOptionPane.showMessageDialog(null, "El nombre del usuario ya existe","Error", JOptionPane.ERROR_MESSAGE);
+                    if(usr.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "El nombre de usuario no puede ser vacío","Error", JOptionPane.ERROR_MESSAGE);
                     }
                     else if (pwd.isEmpty()) {
                         JOptionPane.showMessageDialog(null, "La contraseña no puede ser vacía","Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                    else if (ctrlPresentation.isUserExist(usr)) {
+                        JOptionPane.showMessageDialog(null, "El nombre del usuario ya existe","Error", JOptionPane.ERROR_MESSAGE);
                     }
                     else {
                         if (ctrlPresentation.registerUser(usr, pwd)) JOptionPane.showMessageDialog(null, "¡Se ha registrado con éxito!");

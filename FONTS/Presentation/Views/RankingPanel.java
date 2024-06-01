@@ -9,6 +9,7 @@ import java.util.PriorityQueue;
 
 public class RankingPanel extends JPanel {
     private JTable rankingTable;
+    private JScrollPane scrollPane;
     private CtrlPresentation ctrlPresentation;
 
     public RankingPanel(CtrlPresentation ctrlPresentation) {
@@ -27,18 +28,20 @@ public class RankingPanel extends JPanel {
         tableModel.addColumn("Username");
         tableModel.addColumn("Max point");
 
-        PriorityQueue<PlayerScore> rankingData = ctrlPresentation.getRanking();
+        PriorityQueue<PlayerScore> rankingData =  new PriorityQueue<>(ctrlPresentation.getRanking());
         // Format the ranking data as a string
         StringBuilder rankingDataString = new StringBuilder();
         rankingDataString.append("Rank   Username  MaxPoint\n");
-        int count = 1;
-        for (PlayerScore user : rankingData) {
-            tableModel.addRow(new Object[]{count,user.getName(),user.getMaxScore()});
-            count++;
+
+        int rank = 1;
+        while (!rankingData.isEmpty()) {
+            PlayerScore player = rankingData.poll();
+            System.out.println("Rank " + rank + ": " + player.getName() + " with score " + player.getMaxScore());
+            tableModel.addRow(new Object[]{rank,player.getName(),player.getMaxScore()});
+            rank++;
         }
         rankingTable = new JTable(tableModel);
-
-        JScrollPane scrollPane = new JScrollPane(rankingTable);
+        scrollPane = new JScrollPane(rankingTable);
         add(scrollPane);
         setVisible(true);
     }

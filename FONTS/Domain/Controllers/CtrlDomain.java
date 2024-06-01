@@ -205,6 +205,22 @@ public class CtrlDomain {
         return cage.getResult();
     }
 
+    public int[] getCells() {
+        KenkenCell[][] kCells = ctrlDomainKenken.getCurrentGame().getAllCells();
+
+        int s = ctrlDomainKenken.getCurrentGameSize();
+        int[] cells = new int[s*s];
+
+        for (int i = 0; i < s; i++) {
+            for (int j = 0; j < s; j++) {
+                if (kCells[i][j].isLocked()) cells[i*s + j] = kCells[i][j].getValue();
+                else cells[i*s + j] = 0;
+            }
+        }
+
+        return cells;
+    }
+
     public int[] getSolutionCells() {
         KenkenCell[][] kCells = ctrlDomainKenken.getSolution();
 
@@ -256,5 +272,17 @@ public class CtrlDomain {
 
     public boolean saveCurrentGame(String gameName) {
         return ctrlDomainKenken.saveKenken(gameName);
+    }
+
+    public void setLockedCells(int[] valCells) {
+        KenkenCell[][] cells = ctrlDomainKenken.getCurrentGame().getAllCells();
+        int s = ctrlDomainKenken.getCurrentGame().getSize();
+
+        for (int i = 0; i < valCells.length; ++i) {
+            if (valCells[i] != 0) {
+                cells[i/s][i%s].setValue(valCells[i]);
+                cells[i/s][i%s].setLocked();
+            }
+        }
     }
 }

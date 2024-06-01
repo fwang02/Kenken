@@ -7,7 +7,6 @@ import Persistence.CtrlKenkenFile;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
-//import java.util.Scanner;
 
 /**
  * @author Javier Parcerisas
@@ -18,7 +17,7 @@ public class CtrlDomainKenken {
     private HashSet<Operation> opSet;
     private ArrayList<KenkenCage> cages;
 
-	private CtrlKenkenFile CKF;
+	private final CtrlKenkenFile CKF;
 
 	public CtrlDomainKenken() {
 		currentGame = null;
@@ -67,17 +66,12 @@ public class CtrlDomainKenken {
         KenkenConfig kenkenConfig = new KenkenConfig(kenken);
         kenkenConfig.generateKenkenV1();
         currentGame = kenken;
-		return currentGame != null;
+		return true;
 	}
 
     public boolean solveCurrentGame() {
     	KenkenConfig kenkenConfig = new KenkenConfig(currentGame);
-    	if(kenkenConfig.solveKenken()) {
-    		return true;
-    	}
-    	else {
-    		return false;
-    	}
+        return kenkenConfig.solveKenken();
     }
 
     public boolean solveKenkenByFile(String fileName) {
@@ -97,7 +91,7 @@ public class CtrlDomainKenken {
 		Kenken kenken = CKF.readKenkenByFile(file);
 		if(kenken == null) return false;
 		KenkenConfig kenkenConfig = new KenkenConfig(kenken);
-		if(kenkenConfig.solveKenken()) {
+		if (kenkenConfig.solveKenken()) {
 			currentGame = kenken;
 			return true;
 		}
@@ -107,8 +101,7 @@ public class CtrlDomainKenken {
 	}
 
 	public boolean saveKenken(String gameName) {
-		if (CKF.saveKenkenGame(currentGame, gameName)) return true;
-		else return false;
+        return CKF.saveKenkenGame(currentGame, gameName);
 	}
 
 	public boolean continueKenken(String fileName) {

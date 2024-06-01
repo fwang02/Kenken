@@ -210,24 +210,8 @@ public class Kenken {
     }
 
     public void resetCages() {
-        System.out.println("ArrayList before clear: " + cages);
         cages.clear();
-        System.out.println("ArrayList after clear: " + cages);
     }
-    /*
-    public boolean check(int[] values) {
-        int s = getSize();
-        for (int i = 0; i < s; ++i) {
-            int x = i / s;
-            int y = i % s;
-            if (values[i] == 0) return false;
-            if (values[i] != 0) {
-                int correctValue = getCell(x, y).getValue();
-                if (values[i] != correctValue) return false;
-            }
-        }
-        return true;
-    }*/
 
     public int getPoints() {
         if (!solved) return -1;

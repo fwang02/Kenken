@@ -157,7 +157,6 @@ public class GameView extends View {
 
         if (gameName != null && !gameName.trim().isEmpty()) {
             if (CtrlPresentation.isValid()) {
-                // CtrlPresentation.saveGridToFile(gameName, panel.convertGridToString());
                 JOptionPane.showMessageDialog(this, "Game saved successfully.", "Save", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 JOptionPane.showMessageDialog(this, "The game is not valid and cannot be saved.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -209,6 +208,18 @@ public class GameView extends View {
             int res = ctrlPresentation.getCageRes(i);
 
             DrawLayout.setCage(cellsX, cellsY, op, res);
+        }
+        getCells();
+    }
+
+    private void getCells() {
+        int[] cells = ctrlPresentation.getCells();
+        int size = ctrlPresentation.getKenkenSize();
+
+        for (int i = 0; i < cells.length; ++i) {
+            int x = i / size;
+            int y = i % size;
+            panel.setCell(x, y, cells[i]);
         }
     }
 

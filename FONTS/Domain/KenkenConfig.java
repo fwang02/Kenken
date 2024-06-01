@@ -294,6 +294,7 @@ public class KenkenConfig  {
 			for (int i = ii; i < cage.getCageSize(); ++i) {
 				int x = cage.getPos(i).posX;
 				int y = cage.getPos(i).posY;
+				if (kenken.getCell(x, y).isLocked()) continue; // if the number is locked go to the next cell
 				for (int v = 1; v <= kenken.getSize(); ++v) {
 					if (check(v, x, y)) {
 						kenken.getCell(x, y).setValue(v);

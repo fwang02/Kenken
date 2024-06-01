@@ -49,7 +49,7 @@ public class CtrlKenkenFile {
 		}
 	}
 
-    private Kenken getKenkenByFile(Scanner scanner) {
+	private Kenken getKenkenByFile(Scanner scanner) {
 		int size;
 		KenkenCell[][] cells;
 		HashSet<Operation> opSet;
@@ -93,7 +93,9 @@ public class CtrlKenkenFile {
 
 						cells[posX][posY] = new KenkenCell(posX, posY, val, true);
 						offset++;
-					} else cells[posX][posY] = new KenkenCell(posX, posY, 0, false);
+					} else {
+						cells[posX][posY] = new KenkenCell(posX, posY, 0, false);
+					}
 
 					posCells[i] = new Pos(posX, posY);
 				}
@@ -120,21 +122,20 @@ public class CtrlKenkenFile {
 			myWriter.write(Integer.toString(size) + " " + Integer.toString(ncages) + "\n");
 
 			ArrayList<KenkenCage> cages = kenken.getAllCages();
-			KenkenCage cage;
 			Pos p;
 			int cont;
 
-			for(int i = 0; i < ncages; ++i) {
-				cage = kenken.getCage(i);
+			for(KenkenCage cage : cages) {
 				int op = getOperationNumber(cage.getOperation());
 				int res = cage.getResult();
 				int e = cage.getCageSize();
 				myWriter.write(Integer.toString(op) + " " + Integer.toString(res) + " " + Integer.toString(e));
-				for(int j = 0; j < e; ++j) {
-					p = cage.getPos(j);
+				for (int i = 0; i < e; ++i) {
+					p = cage.getPos(i);
 					cont = kenken.getCell(p).getValue();
-					if (j == (e-1)) myWriter.write(" " + Integer.toString(p.posX+1) + " " + Integer.toString(p.posY+1) + " " + "["+Integer.toString(cont)+"]" + "\n"); 
-					else myWriter.write(" " + Integer.toString(p.posX+1) + " " + Integer.toString(p.posY+1) + " " + "["+Integer.toString(cont)+"]");
+					myWriter.write(" " + Integer.toString(p.posX+1) + " " + Integer.toString(p.posY+1));
+					if (kenken.getCell(p).isLocked()) myWriter.write(" " + "["+Integer.toString(cont)+"]");
+					if (i == e - 1) myWriter.write("\n");
 				}
 			}
 

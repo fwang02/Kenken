@@ -78,7 +78,6 @@ public class PlayOptionView extends View {
     private void initTextPanel() {
         textPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
         textPanel.setLayout(new BorderLayout());
-        //textPanel.add(title,BorderLayout.SOUTH);
         textPanel.add(loginWelcome,BorderLayout.WEST);
 
         logoutButton.setForeground(Color.BLUE);

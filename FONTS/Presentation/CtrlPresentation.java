@@ -18,10 +18,10 @@ import java.util.PriorityQueue;
 public class CtrlPresentation {
 
     private static CtrlDomain ctrlDomain;
-    private MainMenuView mainMenuView;
+    private final MainMenuView mainMenuView;
     private PlayOptionView playOptionView;
     private GameView gameView;
-    private GameCreatorView gameCreatorView;
+    private final GameCreatorView gameCreatorView;
 
     public CtrlPresentation () {
         ctrlDomain = new CtrlDomain();
@@ -157,6 +157,10 @@ public class CtrlPresentation {
         gameCreatorView.initGameCreator(selectedSize);
     }
 
+    public int[] getCells() {
+        return ctrlDomain.getCells();
+    }
+
     public int[] getSolutionCells() {
         return ctrlDomain.getSolutionCells();
     }
@@ -183,5 +187,9 @@ public class CtrlPresentation {
 
     public boolean saveCurrentGame(String gameName) {
         return ctrlDomain.saveCurrentGame(gameName);
+    }
+
+    public void setLockedCells(int[] valCells) {
+        ctrlDomain.setLockedCells(valCells);
     }
 }

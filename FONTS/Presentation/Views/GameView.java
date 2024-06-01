@@ -140,18 +140,6 @@ public class GameView extends View {
                     "Save Game",
                     JOptionPane.PLAIN_MESSAGE
             );
-
-            if (gameName != null && !gameName.trim().isEmpty()) {
-                if (CtrlPresentation.isValid()) {
-                    // CtrlPresentation.saveGridToFile(gameName, panel.convertGridToString());
-                    JOptionPane.showMessageDialog(this, "Game saved successfully.", "Save", JOptionPane.INFORMATION_MESSAGE);
-                    ctrlPresentation.gameViewToPlayOptionView();
-                } else {
-                    JOptionPane.showMessageDialog(this, "The game is not valid and cannot be saved.", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            } else if (gameName != null) {
-                JOptionPane.showMessageDialog(this, "The game name cannot be blank.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
         } else {
             remove(panel);
             ctrlPresentation.gameViewToPlayOptionView();

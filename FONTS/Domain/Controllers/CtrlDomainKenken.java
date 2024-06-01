@@ -106,8 +106,8 @@ public class CtrlDomainKenken {
 		}
 	}
 
-	public boolean saveKenken() {
-		if (CKF.saveKenkenGame(currentGame, "cacatua")) return true;
+	public boolean saveKenken(String gameName) {
+		if (CKF.saveKenkenGame(currentGame, gameName)) return true;
 		else return false;
 	}
 

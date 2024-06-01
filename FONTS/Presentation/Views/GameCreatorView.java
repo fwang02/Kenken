@@ -29,8 +29,7 @@ public class GameCreatorView extends View {
                         "Use keyboard to input numbers\n" +
                         "Use 0 or backspace to delete numbers\n" +
                         "Use spacebar to add a cage\n" +
-                        "Double click on a cage to edit\n\n" +
-                        "Kenken Name:"
+                        "Double click on a cage to edit\n"
         );
         txt.setAutoscrolls(true);
         txt.setEditable(false);
@@ -40,9 +39,6 @@ public class GameCreatorView extends View {
 
         JPanel centerPanel = new JPanel();
         p2.add(centerPanel, BorderLayout.CENTER);
-
-        JTextField name = new JTextField(10);
-        centerPanel.add(name);
 
         JButton play = new JButton("Play");
         centerPanel.add(play);
@@ -65,7 +61,7 @@ public class GameCreatorView extends View {
         save.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                onSaveButtonClicked(name.getText());
+                onSaveButtonClicked();
             }
         });
 
@@ -87,11 +83,31 @@ public class GameCreatorView extends View {
         }
     }
 
-    private void onSaveButtonClicked(String gameName) {
+    private void onSaveButtonClicked() {
         // Handle save button click
-        if (gameName == null || gameName.trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "The game name cannot be blank.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
+        System.out.println("SAVE CREATED KENKEN");
+        if (loadToCurrentGame()) {
+            String gameName = JOptionPane.showInputDialog(
+                    null,
+                    "Enter the game name to save:",
+                    "Save Game",
+                    JOptionPane.PLAIN_MESSAGE
+            );
+
+            if (!gameName.trim().isEmpty()) {
+                if (ctrlPresentation.saveCurrentGame(gameName)){
+                    JOptionPane.showMessageDialog(this, "Juego guardado.", "Save", JOptionPane.INFORMATION_MESSAGE);
+                    ctrlPresentation.gameCreatorViewToPlayOptionView();
+                }
+                else {
+                    JOptionPane.showMessageDialog(this, "Se ha producido un error al guardar.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "The game name cannot be blank.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        else {
+            JOptionPane.showMessageDialog(null, "El kenken no tiene solución", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -107,25 +123,8 @@ public class GameCreatorView extends View {
 
         // Handle the user's response
         if (response == JOptionPane.OK_OPTION) {
-            // User chose to save, show save dialog and handle saving
-            String gameName = JOptionPane.showInputDialog(
-                    this,
-                    "Enter the game name to save:",
-                    "Save Game",
-                    JOptionPane.PLAIN_MESSAGE
-            );
-
-            if (gameName != null && !gameName.trim().isEmpty()) {
-                if (CtrlPresentation.isValid()) {
-                    //CtrlPresentation.saveGridToFile(gameName, panel.convertGridToString());
-                    JOptionPane.showMessageDialog(this, "Game saved successfully.", "Save", JOptionPane.INFORMATION_MESSAGE);
-                    ctrlPresentation.gameCreatorViewToPlayOptionView();
-                } else {
-                    JOptionPane.showMessageDialog(this, "The game is not valid and cannot be saved.", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            } else if (gameName != null) {
-                JOptionPane.showMessageDialog(this, "The game name cannot be blank.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
+            // User chose to save
+            onSaveButtonClicked();
         }
         else {
             remove(panel);

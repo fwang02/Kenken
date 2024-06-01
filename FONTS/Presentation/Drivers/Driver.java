@@ -250,7 +250,7 @@ public class Driver {
                 if(board[i][j] == 0) {
                     hintGived = true;
                     int v = cells[i][j].getValue();
-                    CD.incrHints();
+                    //CD.incrHints();
                     int x = i + 1;
                     int y = j + 1;
                     System.out.println("Prueba con poner " + v + " en la casilla x: " + x + " y: " + y + " Puede que funcione");

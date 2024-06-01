@@ -180,4 +180,8 @@ public class CtrlPresentation {
     public int[] hint(int[] values) {
         return ctrlDomain.hintCurrent(values);
     }
+
+    public boolean saveCurrentGame(String gameName) {
+        return ctrlDomain.saveCurrentGame(gameName);
+    }
 }

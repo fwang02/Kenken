@@ -254,4 +254,7 @@ public class CtrlDomain {
         ctrlDomainKenken.getDomainCells(size);
     }
 
+    public boolean saveCurrentGame(String gameName) {
+        return ctrlDomainKenken.saveKenken(gameName);
+    }
 }

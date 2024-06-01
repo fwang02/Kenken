@@ -119,8 +119,8 @@ public class CtrlDomain {
         ctrlDomainKenken.incrHintsCurrGame();
     }
 
-    public int checkBoard() {
-        return ctrlDomainKenken.check();
+    public boolean checkCurrent(int[] values) {
+        return ctrlDomainKenken.checkCurrentGame(values);
     }
 
     public void resetBoard() {

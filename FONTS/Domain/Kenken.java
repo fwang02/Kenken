@@ -208,31 +208,18 @@ public class Kenken {
         }
     }
 
-    public int check() {
-        if (solved) return 0;
-        int incorrect = 0;
-        int correct = 0;
-        int undefined = 0;
-        for (int i = 0; i < getSize(); ++i) {
-            for (int j = 0; j < getSize(); ++j) {
-                if (board[i][j] == 0) ++undefined;
-                if (board[i][j] != 0) {
-                    int correctValue = getCell(i, j).getValue();
-                    int x = i + 1;
-                    int y = j + 1;
-                    if (board[i][j] != correctValue) {
-                        ++incorrect;
-                    } else {
-                        ++correct;
-                    }
-                }
+    public boolean check(int[] values) {
+        int s = getSize();
+        for (int i = 0; i < s; ++i) {
+            int x = i / s;
+            int y = i % s;
+            if (values[i] == 0) return false;
+            if (values[i] != 0) {
+                int correctValue = getCell(x, y).getValue();
+                if (values[i] != correctValue) return false;
             }
         }
-        if (incorrect == 0 && correct == (getSize() * getSize()) && undefined == 0) {
-            solved = true;
-            return getPoints();
-        } else if (incorrect != 0) return -1;
-        else return -2;
+        return true;
     }
 
     public int getPoints() {

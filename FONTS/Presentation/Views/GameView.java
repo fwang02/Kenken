@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.concurrent.TimeUnit;
+import java.util.ArrayList;
 
 /**
  * @author Romeu Esteve
@@ -33,9 +34,9 @@ public class GameView extends View {
         add(p2, BorderLayout.EAST);
         p2.setPreferredSize(new Dimension(200, 300));
         JTextArea txt = new JTextArea(
-                "Select area with mouse\n" +
-                        "Use keyboard to input numbers\n" +
-                        "Use 0 or backspace to delete numbers\n"
+                "Selecciona el area con el raton\n" +
+                "Utiliza el teclado para insertar numeros\n" +
+                "Utiliza 0 o delete para eliminar los numeros\n"
         );
         txt.setAutoscrolls(true);
         txt.setEditable(false);
@@ -176,7 +177,14 @@ public class GameView extends View {
 
     private void onSubmitButtonClicked() {
         // Handle submit button click
-        if (/*ctrlPresentation.()*/true) {
+        int[] values = panel.getValCells();
+        /*
+        for(int i = 0; i < val.length; ++i) {
+            System.out.println(val[i]);
+        }
+        */
+
+        if (ctrlPresentation.check(values)) {
             JOptionPane.showMessageDialog(this, "Congratulations! The solution is correct.", "Success", JOptionPane.INFORMATION_MESSAGE);
         } else {
             JOptionPane.showMessageDialog(this, "The solution is incorrect. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);

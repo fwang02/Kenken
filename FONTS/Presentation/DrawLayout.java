@@ -5,12 +5,13 @@ import java.awt.*;
 
 public class DrawLayout extends JPanel {
     private static DrawCell[][] cells;
+    private int lenght;
     GridLayout grid;
 
     // Constructora para panel editable
     public DrawLayout(int size, boolean playing) {
         super(new GridLayout(size, size));
-
+        this.lenght = size;
         initLayout(size, playing);
 
     }
@@ -55,5 +56,23 @@ public class DrawLayout extends JPanel {
 
     public int getNCages() {
         return DrawCell.getNCages();
+    }
+
+    public int getLenght() {
+        return lenght;
+    }
+
+    public int[] getValCells() {
+        
+        int s = getLenght();
+        int[] values = new int[s*s];
+
+        for(int i = 0; i < s*s; ++i) {
+            int x = i / s;
+            int y = i % s;
+            values[i] = cells[x][y].getNumber();
+        }
+
+        return values;
     }
 }

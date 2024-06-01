@@ -166,6 +166,12 @@ public class DrawCell extends JPanel {
         mainLabel.setText(number > 0 ? number + "" : "");
     }
 
+    public int getNumber() {
+        String n = mainLabel.getText().trim();
+        if(n.isEmpty()) return 0;
+        else return Integer.valueOf(n);
+    }
+
     public void setOp(String op) {
         smallLabel.setText(op);
     }

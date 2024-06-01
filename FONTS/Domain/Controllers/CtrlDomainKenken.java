@@ -162,8 +162,9 @@ public class CtrlDomainKenken {
 		currentGame.incrHints();
 	}
 
-    public int check() {
-    	return currentGame.check();}
+    public boolean checkCurrentGame(int[] values) {
+    	return currentGame.check(values);
+	}
 
     public int getPoints() {
     	return currentGame.getPoints();

@@ -173,4 +173,8 @@ public class CtrlPresentation {
         return ctrlDomain.solveCurrent();
     }
 
+    public boolean check(int[] values) {
+        return ctrlDomain.checkCurrent(values);
+    }
+
 }

@@ -65,6 +65,10 @@ public class CtrlDomainKenken {
         Kenken kenken = new Kenken(size,ops,difficulty);
         KenkenConfig kenkenConfig = new KenkenConfig(kenken);
         kenkenConfig.generateKenkenV1();
+		// Set all cells as unlocked
+		for (KenkenCell[] row : kenken.getAllCells()){
+			for (KenkenCell c : row) c.setUnlocked();
+		}
         currentGame = kenken;
 		return true;
 	}

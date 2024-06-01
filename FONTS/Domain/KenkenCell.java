@@ -45,6 +45,10 @@ public class KenkenCell {
         locked = true;
     }
 
+    public void setUnlocked() {
+        locked = false;
+    }
+
     public boolean isLocked() {
         return locked;
     }

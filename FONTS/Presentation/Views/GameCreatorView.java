@@ -80,7 +80,6 @@ public class GameCreatorView extends View {
     private void onPlayButtonClicked() {
         // Handle play button click
         System.out.println("Play button clicked");
-        // You can add more logic here to start the game or switch to game play view
 
         if (loadToCurrentGame()) {
             ctrlPresentation.gameCreatorViewToGameView();

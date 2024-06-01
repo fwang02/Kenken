@@ -24,19 +24,19 @@ public class RankingPanel extends JPanel {
             }
         };
 
-        tableModel.addColumn("Rank");
-        tableModel.addColumn("Username");
-        tableModel.addColumn("Max point");
+        tableModel.addColumn("Rango");
+        tableModel.addColumn("Usuario");
+        tableModel.addColumn("Puntos");
 
         PriorityQueue<PlayerScore> rankingData =  new PriorityQueue<>(ctrlPresentation.getRanking());
         // Format the ranking data as a string
         StringBuilder rankingDataString = new StringBuilder();
-        rankingDataString.append("Rank   Username  MaxPoint\n");
+        rankingDataString.append("Rango   Usuario  Puntos\n");
 
         int rank = 1;
         while (!rankingData.isEmpty()) {
             PlayerScore player = rankingData.poll();
-            System.out.println("Rank " + rank + ": " + player.getName() + " with score " + player.getMaxScore());
+            System.out.println("Rango " + rank + ": " + player.getName() + " con puntuación " + player.getMaxScore());
             tableModel.addRow(new Object[]{rank,player.getName(),player.getMaxScore()});
             rank++;
         }

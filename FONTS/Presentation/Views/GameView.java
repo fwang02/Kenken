@@ -179,6 +179,11 @@ public class GameView extends View {
         // Handle submit button click
         int[] values = panel.getValCells();
 
+        System.out.println("VALORES DEL TABLERO");
+        for(int i = 0; i < values.length; ++i) {
+            System.out.println(values[i]);
+        }
+
         if (ctrlPresentation.check(values)) {
             JOptionPane.showMessageDialog(this, "Congratulations! The solution is correct.", "Success", JOptionPane.INFORMATION_MESSAGE);
         } else {
@@ -194,8 +199,15 @@ public class GameView extends View {
 
     private void onHintButtonClicked() {
         // Handle hint button click
-        //ctrlPresentation.showHint();
-        JOptionPane.showMessageDialog(this, "Hint displayed.", "Hint", JOptionPane.INFORMATION_MESSAGE);
+        int[] values = panel.getValCells();
+        int[] hint = ctrlPresentation.hint(values);
+        if(hint[0] == 0 && hint[1] == 0 && hint[2] == 0) {
+            JOptionPane.showMessageDialog(this, "Prueba a Resolver", "Hint", JOptionPane.INFORMATION_MESSAGE);
+        }
+        else {
+            JOptionPane.showMessageDialog(this, "Pueba con " + hint[2] + " en la casilla x:" + (hint[0]+1)
+            + " y:" + (hint[1]+1), "Hint", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
     /**

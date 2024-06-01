@@ -213,7 +213,7 @@ public class Kenken {
         cages.clear();
         System.out.println("ArrayList after clear: "+cages);
     }
-
+    /*
     public boolean check(int[] values) {
         int s = getSize();
         for (int i = 0; i < s; ++i) {
@@ -226,7 +226,7 @@ public class Kenken {
             }
         }
         return true;
-    }
+    }*/
 
     public int getPoints() {
         if (!solved) return -1;

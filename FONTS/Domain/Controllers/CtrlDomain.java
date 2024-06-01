@@ -115,8 +115,11 @@ public class CtrlDomain {
         return ctrlDomainKenken.deleteNumberBoard(a,b);
     }
 
-    public void incrHints() {
+    
+
+    public int[] hintCurrent(int[] values) {
         ctrlDomainKenken.incrHintsCurrGame();
+        return ctrlDomainKenken.hintCurrentGame(values);
     }
 
     public boolean checkCurrent(int[] values) {
@@ -249,7 +252,4 @@ public class CtrlDomain {
         ctrlDomainKenken.getDomainCells(size);
     }
 
-    public boolean solveCurrentGame() {
-        return ctrlDomainKenken.solveCurrentGame();
-    }
 }

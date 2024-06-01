@@ -162,12 +162,47 @@ public class CtrlDomainKenken {
 		return currentGame.getAllCells();
 	}
 
+	public int[] hintCurrentGame(int[] values) {
+		int[] hint;
+        int s = currentGame.getSize();
+        for(int i = 0; i < s*s; ++i) {
+            if(values[i] == 0) {
+                int x = i / s;
+                int y = i % s;
+                int res = currentGame.getCell(x, y).getValue();
+                hint = new int[] {x, y, res};
+                return hint;
+            }
+        }
+		for(int i = 0; i < s*s; ++i) {
+			int x = i / s;
+            int y = i % s;
+            if(values[i] != currentGame.getCell(x, y).getValue()) {
+                int res = currentGame.getCell(x, y).getValue();
+                hint = new int[] {x, y, res};
+                return hint;
+            }
+        }
+        hint = new int[] {0,0,0};
+        return hint;
+    }
+
 	public void incrHintsCurrGame() {
 		currentGame.incrHints();
 	}
 
     public boolean checkCurrentGame(int[] values) {
-    	return currentGame.check(values);
+    	int s = currentGame.getSize();
+        for (int i = 0; i < s*s; ++i) {
+            int x = i / s;
+            int y = i % s;
+            if (values[i] == 0) return false;
+            if (values[i] != 0) {
+                int correctValue = currentGame.getCell(x, y).getValue();
+                if (values[i] != correctValue) return false;
+            }
+        }
+        return true;
 	}
 
     public int getPoints() {

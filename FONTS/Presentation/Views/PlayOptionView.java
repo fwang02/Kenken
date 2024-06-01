@@ -30,6 +30,12 @@ public class PlayOptionView extends View {
     private JLabel title = new JLabel("Opciones para jugar",SwingConstants.CENTER);
     private JLabel loginWelcome = new JLabel();
     private JButton logoutButton = new JButton("Cerrar sesión");
+    
+    //Componentes del ranking
+    private JButton rankingButton = new JButton("Ranking");
+    private JButton bExitRanking = new JButton("Volver");
+    private RankingPanel rankingPanel;
+    private JPanel pExitRanking = new JPanel(new FlowLayout());
 
     //Componentes para la ventana de creación
     private JPanel creationPanel = new JPanel();
@@ -114,10 +120,10 @@ public class PlayOptionView extends View {
     }
 
     private void initFrame() {
-        setBounds(500, 300, 500, 300);
+        setBounds(750, 450, 750, 450);
         setResizable(false);
-        setLocationRelativeTo(null);
         setLayout(new BorderLayout());
+        setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
@@ -174,6 +180,11 @@ public class PlayOptionView extends View {
         createButton.setMaximumSize(buttonSize);
         createButton.setPreferredSize(buttonSize);
 
+        rankingButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        rankingButton.setMinimumSize(buttonSize);
+        rankingButton.setMaximumSize(buttonSize);
+        rankingButton.setPreferredSize(buttonSize);
+
         playOptionPanel.setLayout(new BoxLayout(playOptionPanel,BoxLayout.X_AXIS));
         // Añadir botones a la vista
         playOptionPanel.add(Box.createHorizontalGlue());
@@ -184,6 +195,8 @@ public class PlayOptionView extends View {
         playOptionPanel.add(playExistButton);
         playOptionPanel.add(Box.createHorizontalStrut(10));
         playOptionPanel.add(createButton);
+        playOptionPanel.add(Box.createHorizontalStrut(10));
+        playOptionPanel.add(rankingButton);
         playOptionPanel.add(Box.createHorizontalGlue());
         add(playOptionPanel, BorderLayout.CENTER);
     }
@@ -276,6 +289,40 @@ public class PlayOptionView extends View {
                     ctrlPresentation.setGameCreatorSize(selectedSize);
                     ctrlPresentation.playOptionViewToGameCreatorView();
                 }
+            }
+        });
+
+        rankingButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                rankingPanel = new RankingPanel(ctrlPresentation);
+                remove(title);
+                remove(playOptionPanel);
+                remove(generateNewButton);
+                remove(openFileButton);
+                remove(playExistButton);
+                remove(createButton);
+                remove(textPanel);
+                remove(rankingButton);
+                remove(loginWelcome);
+                remove(logoutButton);
+                remove(textPanel);
+                pExitRanking.add(bExitRanking);
+                add(rankingPanel,BorderLayout.CENTER);
+                add(pExitRanking,BorderLayout.SOUTH);
+                revalidate();
+                repaint();
+            }
+        });
+        
+        bExitRanking.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                remove(rankingPanel);
+                remove(pExitRanking);
+                addCompPlayMenu();
+                revalidate();
+                repaint();
             }
         });
 
@@ -379,6 +426,11 @@ public class PlayOptionView extends View {
                 }
             });
         }
+    }
+    
+    private void addCompPlayMenu() {
+        add(textPanel,BorderLayout.NORTH);
+        add(playOptionPanel,BorderLayout.CENTER);
     }
 
     private void playOptionToCreation() {

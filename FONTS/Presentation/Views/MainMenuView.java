@@ -31,6 +31,7 @@ public class MainMenuView extends View {
         setResizable(false);
         setTitle("Kenken PROP");
         setLayout(new BorderLayout());
+        setLocationRelativeTo(null);
 
         // Title window
         title.setBounds(10, 5, 120, 30);

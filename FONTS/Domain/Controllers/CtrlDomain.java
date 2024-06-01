@@ -49,6 +49,10 @@ public class CtrlDomain {
         return ctrlDomainUser.getRanking();
     }
 
+    public boolean solveCurrent() {
+        return ctrlDomainKenken.solveCurrentGame();
+    }
+
     public boolean openKenkenByFile(String fileName) {
         return ctrlDomainKenken.solveKenkenByFile(fileName);
     }

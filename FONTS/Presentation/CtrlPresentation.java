@@ -169,5 +169,8 @@ public class CtrlPresentation {
         ctrlDomain.initCurrentGame(size);
     }
 
+    public boolean solve() {
+        return ctrlDomain.solveCurrent();
+    }
 
 }

@@ -70,11 +70,9 @@ public class CtrlDomainKenken {
 		return currentGame != null;
 	}
 
-    public boolean solveKenkenByUserParameters(int size, HashSet<Operation> operations, TypeDifficulty dificult, ArrayList<KenkenCage> cages, KenkenCell[][] cells) {
-    	Kenken kenken = new Kenken(size, operations, dificult, cages, cells);
-    	KenkenConfig kenkenConfig = new KenkenConfig(kenken);
+    public boolean solveCurrentGame() {
+    	KenkenConfig kenkenConfig = new KenkenConfig(currentGame);
     	if(kenkenConfig.solveKenken()) {
-    		currentGame = kenken;
     		return true;
     	}
     	else {

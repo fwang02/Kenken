@@ -104,10 +104,19 @@ public class CtrlDomainKenken {
 		}
 	}
 
-	public boolean saveKenken(String gameName) {
+	public boolean saveCurrentGame(String gameName, int[] values) {
+		int s = currentGame.getSize();
+		int[][] auxboard = new int[s][s];
+		for(int i = 0; i < s*s; ++i) {
+			int x = i / s;
+			int y = i % s;
+			auxboard[x][y] = values[i];
+		}
+		currentGame.setBoard(auxboard);
         return CKF.saveKenkenGame(currentGame, gameName);
 	}
 
+	/*
 	public boolean continueKenken(String fileName) {
 		Kenken kenken = CKF.loadKenkenByFile(fileName);
 		if(kenken == null) return false;
@@ -115,7 +124,7 @@ public class CtrlDomainKenken {
 			currentGame = kenken;
 			return true;
 		}
-	}
+	}*/
 
 	public boolean continueKenken(File file) {
 		Kenken kenken = CKF.loadKenkenByFile(file);
@@ -128,14 +137,6 @@ public class CtrlDomainKenken {
 
     // JUGAR CON EL KENKEN
 
-    public boolean insertNumberBoard(int x, int y, int v) {
-    	return currentGame.insertNumberBoard(x,y,v);
-    }
-
-    public boolean deleteNumberBoard(int x, int y) {
-    	return currentGame.deleteNumberBoard(x, y);
-    }
-
     public void resetBoard() {
     	currentGame.resetBoard();
     }
@@ -144,9 +145,16 @@ public class CtrlDomainKenken {
 		currentGame.resetCages();
 	}
 
-    public int[][] getBoard() {
-		//currentGame.showBoard();
-		return currentGame.getBoard();
+    public int[] getCurrentGameBoard() {
+		int[][] auxboard = currentGame.getBoard();
+		int s = currentGame.getSize();
+		int[] values = new int[s*s];
+		for(int i = 0; i < s*s; ++i) {
+			int x = i / s;
+			int y = i % s;
+			values[i] = auxboard[x][y];
+		}
+		return values;
 	}
 
     public ArrayList<KenkenCage> getCages() {

@@ -108,6 +108,10 @@ public class CtrlPresentation {
         return ctrlDomain.openKenkenByFile(fileName);
     }
 
+    public boolean continueGame(File file) {
+        return ctrlDomain.continueGame(file);
+    }
+
     public int getKenkenSize() {
         return ctrlDomain.getKenkenSize();
     }
@@ -157,6 +161,10 @@ public class CtrlPresentation {
         gameCreatorView.initGameCreator(selectedSize);
     }
 
+    public int[] getBoard() {
+        return ctrlDomain.getCurrentBoard();
+    }
+
     public int[] getCells() {
         return ctrlDomain.getCells();
     }
@@ -185,8 +193,8 @@ public class CtrlPresentation {
         return ctrlDomain.hintCurrent(values);
     }
 
-    public boolean saveCurrentGame(String gameName) {
-        return ctrlDomain.saveCurrentGame(gameName);
+    public boolean saveCurrentGame(String gameName, int[] values) {
+        return ctrlDomain.saveCurrent(gameName, values);
     }
 
     public void setLockedCells(int[] valCells) {

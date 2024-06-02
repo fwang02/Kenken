@@ -18,10 +18,6 @@ import java.util.*;
 public class CtrlKenkenFile {
     private static final CtrlKenkenFile CTRL_KENKEN_FILE = new CtrlKenkenFile();
     private Kenken currentGame;
-	/*private KenkenCell[][] cells;
-    private HashSet<Operation> opSet;
-    private ArrayList<KenkenCage> cages;*/
-    //private static final String filePath = "./DATA/";
 
     private CtrlKenkenFile() {
     }
@@ -108,14 +104,14 @@ public class CtrlKenkenFile {
 			return null;
 		}
 
-		return new Kenken(size, opSet, TypeDifficulty.EXPERT, cages, cells);
+		return new Kenken(size, opSet, TypeDifficulty.CUSTOM, cages, cells);
 	}
 
 	// PARA GUARDAR UNA PARTIDA
 	public boolean saveKenkenGame(Kenken kenken, String  UserFileName) {
 		try {
-			File savedGame = new File("../DATA/" + UserFileName + ".txt");
-			FileWriter myWriter = new FileWriter("../DATA/" + UserFileName + ".txt");
+			File savedGame = new File("../DATA/savedGames/" + UserFileName + ".txt");
+			FileWriter myWriter = new FileWriter("../DATA/savedGames/" + UserFileName + ".txt");
 
 			int size = kenken.getSize();
 			int ncages = kenken.getNumberCages();
@@ -224,7 +220,7 @@ public class CtrlKenkenFile {
 		}
 		scanner.close();
 
-		return new Kenken(size, opSet, TypeDifficulty.EXPERT, cages, cells, board);
+		return new Kenken(size, opSet, TypeDifficulty.CUSTOM, cages, cells, board);
 	}
 
     static Operation getOperation(int num) {

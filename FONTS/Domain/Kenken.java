@@ -184,21 +184,8 @@ public class Kenken {
         }
     }
 
-    public boolean insertNumberBoard(int x, int y, int v) {
-        if (x > getSize() || y > getSize() || x < 1 || y < 1) return false;
-        else if (v > getSize() || v < 1) return false;
-        else {
-            board[x - 1][y - 1] = v;
-            return true;
-        }
-    }
-
-    public boolean deleteNumberBoard(int x, int y) {
-        if (x > getSize() || y > getSize() || x < 1 || y < 1) return false;
-        else {
-            board[x - 1][y - 1] = 0;
-            return true;
-        }
+    public void setBoard(int[][] auxboard) {
+        board = auxboard;
     }
 
     public void resetBoard() {

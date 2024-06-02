@@ -25,6 +25,7 @@ public class PlayOptionView extends View {
     private JButton generateNewButton = new JButton("Generar");
     private JButton openFileButton = new JButton("<html>Abrir desde<br>fichero</html>");
     private JButton playExistButton = new JButton("<html>Jugar uno<br>existente</html>");
+    private JButton continueGameButton = new JButton("<html>Continuar<br>partida</html>");
     private JButton createButton = new JButton("Crear");
     private JPanel textPanel = new JPanel();
     private JLabel title = new JLabel("Opciones para jugar",SwingConstants.CENTER);
@@ -166,6 +167,11 @@ public class PlayOptionView extends View {
         generateNewButton.setMaximumSize(buttonSize);
         generateNewButton.setPreferredSize(buttonSize);
 
+        continueGameButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        continueGameButton.setMinimumSize(buttonSize);
+        continueGameButton.setMaximumSize(buttonSize);
+        continueGameButton.setPreferredSize(buttonSize);
+
         openFileButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         openFileButton.setMaximumSize(buttonSize);
 
@@ -188,6 +194,8 @@ public class PlayOptionView extends View {
         // Añadir botones a la vista
         playOptionPanel.add(Box.createHorizontalGlue());
         playOptionPanel.add(generateNewButton);
+        playOptionPanel.add(Box.createHorizontalStrut(10));
+        playOptionPanel.add(continueGameButton);
         playOptionPanel.add(Box.createHorizontalStrut(10));
         playOptionPanel.add(openFileButton);
         playOptionPanel.add(Box.createHorizontalStrut(10));
@@ -236,6 +244,26 @@ public class PlayOptionView extends View {
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Has clicado el botón "+ ((JButton) e.getSource()).getText());
                 playOptionToCreation();
+            }
+        });
+
+        continueGameButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Has clicado el botón "+ ((JButton) e.getSource()).getText());
+                JFileChooser fileChooser = new JFileChooser("../DATA/savedGames");
+                fileChooser.setFileFilter(new FileNameExtensionFilter("TXT files", "txt"));
+                int returnValue = fileChooser.showOpenDialog(null);
+                if (returnValue == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = fileChooser.getSelectedFile();
+                    System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+                    if(ctrlPresentation.continueGame(selectedFile)) {
+                        ctrlPresentation.playOptionViewToGameView();
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(null,"El fichero seleccionado no es válido","Error de lectura de fichero",JOptionPane.ERROR_MESSAGE);
+                    }
+                }
             }
         });
 
@@ -388,7 +416,7 @@ public class PlayOptionView extends View {
                 System.out.println("Has seleccionado la dificultad: " + diff);
 
                 if(ctrlPresentation.createKenken(size,selectedOp, diff)) {
-                    int result = JOptionPane.showConfirmDialog(null, "¿Quieres jugarlo ahora?",
+                    int result = JOptionPane.showConfirmDialog(null, "Ten en cuenta que un kenken puede tener diversas soluciones, el corrector funcionara con una de ellas",
                             "Opción de jugar", JOptionPane.OK_CANCEL_OPTION);
                     if (result == JOptionPane.OK_OPTION) {
                         ctrlPresentation.playOptionViewToGameView();

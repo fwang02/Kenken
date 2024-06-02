@@ -25,11 +25,10 @@ public class GameCreatorView extends View {
         add(p2, BorderLayout.EAST);
         p2.setPreferredSize(new Dimension(300, 450));
         JTextArea txt = new JTextArea(
-                "Select area with mouse\n" +
-                        "Use keyboard to input numbers\n" +
-                        "Use 0 or backspace to delete numbers\n" +
-                        "Use spacebar to add a cage\n" +
-                        "Double click on a cage to edit\n"
+                "Selecciona el area con el raton\n" +
+                "Pulsa 0 o delete para borrar numeros\n" +
+                "Pulsa espacio para añadir una región\n" +
+                "Doble click en una región para editarla\n"
         );
         txt.setAutoscrolls(true);
         txt.setEditable(false);
@@ -79,20 +78,20 @@ public class GameCreatorView extends View {
             ctrlPresentation.gameCreatorViewToGameView();
         }
         else {
-            JOptionPane.showMessageDialog(this, "El kenken no tiene solución");
+            JOptionPane.showMessageDialog(null, "El kenken no tiene solución","Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     private void onSaveButtonClicked() {
         // Handle save button click
-        if (loadToCurrentGame()) {
+       /* if (loadToCurrentGame()) {
             String gameName = JOptionPane.showInputDialog(
                     null,
                     "Enter the game name to save:",
                     "Save Game",
                     JOptionPane.PLAIN_MESSAGE
             );
-
+            
             if (!gameName.trim().isEmpty()) {
                 if (ctrlPresentation.saveCurrentGame(gameName)){
                     JOptionPane.showMessageDialog(this, "Juego guardado.", "Save", JOptionPane.INFORMATION_MESSAGE);
@@ -107,7 +106,7 @@ public class GameCreatorView extends View {
         }
         else {
             JOptionPane.showMessageDialog(null, "El kenken no tiene solución", "Error", JOptionPane.ERROR_MESSAGE);
-        }
+        }*/
     }
 
     private void onExitButtonClicked() {

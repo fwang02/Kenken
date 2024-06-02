@@ -157,7 +157,8 @@ public class GameView extends View {
             );
 
             if (!gameName.trim().isEmpty()) {
-                if (ctrlPresentation.saveCurrentGame(gameName)){
+                int[] values = panel.getValCells();
+                if (ctrlPresentation.saveCurrentGame(gameName, values)){
                     JOptionPane.showMessageDialog(this, "Juego guardado.", "Save", JOptionPane.INFORMATION_MESSAGE);
                     ctrlPresentation.gameCreatorViewToPlayOptionView();
                 }
@@ -198,8 +199,8 @@ public class GameView extends View {
             JOptionPane.showMessageDialog(this, "Prueba a Resolver", "Hint", JOptionPane.INFORMATION_MESSAGE);
         }
         else {
-            JOptionPane.showMessageDialog(this, "Pueba con " + hint[2] + " en la casilla x:" + (hint[0]+1)
-            + " y:" + (hint[1]+1), "Hint", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Pueba con " + hint[2] + " en la casilla x:" + (hint[1]+1)
+            + " y:" + (hint[0]+1), "Hint", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
@@ -216,17 +217,17 @@ public class GameView extends View {
 
             DrawLayout.setCage(cellsX, cellsY, op, res);
         }
-        getCells();
+        getBoard();
     }
 
-    private void getCells() {
-        int[] cells = ctrlPresentation.getCells();
+    private void getBoard() {
+        int[] board = ctrlPresentation.getBoard();
         int size = ctrlPresentation.getKenkenSize();
 
-        for (int i = 0; i < cells.length; ++i) {
+        for (int i = 0; i < board.length; ++i) {
             int x = i / size;
             int y = i % size;
-            panel.setCell(x, y, cells[i]);
+            panel.setCell(x, y, board[i]);
         }
     }
 
@@ -242,7 +243,7 @@ public class GameView extends View {
     }
 
     private void showSolution() {
-        int[] cells = ctrlPresentation.getSolutionCells();
+        int[] cells = ctrlPresentation.getCells();
         int size = ctrlPresentation.getKenkenSize();
 
         for (int i = 0; i < cells.length; ++i) {
@@ -270,7 +271,7 @@ public class GameView extends View {
             Object[] cage = panel.getCage(i);
             ctrlPresentation.setCage((int[]) cage[0], (int[]) cage[1], (int) cage[2], (int) cage[3]);
         }
-        ctrlPresentation.setLockedCells(panel.getValCells());
+        //ctrlPresentation.setLockedCells(panel.getValCells());
         return ctrlPresentation.solve();
     }
 }

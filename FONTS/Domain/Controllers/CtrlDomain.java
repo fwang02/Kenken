@@ -60,6 +60,10 @@ public class CtrlDomain {
         return ctrlDomainKenken.solveKenkenByFile(file);
     }
 
+    public boolean continueGame(File file) {
+        return ctrlDomainKenken.continueKenken(file);
+    }
+
     public boolean generateKenkenByDifficulty(int size, HashSet<Operation> operations, TypeDifficulty diff) {
         return ctrlDomainKenken.generateKenkenByDifficulty(size,operations,diff);
     }
@@ -102,20 +106,6 @@ public class CtrlDomain {
     public KenkenCell[][] printSolution() {
         return ctrlDomainKenken.getSolution();
     }
-
-    public int[][] printBoard() {
-        return ctrlDomainKenken.getBoard();
-    }
-
-    public boolean insertNumberBoard(int a, int b, int v) {
-        return ctrlDomainKenken.insertNumberBoard(a,b,v);
-    }
-
-    public boolean deleteNumberBoard(int a, int b) {
-        return ctrlDomainKenken.deleteNumberBoard(a,b);
-    }
-
-    
 
     public int[] hintCurrent(int[] values) {
         ctrlDomainKenken.incrHintsCurrGame();
@@ -205,6 +195,10 @@ public class CtrlDomain {
         return cage.getResult();
     }
 
+    public int[] getCurrentBoard() {
+        return ctrlDomainKenken.getCurrentGameBoard();
+    }
+
     public int[] getCells() {
         KenkenCell[][] kCells = ctrlDomainKenken.getCurrentGame().getAllCells();
 
@@ -213,8 +207,9 @@ public class CtrlDomain {
 
         for (int i = 0; i < s; i++) {
             for (int j = 0; j < s; j++) {
-                if (kCells[i][j].isLocked()) cells[i*s + j] = kCells[i][j].getValue();
-                else cells[i*s + j] = 0;
+                //if (kCells[i][j].isLocked()) cells[i*s + j] = kCells[i][j].getValue();
+                //else cells[i*s + j] = 0;
+                cells[i * s + j] = kCells[i][j].getValue();
             }
         }
 
@@ -270,8 +265,8 @@ public class CtrlDomain {
         ctrlDomainKenken.getDomainCells(size);
     }
 
-    public boolean saveCurrentGame(String gameName) {
-        return ctrlDomainKenken.saveKenken(gameName);
+    public boolean saveCurrent(String gameName, int[] values) {
+        return ctrlDomainKenken.saveCurrentGame(gameName, values);
     }
 
     public void setLockedCells(int[] valCells) {

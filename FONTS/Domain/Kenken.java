@@ -19,7 +19,7 @@ public class Kenken {
     private int[][] board;
     private int hints;
     private int points;
-    private boolean solved;
+    private boolean finished;
 
     public Kenken() {
         this.size = 0;
@@ -28,7 +28,7 @@ public class Kenken {
         this.operations = new HashSet<>();
         this.cages = new ArrayList<>();
         iniCells();
-        this.solved = false;
+        this.finished = false;
         this.board = new int[this.size][this.size];
 
     }
@@ -42,7 +42,7 @@ public class Kenken {
         this.cages = new ArrayList<>(k.getAllCages());
         iniCells();
         this.board = new int[this.size][this.size];
-        this.solved = false;
+        this.finished = false;
     }
 
     // PARA GENERAR Y RESOLVER KENKENS v1
@@ -54,7 +54,7 @@ public class Kenken {
         this.cages = new ArrayList<>();
         iniCells();
         this.board = new int[this.size][this.size];
-        this.solved = false;
+        this.finished = false;
     }
 
     // PARA RESOLVER KENKEN DESDE UN FICHERO
@@ -66,7 +66,7 @@ public class Kenken {
         this.cages = cages;
         this.cells = cells;
         this.board = new int[this.size][this.size];
-        this.solved = false;
+        this.finished = false;
     }
 
     // PARA CONTINUAR UN KENKEN 
@@ -78,7 +78,7 @@ public class Kenken {
         this.cages = cages;
         this.cells = cells;
         this.board = board;
-        this.solved = false;
+        this.finished = false;
     }
 
     public int getSize() {
@@ -200,8 +200,10 @@ public class Kenken {
         cages.clear();
     }
 
+    public void setFinished() { finished = true; }
+
     public int getPoints() {
-        if (!solved) return -1;
+        if (!finished) return -1;
         else {
             int multiplier = 1;
             switch (dificult) {

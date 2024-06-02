@@ -16,7 +16,6 @@ public class CtrlDomainKenken {
 	private KenkenCell[][] cells;
     private HashSet<Operation> opSet;
     private ArrayList<KenkenCage> cages;
-
 	private final CtrlKenkenFile CKF;
 
 	public CtrlDomainKenken() {
@@ -198,15 +197,18 @@ public class CtrlDomainKenken {
 
     public boolean checkCurrentGame(int[] values) {
     	int s = currentGame.getSize();
+		int correctCount = 0;
         for (int i = 0; i < s*s; ++i) {
             int x = i / s;
             int y = i % s;
-            if (values[i] == 0) return false;
+            //if (values[i] == 0) return false;
             if (values[i] != 0) {
                 int correctValue = currentGame.getCell(x, y).getValue();
+				++correctCount;
                 if (values[i] != correctValue) return false;
             }
         }
+		if(correctCount == s*s) currentGame.setFinished();
         return true;
 	}
 

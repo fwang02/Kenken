@@ -200,4 +200,8 @@ public class CtrlPresentation {
     public void setLockedCells(int[] valCells) {
         ctrlDomain.setLockedCells(valCells);
     }
+
+    public int getGamePoints() {
+        return ctrlDomain.getGamePoints();
+    }
 }

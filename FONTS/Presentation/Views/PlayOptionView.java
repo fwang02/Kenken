@@ -161,7 +161,7 @@ public class PlayOptionView extends View {
 
     private void initPlayOptionPanel() {
         playOptionPanel.setLayout(new GridLayout(2,3,50,50));
-        playOptionPanel.setBorder(new EmptyBorder(50, 50, 50, 60));
+        playOptionPanel.setBorder(new EmptyBorder(50, 50, 50, 50));
         // Añadir botones a la vista
         playOptionPanel.add(generateNewButton);
         playOptionPanel.add(continueGameButton);
@@ -175,7 +175,7 @@ public class PlayOptionView extends View {
     private void initDefaultGamesPanel() {
         defaultGamesPanel.setLayout(new BorderLayout());
 
-        JPanel basicPanel = new JPanel(new GridLayout(2,0));
+        JPanel basicPanel = new JPanel(new GridLayout(2,0,30,30));
         Border titledBorder = BorderFactory.createTitledBorder("Básicos");
         basicPanel.setBorder(titledBorder);
         String textBut;
@@ -185,7 +185,7 @@ public class PlayOptionView extends View {
             basicPanel.add(basicGamesB[i-3]);
         }
 
-        JPanel specialGamesPanel = new JPanel(new GridLayout());
+        JPanel specialGamesPanel = new JPanel(new GridLayout(1,2,30,30));
         titledBorder = BorderFactory.createTitledBorder("Especiales");
         specialGamesPanel.setBorder(titledBorder);
         String[] specialNames = {"Brick Wall", "Cacatua"};
@@ -195,10 +195,14 @@ public class PlayOptionView extends View {
         }
 
         JPanel exitPanel = new JPanel(new BorderLayout());
-
         exitPanel.add(exitDef,BorderLayout.EAST);
-        defaultGamesPanel.add(basicPanel,BorderLayout.CENTER);
-        defaultGamesPanel.add(specialGamesPanel,BorderLayout.NORTH);
+
+        JPanel gamesPanel = new JPanel();
+        gamesPanel.setLayout(new BoxLayout(gamesPanel,BoxLayout.Y_AXIS));
+        gamesPanel.add(basicPanel);
+        gamesPanel.add(specialGamesPanel);
+
+        defaultGamesPanel.add(gamesPanel,BorderLayout.CENTER);
         defaultGamesPanel.add(exitPanel,BorderLayout.SOUTH);
     }
 

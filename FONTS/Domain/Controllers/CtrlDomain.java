@@ -280,4 +280,8 @@ public class CtrlDomain {
             }
         }
     }
+
+    public int getGamePoints() {
+        return ctrlDomainKenken.getPoints();
+    }
 }

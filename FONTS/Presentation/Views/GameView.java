@@ -8,7 +8,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.concurrent.TimeUnit;
-import java.util.ArrayList;
 
 /**
  * @author Romeu Esteve
@@ -19,6 +18,7 @@ public class GameView extends View {
     private JLabel timerLabel;
     private Timer timer;
     private long startTime;
+    private boolean solutionShowed;
 
     public GameView(CtrlPresentation cp) {
         // Window
@@ -111,14 +111,8 @@ public class GameView extends View {
         });
 
         // Initialize and start the timer
-        startTime = System.currentTimeMillis();
-        timer = new Timer(1000, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                updateTimer();
-            }
-        });
-        timer.start();
+        timer = new Timer(1000, e -> updateTimer());
+
     }
 
     private void onExitButtonClicked() {
@@ -177,11 +171,19 @@ public class GameView extends View {
     private void onSubmitButtonClicked() {
         // Handle submit button click
         int[] values = panel.getValCells();
-
+        if(solutionShowed) {
+            JOptionPane.showMessageDialog(this, "Has visto la solucion", "Finished", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
         if (ctrlPresentation.check(values)) {
-            JOptionPane.showMessageDialog(this, "Congratulations! The solution is correct.", "Success", JOptionPane.INFORMATION_MESSAGE);
+            int gamePoints = ctrlPresentation.getGamePoints();
+            if(gamePoints == -1) JOptionPane.showMessageDialog(this, "Todas las casillas rellenadas son correctas", "Correcto", JOptionPane.INFORMATION_MESSAGE);
+            else {
+                JOptionPane.showMessageDialog(this, "¡Has solucionado todo correctamente\n Puntos: "+gamePoints, "Acabado", JOptionPane.INFORMATION_MESSAGE);
+                timer.stop();
+            }
         } else {
-            JOptionPane.showMessageDialog(this, "The solution is incorrect. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Algunas casillas no son correctas", "Incorrecta", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
@@ -189,6 +191,8 @@ public class GameView extends View {
         // Handle show solution button click
         showSolution();
         JOptionPane.showMessageDialog(this, "Solution displayed.", "Solution", JOptionPane.INFORMATION_MESSAGE);
+        solutionShowed = true;
+        timer.stop();
     }
 
     private void onHintButtonClicked() {
@@ -199,7 +203,7 @@ public class GameView extends View {
             JOptionPane.showMessageDialog(this, "Prueba a Resolver", "Hint", JOptionPane.INFORMATION_MESSAGE);
         }
         else {
-            JOptionPane.showMessageDialog(this, "Pueba con " + hint[2] + " en la casilla x:" + (hint[1]+1)
+            JOptionPane.showMessageDialog(this, "Prueba con " + hint[2] + " en la casilla x:" + (hint[1]+1)
             + " y:" + (hint[0]+1), "Hint", JOptionPane.INFORMATION_MESSAGE);
         }
     }
@@ -236,6 +240,11 @@ public class GameView extends View {
             panel.reset();
             remove(panel);
         }
+
+        startTime = System.currentTimeMillis();
+        timer.start();
+        solutionShowed = false;
+
         int size = ctrlPresentation.getKenkenSize();
         panel = new DrawLayout(size, true);
         loadKenken();
@@ -251,6 +260,7 @@ public class GameView extends View {
             int y = i % size;
             panel.setCell(x, y, cells[i]);
         }
+
     }
 
     private void updateTimer() {

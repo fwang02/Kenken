@@ -129,17 +129,6 @@ public class CtrlDomain {
         return ctrlDomainKenken.getCurrentGameSize();
     }
 
-    /*public int[][] getKenkenCells() {
-        int s = getKenkenSize();
-        int[][] cells = new int[s][s];
-
-        for (int i = 0; i < s; ++i) {
-            for (int j = 0; j < s; ++j) {
-                cells[i][j] = ctrlDomainKenken.getDomainCells()
-            }
-        }
-    }*/
-
     public boolean isUserExist(String username) {
         return ctrlDomainUser.isUserExist(username);
     }
@@ -207,23 +196,6 @@ public class CtrlDomain {
 
         for (int i = 0; i < s; i++) {
             for (int j = 0; j < s; j++) {
-                //if (kCells[i][j].isLocked()) cells[i*s + j] = kCells[i][j].getValue();
-                //else cells[i*s + j] = 0;
-                cells[i * s + j] = kCells[i][j].getValue();
-            }
-        }
-
-        return cells;
-    }
-
-    public int[] getSolutionCells() {
-        KenkenCell[][] kCells = ctrlDomainKenken.getSolution();
-
-        int s = ctrlDomainKenken.getCurrentGameSize();
-        int[] cells = new int[s*s];
-
-        for (int i = 0; i < s; i++) {
-            for (int j = 0; j < s; j++) {
                 cells[i * s + j] = kCells[i][j].getValue();
             }
         }
@@ -240,7 +212,6 @@ public class CtrlDomain {
         Operation o = CtrlDomainKenken.getOperation(op);
         ctrlDomainKenken.getCurrentGame().addOpCage(o, res, cells);
 
-        //System.out.println(ctrlDomainKenken.saveKenken());
     }
 
     public void initCurrentGame(int size) {
@@ -267,18 +238,6 @@ public class CtrlDomain {
 
     public boolean saveCurrent(String gameName, int[] values) {
         return ctrlDomainKenken.saveCurrentGame(gameName, values);
-    }
-
-    public void setLockedCells(int[] valCells) {
-        KenkenCell[][] cells = ctrlDomainKenken.getCurrentGame().getAllCells();
-        int s = ctrlDomainKenken.getCurrentGame().getSize();
-
-        for (int i = 0; i < valCells.length; ++i) {
-            if (valCells[i] != 0) {
-                cells[i/s][i%s].setValue(valCells[i]);
-                cells[i/s][i%s].setLocked();
-            }
-        }
     }
 
     public int getGamePoints() {

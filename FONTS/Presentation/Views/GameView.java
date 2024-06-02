@@ -39,9 +39,9 @@ public class GameView extends View {
                 "·Utiliza el teclado para insertar numeros\n" +
                 "·Utiliza 0 o delete para eliminar los numeros\n" +
                 "\n" +
-                "·Pulsa SUBMIT para comprobar la respuesta\n" +
-                "·Pulsa HINT para recibir una pista\n" +
-                "·Pulsa SOLVE para ver la solución\n"
+                "·Pulsa COMPROBAR para comprobar la respuesta\n" +
+                "·Pulsa PISTA para recibir una pista\n" +
+                "·Pulsa SOLUCIÓN para ver la solución\n"
         );
         txt.setAutoscrolls(true);
         txt.setEditable(false);
@@ -53,7 +53,7 @@ public class GameView extends View {
         p2.add(centerPanel, BorderLayout.CENTER);
 
         // Timer label
-        timerLabel = new JLabel("Time: 00:00:00");
+        timerLabel = new JLabel("Tiempo: 00:00:00");
         timerLabel.setHorizontalAlignment(SwingConstants.CENTER);
         p2.add(timerLabel, BorderLayout.CENTER);
 
@@ -62,11 +62,11 @@ public class GameView extends View {
         p2.add(southPanel, BorderLayout.SOUTH);
 
         // Create buttons
-        JButton submitButton = new JButton("Submit");
-        JButton saveButton = new JButton("Save");
-        JButton showSolutionButton = new JButton("Solve");
-        JButton hintButton = new JButton("Hint");
-        JButton exitButton = new JButton("Exit");
+        JButton submitButton = new JButton("Comprobar");
+        JButton saveButton = new JButton("Guardar");
+        JButton showSolutionButton = new JButton("Solución");
+        JButton hintButton = new JButton("Pista");
+        JButton exitButton = new JButton("Salir");
 
         // Add buttons to the south panel
         southPanel.add(submitButton);
@@ -125,8 +125,8 @@ public class GameView extends View {
 
         int response = JOptionPane.showConfirmDialog(
                 this,
-                "Do you want to save before exiting?",
-                "Exit",
+                "¿Quieres GUARDAR antes de salir?",
+                "Salir",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE
         );
@@ -136,8 +136,8 @@ public class GameView extends View {
             // User chose to save, show save dialog and handle saving
             String gameName = JOptionPane.showInputDialog(
                     this,
-                    "Enter the game name to save:",
-                    "Save Game",
+                    "Nombre de la partida guardada:",
+                    "Guardar Partida",
                     JOptionPane.PLAIN_MESSAGE
             );
         } else {
@@ -152,30 +152,26 @@ public class GameView extends View {
             return;
         }
         // Handle save button click
-        if (loadToCurrentGame()) {
-            String gameName = JOptionPane.showInputDialog(
-                    null,
-                    "Enter the game name to save:",
-                    "Save Game",
-                    JOptionPane.PLAIN_MESSAGE
-            );
+        String gameName = JOptionPane.showInputDialog(
+            null,
+            "Nombre de la partida guardada:",
+            "Guardar Partida",
+            JOptionPane.PLAIN_MESSAGE
+        );
 
-            if (!gameName.trim().isEmpty()) {
-                int[] values = panel.getValCells();
-                if (ctrlPresentation.saveCurrentGame(gameName, values)){
-                    JOptionPane.showMessageDialog(this, "Partida acabada.", "Guardar", JOptionPane.INFORMATION_MESSAGE);
-                    ctrlPresentation.gameCreatorViewToPlayOptionView();
-                }
-                else {
-                    JOptionPane.showMessageDialog(this, "Se ha producido un error al guardar.", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            } else {
-                JOptionPane.showMessageDialog(this, "Por favor, rellene el nombre del fichero.", "Error", JOptionPane.ERROR_MESSAGE);
+        if (!gameName.trim().isEmpty()) {
+            int[] values = panel.getValCells();
+            if (ctrlPresentation.saveCurrentGame(gameName, values)){
+                JOptionPane.showMessageDialog(this, "Partida acabada.", "Guardar", JOptionPane.INFORMATION_MESSAGE);
+                ctrlPresentation.gameCreatorViewToPlayOptionView();
             }
+            else {
+                JOptionPane.showMessageDialog(this, "Se ha producido un error al guardar.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Por favor, rellene el nombre del fichero.", "Error", JOptionPane.ERROR_MESSAGE);
         }
-        else {
-            JOptionPane.showMessageDialog(null, "El kenken no tiene solución", "Error", JOptionPane.ERROR_MESSAGE);
-        }
+        
     }
 
     private void onSubmitButtonClicked() {
@@ -224,7 +220,7 @@ public class GameView extends View {
 
     private void onHintButtonClicked() {
         if(finished) {
-            JOptionPane.showMessageDialog(this, "Partida acabada.", "Hint", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Partida acabada.", "Pista", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
 
@@ -232,11 +228,11 @@ public class GameView extends View {
         int[] values = panel.getValCells();
         int[] hint = ctrlPresentation.hint(values);
         if(hint[0] == 0 && hint[1] == 0 && hint[2] == 0) {
-            JOptionPane.showMessageDialog(this, "Prueba a Resolver", "Hint", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Prueba a Resolver", "Pista", JOptionPane.INFORMATION_MESSAGE);
         }
         else {
             JOptionPane.showMessageDialog(this, "Prueba con " + hint[2] + " en la casilla x:" + (hint[1]+1)
-            + " y:" + (hint[0]+1), "Hint", JOptionPane.INFORMATION_MESSAGE);
+            + " y:" + (hint[0]+1), "Pista", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
@@ -245,7 +241,7 @@ public class GameView extends View {
      */
     private void loadKenken() {
         int ncages = ctrlPresentation.getNCages();
-        for (int i = 0; i < ncages; ++i) { // i = index of cages of currentGame
+        for (int i = 0; i < ncages; ++i) { 
             int[] cellsX = ctrlPresentation.getCageCellsX(i);
             int[] cellsY = ctrlPresentation.getCageCellsY(i);
             char op = ctrlPresentation.getCageOp(i);
@@ -304,7 +300,7 @@ public class GameView extends View {
         long minutes = TimeUnit.MILLISECONDS.toMinutes(elapsedTime) % 60;
         long seconds = TimeUnit.MILLISECONDS.toSeconds(elapsedTime) % 60;
 
-        String timeString = String.format("Time: %02d:%02d:%02d", hours, minutes, seconds);
+        String timeString = String.format("Tiempo: %02d:%02d:%02d", hours, minutes, seconds);
         timerLabel.setText(timeString);
     }
 
@@ -314,7 +310,6 @@ public class GameView extends View {
             Object[] cage = panel.getCage(i);
             ctrlPresentation.setCage((int[]) cage[0], (int[]) cage[1], (int) cage[2], (int) cage[3]);
         }
-        //ctrlPresentation.setLockedCells(panel.getValCells());
         return ctrlPresentation.solve();
     }
 }

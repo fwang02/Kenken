@@ -30,7 +30,7 @@ public class Cage {
     }
 
     private void initButtons() {
-        String[] operators = {"+", "-", "*", "/", "%", "^"};
+        String[] operators = {"+", "-", "x", "/", "%", "^"};
         opButtons = new JRadioButton[operators.length];
         buttonGroup = new ButtonGroup();
 
@@ -49,7 +49,7 @@ public class Cage {
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         // Label for the number input
-        JLabel numberLabel = new JLabel("Enter a number:");
+        JLabel numberLabel = new JLabel("Indica un numero:");
         gbc.gridx = 0;
         gbc.gridy = 0;
         panel.add(numberLabel, gbc);
@@ -99,13 +99,13 @@ public class Cage {
                     number = Integer.parseInt(numberField.getText());
                     opCell.setOp(operator + number + "");
                 } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(panel, "Please enter a valid number.", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(panel, "Indica un numero valido.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
 
         // Show the custom JOptionPane with Accept and Cancel options
-        int result = JOptionPane.showConfirmDialog(null, panel, "Cage Editor", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        int result = JOptionPane.showConfirmDialog(null, panel, "Editor de Región", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
         if (result == JOptionPane.OK_OPTION) {
             number = Integer.parseInt(numberField.getText());
@@ -142,7 +142,7 @@ public class Cage {
                 return 1;
             case "-":
                 return 2;
-            case "*":
+            case "x":
                 return 3;
             case "/":
                 return 4;

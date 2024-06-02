@@ -22,11 +22,11 @@ public class PlayOptionView extends View {
     private CtrlPresentation ctrlPresentation;
     //Componentes de opciones para jugar
     private JPanel playOptionPanel = new JPanel();
-    private JButton generateNewButton = new JButton("Generar");
-    private JButton openFileButton = new JButton("Abrir desde fichero");
+    private JButton generateNewButton = new JButton("Kenken aleatorio");
+    private JButton openFileButton = new JButton("Importar Kenken");
     private JButton playExistButton = new JButton("Jugar uno existente");
     private JButton continueGameButton = new JButton("Continuar partida");
-    private JButton createButton = new JButton("Crear");
+    private JButton createButton = new JButton("Crear Kenken");
     private JPanel textPanel = new JPanel();
     private JLabel title = new JLabel("Opciones para jugar",SwingConstants.CENTER);
     private JLabel loginWelcome = new JLabel();
@@ -131,7 +131,7 @@ public class PlayOptionView extends View {
         operationPanel.setLayout(new GridLayout(2,3));
         Border titledBorder = BorderFactory.createTitledBorder("Operaciones");
         operationPanel.setBorder(titledBorder);
-        String[] operations = {"ADD","SUB","MULT","DIV","POW","MOD"};
+        String[] operations = {"SUM","RES","MULT","DIV","POW","MOD"};
         for(int i = 0; i < 6; ++i) {
             operationSelect[i] = new JCheckBox(operations[i]);
             operationPanel.add(operationSelect[i]);

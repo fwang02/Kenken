@@ -25,10 +25,10 @@ public class GameCreatorView extends View {
         add(p2, BorderLayout.EAST);
         p2.setPreferredSize(new Dimension(300, 450));
         JTextArea txt = new JTextArea(
-                "Selecciona el area con el raton\n" +
-                "Pulsa 0 o delete para borrar numeros\n" +
-                "Pulsa espacio para añadir una región\n" +
-                "Doble click en una región para editarla\n"
+                "·Selecciona las casillas con el raton\n" +
+                "·Pulsa 0 o delete para borrar numeros\n" +
+                "·Pulsa espacio para añadir una región con las casillas seleccionadas\n" +
+                "·Doble click en una región para editarla\n"
         );
         txt.setAutoscrolls(true);
         txt.setEditable(false);
@@ -39,12 +39,12 @@ public class GameCreatorView extends View {
         JPanel centerPanel = new JPanel();
         p2.add(centerPanel, BorderLayout.CENTER);
 
-        JButton play = new JButton("Play");
+        JButton play = new JButton("Jugar");
         centerPanel.add(play);
-        JButton save = new JButton("Save");
+        JButton save = new JButton("Guardar");
         centerPanel.add(save);
 
-        JButton exit = new JButton("Exit");
+        JButton exit = new JButton("Salir");
         JPanel southPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         southPanel.add(exit);
         p2.add(southPanel, BorderLayout.SOUTH);
@@ -84,16 +84,17 @@ public class GameCreatorView extends View {
 
     private void onSaveButtonClicked() {
         // Handle save button click
-       /* if (loadToCurrentGame()) {
+       if (loadToCurrentGame()) {
             String gameName = JOptionPane.showInputDialog(
                     null,
-                    "Enter the game name to save:",
-                    "Save Game",
+                    "Nombre de la partida guardada:",
+                    "Guardar Partida",
                     JOptionPane.PLAIN_MESSAGE
             );
             
             if (!gameName.trim().isEmpty()) {
-                if (ctrlPresentation.saveCurrentGame(gameName)){
+                int[] values = panel.getValCells();
+                if (ctrlPresentation.saveCurrentGame(gameName, values)){
                     JOptionPane.showMessageDialog(this, "Juego guardado.", "Save", JOptionPane.INFORMATION_MESSAGE);
                     ctrlPresentation.gameCreatorViewToPlayOptionView();
                 }
@@ -106,15 +107,15 @@ public class GameCreatorView extends View {
         }
         else {
             JOptionPane.showMessageDialog(null, "El kenken no tiene solución", "Error", JOptionPane.ERROR_MESSAGE);
-        }*/
+        }
     }
 
     private void onExitButtonClicked() {
         // Handle exit button click
         int response = JOptionPane.showConfirmDialog(
                 this,
-                "Do you want to save before exiting?",
-                "Exit",
+                "¿Quieres GUARDAR antes de salir?",
+                "Salir",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE
         );
@@ -146,7 +147,6 @@ public class GameCreatorView extends View {
             Object[] cage = panel.getCage(i);
             ctrlPresentation.setCage((int[]) cage[0], (int[]) cage[1], (int) cage[2], (int) cage[3]);
         }
-        ctrlPresentation.setLockedCells(panel.getValCells());
         return ctrlPresentation.solve();
     }
 }

@@ -204,14 +204,14 @@ public class DrawCell extends JPanel {
 
             if (cell.selected) {
                 if (cell.hasCage()) {
-                    JOptionPane.showMessageDialog(null, "Cell already in a cage.");
+                    JOptionPane.showMessageDialog(null, "Esta casilla ya esta en una región");
                     return;
                 }
             }
         }
         //DFS to check the cells are connected
         if (!areYellowCellsConnected()) {
-            JOptionPane.showMessageDialog(null, "Cells are not connected.");
+            JOptionPane.showMessageDialog(null, "Las casillas no estan conectadas");
             return;
         }
         // Draw cage

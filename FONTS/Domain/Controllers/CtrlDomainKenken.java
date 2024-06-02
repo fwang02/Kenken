@@ -64,10 +64,6 @@ public class CtrlDomainKenken {
         Kenken kenken = new Kenken(size,ops,difficulty);
         KenkenConfig kenkenConfig = new KenkenConfig(kenken);
         kenkenConfig.generateKenkenV1();
-		// Set all cells as unlocked
-		for (KenkenCell[] row : kenken.getAllCells()){
-			for (KenkenCell c : row) c.setUnlocked();
-		}
         currentGame = kenken;
 		return true;
 	}
@@ -115,16 +111,6 @@ public class CtrlDomainKenken {
         return CKF.saveKenkenGame(currentGame, gameName);
 	}
 
-	/*
-	public boolean continueKenken(String fileName) {
-		Kenken kenken = CKF.loadKenkenByFile(fileName);
-		if(kenken == null) return false;
-		else {
-			currentGame = kenken;
-			return true;
-		}
-	}*/
-
 	public boolean continueKenken(File file) {
 		Kenken kenken = CKF.loadKenkenByFile(file);
 		if(kenken == null) return false;
@@ -133,8 +119,6 @@ public class CtrlDomainKenken {
 			return true;
 		}
 	}
-
-    // JUGAR CON EL KENKEN
 
     public void resetBoard() {
     	currentGame.resetBoard();
@@ -157,12 +141,10 @@ public class CtrlDomainKenken {
 	}
 
     public ArrayList<KenkenCage> getCages() {
-    	//currentGame.showCages();
 		return currentGame.getAllCages();
 	}
 
     public KenkenCell[][] getSolution() {
-    	//currentGame.showSolution();
 		return currentGame.getAllCells();
 	}
 
@@ -201,7 +183,6 @@ public class CtrlDomainKenken {
         for (int i = 0; i < s*s; ++i) {
             int x = i / s;
             int y = i % s;
-            //if (values[i] == 0) return false;
             if (values[i] != 0) {
                 int correctValue = currentGame.getCell(x, y).getValue();
 				++correctCount;

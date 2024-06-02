@@ -24,7 +24,7 @@ public class View extends JFrame {
         // Set logo in all views
         setIconImage(icon.getImage());
         setUIFont (new javax.swing.plaf.FontUIResource("Corbel", 1, 14));
-        setTitle("Kenken PROP");
+        setTitle("KenKen");
 
         setBounds(500, 300, 500, 300);
         setResizable(false);

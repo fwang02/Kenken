@@ -29,7 +29,7 @@ public class MainMenuView extends View {
         // Window
         setBounds(500, 300, 500, 300);
         setResizable(false);
-        setTitle("Kenken PROP");
+        setTitle("KenKen");
         setLayout(new BorderLayout());
         setLocationRelativeTo(null);
 
@@ -69,7 +69,7 @@ public class MainMenuView extends View {
                 loginMenu.add(password);
 
                 int result = JOptionPane.showConfirmDialog(null, loginMenu,
-                        "Log In", JOptionPane.OK_CANCEL_OPTION);
+                        "Iniciar Sesión", JOptionPane.OK_CANCEL_OPTION);
                 String usr = username.getText();
                 String pwd = password.getText();
                 if (result == JOptionPane.OK_OPTION) {
@@ -100,7 +100,7 @@ public class MainMenuView extends View {
                 registerMenu.add(password);
 
                 int result = JOptionPane.showConfirmDialog(null, registerMenu,
-                        "Register", JOptionPane.OK_CANCEL_OPTION);
+                        "Registrarse", JOptionPane.OK_CANCEL_OPTION);
                 String usr = username.getText();
                 String pwd = password.getText();
                 if (result == JOptionPane.OK_OPTION) {

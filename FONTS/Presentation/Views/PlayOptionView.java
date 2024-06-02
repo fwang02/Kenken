@@ -23,9 +23,9 @@ public class PlayOptionView extends View {
     //Componentes de opciones para jugar
     private JPanel playOptionPanel = new JPanel();
     private JButton generateNewButton = new JButton("Generar");
-    private JButton openFileButton = new JButton("<html>Abrir desde<br>fichero</html>");
-    private JButton playExistButton = new JButton("<html>Jugar uno<br>existente</html>");
-    private JButton continueGameButton = new JButton("<html>Continuar<br>partida</html>");
+    private JButton openFileButton = new JButton("Abrir desde fichero");
+    private JButton playExistButton = new JButton("Jugar uno existente");
+    private JButton continueGameButton = new JButton("Continuar partida");
     private JButton createButton = new JButton("Crear");
     private JPanel textPanel = new JPanel();
     private JLabel title = new JLabel("Opciones para jugar",SwingConstants.CENTER);
@@ -160,51 +160,15 @@ public class PlayOptionView extends View {
     }
 
     private void initPlayOptionPanel() {
-        Dimension buttonSize = new Dimension(100, 100);
-
-        generateNewButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        generateNewButton.setMinimumSize(buttonSize);
-        generateNewButton.setMaximumSize(buttonSize);
-        generateNewButton.setPreferredSize(buttonSize);
-
-        continueGameButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        continueGameButton.setMinimumSize(buttonSize);
-        continueGameButton.setMaximumSize(buttonSize);
-        continueGameButton.setPreferredSize(buttonSize);
-
-        openFileButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        openFileButton.setMaximumSize(buttonSize);
-
-        playExistButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        playExistButton.setMinimumSize(buttonSize);
-        playExistButton.setMaximumSize(buttonSize);
-        playExistButton.setPreferredSize(buttonSize);
-
-        createButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        createButton.setMinimumSize(buttonSize);
-        createButton.setMaximumSize(buttonSize);
-        createButton.setPreferredSize(buttonSize);
-
-        rankingButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        rankingButton.setMinimumSize(buttonSize);
-        rankingButton.setMaximumSize(buttonSize);
-        rankingButton.setPreferredSize(buttonSize);
-
-        playOptionPanel.setLayout(new BoxLayout(playOptionPanel,BoxLayout.X_AXIS));
+        playOptionPanel.setLayout(new GridLayout(2,3,50,50));
+        playOptionPanel.setBorder(new EmptyBorder(50, 50, 50, 60));
         // Añadir botones a la vista
-        playOptionPanel.add(Box.createHorizontalGlue());
         playOptionPanel.add(generateNewButton);
-        playOptionPanel.add(Box.createHorizontalStrut(10));
         playOptionPanel.add(continueGameButton);
-        playOptionPanel.add(Box.createHorizontalStrut(10));
         playOptionPanel.add(openFileButton);
-        playOptionPanel.add(Box.createHorizontalStrut(10));
         playOptionPanel.add(playExistButton);
-        playOptionPanel.add(Box.createHorizontalStrut(10));
         playOptionPanel.add(createButton);
-        playOptionPanel.add(Box.createHorizontalStrut(10));
         playOptionPanel.add(rankingButton);
-        playOptionPanel.add(Box.createHorizontalGlue());
         add(playOptionPanel, BorderLayout.CENTER);
     }
 
@@ -453,6 +417,23 @@ public class PlayOptionView extends View {
                 }
             });
         }
+
+        for (int i = 0; i < 2; ++i) {
+            int finalI = i;
+            specialGamesB[i].addActionListener(e -> {
+                System.out.println("Has clicado el botón "+ ((JButton) e.getSource()).getText());
+                String fileName = "";
+                if(finalI == 0)  fileName = "/defaultGames/brickwall";
+                else fileName = "/defaultGames/cacatua";
+                if(ctrlPresentation.openKenkenByFile(fileName)) {
+                    ctrlPresentation.playOptionViewToGameView();
+                }
+                else {
+                    JOptionPane.showMessageDialog(null,"El juego no existe","Error de lectura de fichero",JOptionPane.ERROR_MESSAGE);
+                }
+            });
+        }
+
     }
     
     private void addCompPlayMenu() {

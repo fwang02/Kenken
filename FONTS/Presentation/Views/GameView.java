@@ -148,21 +148,28 @@ public class GameView extends View {
 
     private void onSaveButtonClicked() {
         // Handle save button click
-        String gameName = JOptionPane.showInputDialog(
-                this,
-                "Enter the game name to save:",
-                "Save Game",
-                JOptionPane.PLAIN_MESSAGE
-        );
+        if (loadToCurrentGame()) {
+            String gameName = JOptionPane.showInputDialog(
+                    null,
+                    "Enter the game name to save:",
+                    "Save Game",
+                    JOptionPane.PLAIN_MESSAGE
+            );
 
-        if (gameName != null && !gameName.trim().isEmpty()) {
-            if (CtrlPresentation.isValid()) {
-                JOptionPane.showMessageDialog(this, "Game saved successfully.", "Save", JOptionPane.INFORMATION_MESSAGE);
+            if (!gameName.trim().isEmpty()) {
+                if (ctrlPresentation.saveCurrentGame(gameName)){
+                    JOptionPane.showMessageDialog(this, "Juego guardado.", "Save", JOptionPane.INFORMATION_MESSAGE);
+                    ctrlPresentation.gameCreatorViewToPlayOptionView();
+                }
+                else {
+                    JOptionPane.showMessageDialog(this, "Se ha producido un error al guardar.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
             } else {
-                JOptionPane.showMessageDialog(this, "The game is not valid and cannot be saved.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Por favor, rellene el nombre del fichero.", "Error", JOptionPane.ERROR_MESSAGE);
             }
-        } else if (gameName != null) {
-            JOptionPane.showMessageDialog(this, "The game name cannot be blank.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        else {
+            JOptionPane.showMessageDialog(null, "El kenken no tiene solución", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -255,5 +262,15 @@ public class GameView extends View {
 
         String timeString = String.format("Time: %02d:%02d:%02d", hours, minutes, seconds);
         timerLabel.setText(timeString);
+    }
+
+    private boolean loadToCurrentGame() {
+        ctrlPresentation.initCurrentGame(panel.getLenght());
+        for (int i = 0; i < panel.getNCages(); ++i) {
+            Object[] cage = panel.getCage(i);
+            ctrlPresentation.setCage((int[]) cage[0], (int[]) cage[1], (int) cage[2], (int) cage[3]);
+        }
+        ctrlPresentation.setLockedCells(panel.getValCells());
+        return ctrlPresentation.solve();
     }
 }

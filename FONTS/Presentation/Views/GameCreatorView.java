@@ -79,7 +79,7 @@ public class GameCreatorView extends View {
             ctrlPresentation.gameCreatorViewToGameView();
         }
         else {
-            JOptionPane.showMessageDialog(this, "No se ha encontrado solución posible, intentalo de nuevo");
+            JOptionPane.showMessageDialog(this, "El kenken no tiene solución");
         }
     }
 
@@ -102,7 +102,7 @@ public class GameCreatorView extends View {
                     JOptionPane.showMessageDialog(this, "Se ha producido un error al guardar.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             } else {
-                JOptionPane.showMessageDialog(this, "The game name cannot be blank.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Por favor, rellene el nombre del fichero.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
         else {

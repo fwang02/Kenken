@@ -88,7 +88,20 @@ public class CtrlDomainUser {
         ranking.add(new PlayerScore(loggedUser,newMaxPoint));
 
         users.get(loggedUser).setMaxPoint(newMaxPoint);
-        return true;
+
+        return updateAllUsers();
+    }
+
+    private boolean updateAllUsers() {
+        ArrayList<String[]> allUsersData = new ArrayList<>();
+        for (User user : users.values()) {
+            String[] userData = new String[3];
+            userData[0] = user.getUsername();
+            userData[1] = user.getPassword();
+            userData[2] = String.valueOf(user.getMaxPoint());
+            allUsersData.add(userData);
+        }
+        return ctrlUserFile.updateDatas(allUsersData);
     }
 
     public boolean deleteUser(String username) {
@@ -99,7 +112,6 @@ public class CtrlDomainUser {
         // Remove user from memory
         users.remove(username);
         ranking.removeIf(playerScore -> playerScore.getName().equals(username));
-
 
         String userFilePath = CtrlUserFile.getFilePath();
         // Remove user from file

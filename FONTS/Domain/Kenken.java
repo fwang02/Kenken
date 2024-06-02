@@ -211,6 +211,7 @@ public class Kenken {
                     multiplier = 25;
                     break;
                 case MEDIUM:
+                case CUSTOM:
                     multiplier = 50;
                     break;
                 case HARD:
@@ -220,7 +221,8 @@ public class Kenken {
                     multiplier = 100;
                     break;
             }
-            points = multiplier * size * size - hints * 2 * size * size;
+            int numOp = operations.size();
+            points = (numOp * size + multiplier * size * size) - hints * size * size;
             if (points < 0) points = 1;
             return points;
         }

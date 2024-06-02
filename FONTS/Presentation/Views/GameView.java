@@ -19,6 +19,7 @@ public class GameView extends View {
     private Timer timer;
     private long startTime;
     private boolean solutionShowed;
+    private boolean finished;
 
     public GameView(CtrlPresentation cp) {
         // Window
@@ -117,6 +118,11 @@ public class GameView extends View {
 
     private void onExitButtonClicked() {
         // Handle exit button click
+        if(finished){
+            ctrlPresentation.gameViewToPlayOptionView();
+            return;
+        }
+
         int response = JOptionPane.showConfirmDialog(
                 this,
                 "Do you want to save before exiting?",
@@ -141,6 +147,10 @@ public class GameView extends View {
     }
 
     private void onSaveButtonClicked() {
+        if(finished) {
+            JOptionPane.showMessageDialog(this, "Partida acabada, no se necesita guardar.", "Guardar", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
         // Handle save button click
         if (loadToCurrentGame()) {
             String gameName = JOptionPane.showInputDialog(
@@ -153,7 +163,7 @@ public class GameView extends View {
             if (!gameName.trim().isEmpty()) {
                 int[] values = panel.getValCells();
                 if (ctrlPresentation.saveCurrentGame(gameName, values)){
-                    JOptionPane.showMessageDialog(this, "Juego guardado.", "Save", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Partida acabada.", "Guardar", JOptionPane.INFORMATION_MESSAGE);
                     ctrlPresentation.gameCreatorViewToPlayOptionView();
                 }
                 else {
@@ -172,15 +182,26 @@ public class GameView extends View {
         // Handle submit button click
         int[] values = panel.getValCells();
         if(solutionShowed) {
-            JOptionPane.showMessageDialog(this, "Has visto la solucion", "Finished", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Se ha mostrado la solución, no se puede contar puntos.", "Acabado", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        if(finished) {
+            JOptionPane.showMessageDialog(this, "La partida está acabada.", "Acabado", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
         if (ctrlPresentation.check(values)) {
             int gamePoints = ctrlPresentation.getGamePoints();
             if(gamePoints == -1) JOptionPane.showMessageDialog(this, "Todas las casillas rellenadas son correctas", "Correcto", JOptionPane.INFORMATION_MESSAGE);
             else {
-                JOptionPane.showMessageDialog(this, "¡Has solucionado todo correctamente\n Puntos: "+gamePoints, "Acabado", JOptionPane.INFORMATION_MESSAGE);
+                if(ctrlPresentation.updateMaxPoint(gamePoints)) {
+                    JOptionPane.showMessageDialog(this, "¡Has solucionado todo correctamente!\n Puntos: " + gamePoints + ", puntos max actualizados.", "Acabado", JOptionPane.INFORMATION_MESSAGE);
+                }
+                else {
+                    JOptionPane.showMessageDialog(this, "¡Has solucionado todo correctamente!\n Puntos: " + gamePoints + ", no ha superado a puntos max del usuario.", "Acabado", JOptionPane.INFORMATION_MESSAGE);
+                }
+                finished = true;
                 timer.stop();
+
             }
         } else {
             JOptionPane.showMessageDialog(this, "Algunas casillas no son correctas", "Incorrecta", JOptionPane.INFORMATION_MESSAGE);
@@ -188,14 +209,25 @@ public class GameView extends View {
     }
 
     private void onShowSolutionButtonClicked() {
+        if(solutionShowed) return;
+        if(finished) {
+            JOptionPane.showMessageDialog(this, "Partida acabada.", "Solución", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
         // Handle show solution button click
         showSolution();
-        JOptionPane.showMessageDialog(this, "Solution displayed.", "Solution", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Solución mostrada.", "Solución", JOptionPane.INFORMATION_MESSAGE);
         solutionShowed = true;
+        finished = true;
         timer.stop();
     }
 
     private void onHintButtonClicked() {
+        if(finished) {
+            JOptionPane.showMessageDialog(this, "Partida acabada.", "Hint", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
         // Handle hint button click
         int[] values = panel.getValCells();
         int[] hint = ctrlPresentation.hint(values);
@@ -244,6 +276,7 @@ public class GameView extends View {
         startTime = System.currentTimeMillis();
         timer.start();
         solutionShowed = false;
+        finished = false;
 
         int size = ctrlPresentation.getKenkenSize();
         panel = new DrawLayout(size, true);

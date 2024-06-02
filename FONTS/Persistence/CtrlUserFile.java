@@ -78,11 +78,11 @@ public class CtrlUserFile {
      * @param usersData Una lista de listas de strings, donde cada lista contiene los datos de un usuario.
      * @return Verdadero si la operación fue exitosa, falso en caso contrario.
      */
-    public boolean updateDatas(ArrayList<ArrayList<String>> usersData) {
+    public boolean updateDatas(ArrayList<String[]> usersData) {
         try {
             FileWriter fw = new FileWriter(filePath,false);
-            for(ArrayList<String> userData : usersData) {
-                fw.write(userData.get(0)+';'+userData.get(1)+';'+userData.get(2)+'\n');
+            for(String[] userData : usersData) {
+                fw.write(userData[0]+';'+userData[1]+';'+userData[2]+'\n');
             }
             fw.close();
         } catch (IOException e) {

@@ -204,4 +204,8 @@ public class CtrlPresentation {
     public int getGamePoints() {
         return ctrlDomain.getGamePoints();
     }
+
+    public boolean updateMaxPoint(int gamePoints) {
+        return ctrlDomain.newMaxPoint(gamePoints);
+    }
 }

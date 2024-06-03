@@ -188,19 +188,9 @@ public class Kenken {
         board = auxboard;
     }
 
-    public void resetBoard() {
-        for (int i = 0; i < getSize(); ++i) {
-            for (int j = 0; j < getSize(); ++j) {
-                board[i][j] = 0;
-            }
-        }
+    public void setFinished() { 
+        finished = true; 
     }
-
-    public void resetCages() {
-        cages.clear();
-    }
-
-    public void setFinished() { finished = true; }
 
     public int getPoints() {
         if (!finished) return -1;

@@ -30,19 +30,6 @@ public class CtrlPresentation {
         gameView = new GameView(this);
     }
 
-    public static boolean isValid() {
-
-        if (ctrlDomain.openKenkenByFile("../DATA/input.txt")) {
-            System.out.println("KENKEN GAME VALIDO");
-            return true;
-        }
-        else {
-            System.out.println("KENKEN GAME NO VALIDO");
-            return false;
-        }
-    }
-
-
     public void initPresentation() {
         mainMenuView.makeVisible();
         //gameView.makeVisible();
@@ -76,7 +63,6 @@ public class CtrlPresentation {
         gameView.makeVisible();
         //gameCreatorView.startPlay();
         //gameCreatorView.makeVisible();
-
     }
 
     public void gameViewToPlayOptionView() {
@@ -98,6 +84,10 @@ public class CtrlPresentation {
     //Llamadas a la capa dominio
     public PriorityQueue<PlayerScore> getRanking() {
         return ctrlDomain.getRanking();
+    }
+
+    public boolean createKenken(int size, HashSet<String> operations, String diff) {
+        return ctrlDomain.generateKenkenFromView(size,operations,diff);
     }
 
     public boolean openKenkenByFile(File file) {
@@ -136,10 +126,6 @@ public class CtrlPresentation {
         return ctrlDomain.getLoggedUserName();
     }
 
-    public boolean createKenken(int size, HashSet<String> operations, String diff) {
-        return ctrlDomain.generateKenkenFromView(size,operations,diff);
-    }
-
     public int getNCages() {
         return ctrlDomain.getNCages();
     }
@@ -159,7 +145,6 @@ public class CtrlPresentation {
     public int getCageRes(int index) {
         return ctrlDomain.getCageRes(index);
     }
-
 
     public void setGameCreatorSize(int selectedSize) {
         gameCreatorView.initGameCreator(selectedSize);

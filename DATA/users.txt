@@ -3,6 +3,8 @@
 123;123;1000
 333;123;123
 lego;lego;903
+Usuario;1234;228
 test;test;580
 1234;1234;0
 javi;javi;9000
+user;user;0

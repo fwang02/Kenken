@@ -13,32 +13,11 @@ import java.util.HashSet;
  */
 public class CtrlDomainKenken {
 	private Kenken currentGame;
-	private KenkenCell[][] cells;
-    private HashSet<Operation> opSet;
-    private ArrayList<KenkenCage> cages;
 	private final CtrlKenkenFile CKF;
 
 	public CtrlDomainKenken() {
 		currentGame = null;
-        opSet = null;
-        cages = null;
-        cells = null;
 		CKF = CtrlKenkenFile.getInstance();
-	}
-
-	public KenkenCell[][] getDomainCells(int size) {
-		cells = new KenkenCell[size][size];
-		return cells;
-	}
-
-	public HashSet<Operation> getDomainOperations() {
-		opSet = new HashSet<>();
-		return opSet;
-	}
-
-	public ArrayList<KenkenCage> getDomainCages() {
-		cages = new ArrayList<>();
-		return cages;
 	}
 
 	static Operation getOperation(int num) {
@@ -120,14 +99,6 @@ public class CtrlDomainKenken {
 		}
 	}
 
-    public void resetBoard() {
-    	currentGame.resetBoard();
-    }
-
-	public void resetCages() {
-		currentGame.resetCages();
-	}
-
     public int[] getCurrentGameBoard() {
 		int[][] auxboard = currentGame.getBoard();
 		int s = currentGame.getSize();
@@ -144,8 +115,45 @@ public class CtrlDomainKenken {
 		return currentGame.getAllCages();
 	}
 
-    public KenkenCell[][] getSolution() {
-		return currentGame.getAllCells();
+	public int[] getCurrentCageCellsX(int index) {
+		KenkenCage cage = currentGame.getAllCages().get(index);
+
+        int ncells = cage.getCageSize();
+        int[] cellsX = new int[ncells];
+
+        for (int i = 0; i < ncells; ++i) {
+            cellsX[i] = cage.getPos(i).posX;
+        }
+
+        return cellsX;
+	}
+
+	public int[] getCurrentCageCellsY(int index) {
+        KenkenCage cage = currentGame.getAllCages().get(index);
+
+        int ncells = cage.getCageSize();
+        int[] cellsY = new int[ncells];
+
+        for (int i = 0; i < ncells; ++i) {
+            cellsY[i] = cage.getPos(i).posY;
+        }
+
+        return cellsY;
+    }
+
+	public int[] getCurrentCells() {
+		KenkenCell[][] kCells = currentGame.getAllCells();
+
+        int s = getCurrentGameSize();
+        int[] cells = new int[s*s];
+
+        for (int i = 0; i < s; i++) {
+            for (int j = 0; j < s; j++) {
+                cells[i * s + j] = kCells[i][j].getValue();
+            }
+        }
+
+        return cells;
 	}
 
 	public int[] hintCurrentGame(int[] values) {
@@ -195,16 +203,6 @@ public class CtrlDomainKenken {
 
     public int getPoints() {
     	return currentGame.getPoints();
-    }
-
-    // Getters y setters
-
-    public KenkenCell getNewKenkenCell(int x, int y, int val, boolean state) {
-    	return (new KenkenCell(x,y,val,state));
-    }
-
-    public KenkenCage getNewKenkenCage(Operation operation, int result, Pos[] posCells) {
-    	return (new KenkenCage(operation, result, posCells));
     }
 
 	public boolean hasCurrentGame() {

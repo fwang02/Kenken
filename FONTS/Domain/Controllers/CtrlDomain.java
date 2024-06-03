@@ -21,18 +21,6 @@ public class CtrlDomain {
         ctrlDomainKenken = new CtrlDomainKenken();
     }
 
-    /*public static void setCurrentGame(String content) {
-        //ctrlDomainKenken.
-
-    }
-
-    public static String getCurrentGame() {
-        //ctrlDomainKenken.getCurrentGame().;
-        File gameFile = "../DATA/GAME.txt";
-
-    }*/
-
-
     public boolean loginUser(String username, String password) {
         if(!ctrlDomainUser.isUserExist(username)) return false;
         if(!ctrlDomainUser.isPasswordCorrect(username,password)) return false;
@@ -95,18 +83,6 @@ public class CtrlDomain {
         return ctrlDomainKenken.generateKenkenByDifficulty(size,opSets,TypeDifficulty.valueOf(diff));
     }
 
-    public boolean currentGameExist() {
-        return ctrlDomainKenken.hasCurrentGame();
-    }
-
-    public ArrayList<KenkenCage> printRegions() {
-        return ctrlDomainKenken.getCages();
-    }
-
-    public KenkenCell[][] printSolution() {
-        return ctrlDomainKenken.getSolution();
-    }
-
     public int[] hintCurrent(int[] values) {
         ctrlDomainKenken.incrHintsCurrGame();
         return ctrlDomainKenken.hintCurrentGame(values);
@@ -115,11 +91,6 @@ public class CtrlDomain {
     public boolean checkCurrent(int[] values) {
         return ctrlDomainKenken.checkCurrentGame(values);
     }
-
-    public void resetBoard() {
-        ctrlDomainKenken.resetBoard();
-    }
-
 
     public boolean newMaxPoint(int newMaxPoint) {
         return ctrlDomainUser.updateMaxPointCurrUser(newMaxPoint);
@@ -146,30 +117,11 @@ public class CtrlDomain {
     }
 
     public int[] getCageCellsX(int index) {
-        KenkenCage cage = ctrlDomainKenken.getCages().get(index);
-
-        int ncells = cage.getCageSize();
-        System.out.println(ncells);
-        int[] cellsX = new int[ncells];
-
-        for (int i = 0; i < ncells; ++i) {
-            cellsX[i] = cage.getPos(i).posX;
-        }
-
-        return cellsX;
+        return ctrlDomainKenken.getCurrentCageCellsX(index);
     }
 
     public int[] getCageCellsY(int index) {
-        KenkenCage cage = ctrlDomainKenken.getCages().get(index);
-
-        int ncells = cage.getCageSize();
-        int[] cellsY = new int[ncells];
-
-        for (int i = 0; i < ncells; ++i) {
-            cellsY[i] = cage.getPos(i).posY;
-        }
-
-        return cellsY;
+        return ctrlDomainKenken.getCurrentCageCellsY(index);
     }
 
     public char getCageOp(int index) {
@@ -189,18 +141,7 @@ public class CtrlDomain {
     }
 
     public int[] getCells() {
-        KenkenCell[][] kCells = ctrlDomainKenken.getCurrentGame().getAllCells();
-
-        int s = ctrlDomainKenken.getCurrentGameSize();
-        int[] cells = new int[s*s];
-
-        for (int i = 0; i < s; i++) {
-            for (int j = 0; j < s; j++) {
-                cells[i * s + j] = kCells[i][j].getValue();
-            }
-        }
-
-        return cells;
+        return ctrlDomainKenken.getCurrentCells();
     }
 
     public void setCage(int[] cellsX, int[] cellsY, int op, int res) {
@@ -216,9 +157,6 @@ public class CtrlDomain {
 
     public void initCurrentGame(int size) {
         if (ctrlDomainKenken.hasCurrentGame()) {
-            ctrlDomainKenken.resetBoard();
-            ctrlDomainKenken.resetCages();
-
             System.out.println("Reset Current Game");
         }
 
@@ -233,7 +171,6 @@ public class CtrlDomain {
         Kenken k = ctrlDomainKenken.getCurrentGame();
 
         ctrlDomainKenken.setCurrentGame(new Kenken(size, opSets, TypeDifficulty.CUSTOM));
-        ctrlDomainKenken.getDomainCells(size);
     }
 
     public boolean saveCurrent(String gameName, int[] values) {

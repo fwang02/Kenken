@@ -24,7 +24,7 @@ public class PlayOptionView extends View {
     private JPanel playOptionPanel = new JPanel();
     private JButton generateNewButton = new JButton("Kenken aleatorio");
     private JButton openFileButton = new JButton("Importar Kenken");
-    private JButton playExistButton = new JButton("Jugar uno existente");
+    private JButton playExistButton = new JButton("Kenkens predefinidos");
     private JButton continueGameButton = new JButton("Continuar partida");
     private JButton createButton = new JButton("Crear Kenken");
     private JPanel textPanel = new JPanel();

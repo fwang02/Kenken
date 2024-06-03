@@ -102,7 +102,7 @@ public class KenkenCell {
     /**
 	 * Función de consulta que nos indica el estado de la casilla
      * 
-     * @return devuelve cierto si la casilla ya pertenece a una región o falso si no pertenece
+     * @return devuelve cierto si la casilla ya pertenece a una región o falso si no pertenece en el caso de la generación o si la casilla es estatica o no
 	 */
     public boolean isLocked() {
         return locked;

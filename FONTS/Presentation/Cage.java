@@ -102,6 +102,10 @@ public class Cage {
         int result = JOptionPane.showConfirmDialog(null, panel, "Editor de Región", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
         if (result == JOptionPane.OK_OPTION) {
+            if (!numberField.getText().matches("\\d+")) {
+                JOptionPane.showMessageDialog(null, "Indica un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
             number = Integer.parseInt(numberField.getText());
             for (JRadioButton button : opButtons) {
                 if (button.isSelected()) {

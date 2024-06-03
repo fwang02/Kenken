@@ -52,10 +52,6 @@ public class CtrlDomain {
         return ctrlDomainKenken.continueKenken(file);
     }
 
-    public boolean generateKenkenByDifficulty(int size, HashSet<Operation> operations, TypeDifficulty diff) {
-        return ctrlDomainKenken.generateKenkenByDifficulty(size,operations,diff);
-    }
-
     public boolean generateKenkenFromView(int size, HashSet<String> operations, String diff) {
         HashSet<Operation> opSets = new HashSet<>();
         for(String op : operations) {
@@ -179,5 +175,19 @@ public class CtrlDomain {
 
     public int getGamePoints() {
         return ctrlDomainKenken.getPoints();
+    }
+
+    /**
+     * Obtiene las celdas que no cambian.
+     */
+    public int[] getLockedCells() {
+         return ctrlDomainKenken.getLockedCells();
+    }
+
+    /**
+     * Asigna las celdas que no cambian.
+     */
+    public void setLockedCells(int[] valCells) {
+        ctrlDomainKenken.setLockedCells(valCells);
     }
 }

@@ -150,6 +150,9 @@ public class MainMenuView extends View {
         bExitRanking.addActionListener(ExitRanking);
     }
 
+    /**
+     * Añade los componentes en la vista
+     */
     private void addCompLogMenu() {
         add(title);
         add(bLogin);

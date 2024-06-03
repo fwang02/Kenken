@@ -6,6 +6,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
+ * Esta clase define un Kenken con sus atributos. Atributos a destacar de esta clase son
+ * el ArrayList de KenkenCages que contiene las distintas regiones de este Kenken, la matriz
+ * de KenkenCell que contiene las distintas casillas del kenken y otros atributos como la
+ * dificultad, operaciones, etc
+ * 
  * @author Javier Parcerisas
  */
 public class Kenken {
@@ -20,6 +25,9 @@ public class Kenken {
     private int points;
     private boolean finished;
 
+    /**
+	 * Constructora de la clase Kenken
+	 */
     public Kenken() {
         this.size = 0;
         this.name = null;

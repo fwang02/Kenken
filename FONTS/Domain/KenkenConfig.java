@@ -6,10 +6,12 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
+ * La función principal de esta clase es generar o resolver kenkens mediante algoritmos
+ * basados en backtracking
+ * 
  * @author Javier Parcerisas
  */
 public class KenkenConfig  {
-
 	private final Kenken kenken;
 	private boolean filled;
 	private int index;
@@ -21,7 +23,11 @@ public class KenkenConfig  {
 	private static final int[] Y = {1,0,-1,0};
 	private static SecureRandom sr;
 	
-
+	/**
+	 * Constructora de la clase KenkenConfig
+	 * 
+	 * @param kenken kenken sobre el que operaremos, ya sea para solucionar o para generar
+	 */
 	public KenkenConfig(Kenken kenken) {
 		this.kenken = kenken;
 		this.filled = false;
@@ -33,12 +39,25 @@ public class KenkenConfig  {
 		sr = new SecureRandom();
 	}
 
-
+	/**
+	 * Función que comprueba si un valor se repite en su misma fila o columna
+	 * 
+	 * @param val valor que queremos comprobar
+	 * @param row fila que queremos comprobar
+	 * @param col columna que queremos comprobar
+	 * @return cierto si no se repite, falso si se repite el valor en la fila o la columna
+	 */
 	private boolean check(int val, int row, int col) {
 		if(!kenken.rowCheck(row, val)) return false;
 		else return kenken.colCheck(col, val);
 	}
 
+	
+	/**
+	 * Función para identificar las operaciones que contiene el kenken
+	 * 
+	 * @param current tipos de operación actuales que contiene el kenken
+	 */
 	private void checkOperations(HashSet<Operation> current) {
 		for(Operation o: current) {
 			if(o instanceof ADD) {moreCellOperator.add("ADD"); twoCellOperator.add("ADD"); moreCellOperatorBool = true; twoCellOperatorBool = true;}
@@ -52,9 +71,16 @@ public class KenkenConfig  {
 
 
 
-	// GENERAR Y RESOLVER UN KENKEN v1//
+	// GENERACIÓN DE KENKEN//
 
-	//esta funcion es un backtracking que rellena la matriz del kenken
+	/**
+	 * Esta función realiza un backtracking en la matriz de casillas del kenken y las
+	 * va llenando con valores siempre que no se repitan ni en la misma fila ni columna y 
+	 * no sean superiores al tamaño del kenken
+	 * 
+	 * @param i posición i de la matriz de casilla en la que iniciar el backtracking
+	 * @param j posición j de la matriz de casilla en la que iniciar el backtracking
+	 */
 	private void fillKenken(int i, int j) {
 		if (i == kenken.getSize()) {filled = true;}
 		else if (j == kenken.getSize()) {fillKenken(i+1, 0);}
@@ -76,7 +102,10 @@ public class KenkenConfig  {
 		}
 	}
 
-	//esta funcion crea regiones de una sola casilla dependiendo de la dificultad que haya indicado el usuario
+
+	/**
+	 * Esta función crea regiones de casillas individuales según la dificultad del kenken
+	 */
 	private void fillCellsByDifficulty() {
 		int individualCells = 0;
 		switch(kenken.getDificult()) {
@@ -107,6 +136,14 @@ public class KenkenConfig  {
 		}
 	}
 
+
+	/**
+	 * Esta función se utiliza en la generación aleatoria de regiones. Su funcionalidad
+	 * es limitar el tamaño de las regiones a máximo 2 casillas según una probabilidad.
+	 * 	
+	 * @param p probabilidad de parar de expandir la región
+	 * @param s tamaño actual de la región
+	 */
 	private boolean stop_2 (double p, int s) {
 		if(twoCellOperatorBool) {
 			return ((p < sr.nextDouble()) && s < 2);
@@ -114,6 +151,14 @@ public class KenkenConfig  {
 		else return false;
 	}
 
+
+	/**
+	 * Esta función se utiliza en la generación aleatoria de regiones. Su funcionalidad
+	 * es limitar el tamaño de las regiones a máximo 4 casillas según una probabilidad.
+	 * 	
+	 * @param p probabilidad de parar de expandir la región
+	 * @param s tamaño actual de la región
+	 */
 	private boolean stop_4 (double p, int s) {
 		if (moreCellOperatorBool) {
 			return ((p < sr.nextDouble()) && s < 4);
@@ -121,7 +166,10 @@ public class KenkenConfig  {
 		else return false;
 	}
 
-	//esta funcion genera las regiones del kenken de forma aleatoria
+	/**
+	 * Esta función se encarga de generar regiones de manera aleatoria en el kenken 
+	 * teniendo en cuenta el tipo de operaciones que hay
+	 */
 	private void fillCages() {
 		ArrayList<KenkenCell> cageCells;
 		double probToStop4 = 0.0;
@@ -161,8 +209,10 @@ public class KenkenConfig  {
 		}
 	}
 
-	// esta funcion, se necesita previamente haber generado la matriz del kenken y creado las regiones, asigna una operacion y resultado
-	// a la region
+	/**
+	 * Esta función asigna un tipo de operación a la región y calcula el resultado
+	 * según la operación asignada
+	 */
 	private void fillCagesResult() {
 		int v1 ,v2, v3, v4 = 0;
 		for(int i = 0; i < kenken.getAllCages().size(); ++i) {
@@ -277,7 +327,12 @@ public class KenkenConfig  {
 		}
 	}
 
-	// esta funcion es un backtracking que resuelve el kenken importado desde fichero u otros lados
+	/**
+	 * Esta función es la encargada de resolver kenkens mediante backtracking.
+	 * 	
+	 * @param cage región que estamos resolviendo
+	 * @param ii casilla de la región en la que estamos trabajando
+	 */
 	private void solveKenkenByCages(KenkenCage cage, int ii) {
 		if (cage.isCageComplete(kenken)) {
 			if (cage.checkValueCage(kenken)) {
@@ -293,25 +348,23 @@ public class KenkenConfig  {
 			for (int i = ii; i < cage.getCageSize(); ++i) {
 				int x = cage.getPos(i).posX;
 				int y = cage.getPos(i).posY;
-				if (kenken.getCell(x, y).isLocked()) continue; // if the number is locked go to the next cell
 				for (int v = 1; v <= kenken.getSize(); ++v) {
 					if (check(v, x, y)) {
 						kenken.getCell(x, y).setValue(v);
 						solveKenkenByCages(cage, i + 1);
-						if (filled) return; // Add this to exit if solution is found
-						kenken.getCell(x, y).setValue(0); // Backtrack
+						if (filled) return; 
+						kenken.getCell(x, y).setValue(0); 
 					}
 				}
-				return; // Return only after all values are tried for current cell
+				return; 
 			}
 		}
 	}
 
 
-
-	// GENERAR/RESOLVER UN KENKEN //
-
-	//Esta funcion genera un kenken mediante el tamaño, la dificultad y las operaciones indicadas por el usuario
+	/**
+	 * Esta función sirve para llamar a todas las funciones que se necesitan para generar un kenken
+	 */
 	public void generateKenkenV1() {
 		checkOperations(kenken.getOperations());
 		fillKenken(0,0);
@@ -320,7 +373,11 @@ public class KenkenConfig  {
 		fillCagesResult();
 	}
 
-	// Esta funcion resuelve un kenken con las regiones previamente definidas
+	/**
+	 * Esta función sirve para llamar a las funciones necesarias para resolver un kenken
+	 * 
+	 * @return devuelve cierto si el kenken tiene solución, falso si no tiene
+	 */
 	public boolean solveKenken() {
 		try {
 			solveKenkenByCages(kenken.getCage(0), 0);

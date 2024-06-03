@@ -104,7 +104,7 @@ public class CtrlKenkenFile {
 		return new Kenken(size, opSet, TypeDifficulty.CUSTOM, cages, cells);
 	}
 
-	// PARA GUARDAR UNA PARTIDA
+	// guardar partida
 	public boolean saveKenkenGame(Kenken kenken, String  UserFileName) {
 		try {
 			File savedGame = new File("../DATA/savedGames/" + UserFileName + ".txt");

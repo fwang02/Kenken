@@ -32,8 +32,6 @@ public class CtrlPresentation {
 
     public void initPresentation() {
         mainMenuView.makeVisible();
-        //gameView.makeVisible();
-        //gameCreatorView.makeVisible();
     }
 
     /////Gestion de vistas
@@ -42,7 +40,6 @@ public class CtrlPresentation {
         if(playOptionView == null) playOptionView = new PlayOptionView(this);
         playOptionView.makeVisible();
         playOptionView.addLoggedUser();
-        //gameView.makeVisible();
     }
 
     public void playOptionViewToMainMenuView() {
@@ -61,8 +58,6 @@ public class CtrlPresentation {
         if(gameView == null) gameView = new GameView(this);
         gameView.startPlay();
         gameView.makeVisible();
-        //gameCreatorView.startPlay();
-        //gameCreatorView.makeVisible();
     }
 
     public void gameViewToPlayOptionView() {

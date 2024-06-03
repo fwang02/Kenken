@@ -5,16 +5,22 @@ import Presentation.DrawLayout;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
+/**
+ * Clase para la vista de creación de juego.
+ * Permite al usuario crear un nuevo juego de KenKen.
+ * @author Romeu Esteve
+ */
 public class GameCreatorView extends View {
     private final CtrlPresentation ctrlPresentation;
     DrawLayout panel;
 
-
+    /**
+     * Construye una nueva instancia de GameCreatorView.
+     * @param cp El controlador de presentación.
+     */
     public GameCreatorView(CtrlPresentation cp) {
-        // Window
+        // Ventana
         setBounds(750, 450, 750, 450);
         setResizable(false);
         getContentPane().setLayout(new BorderLayout());
@@ -25,10 +31,10 @@ public class GameCreatorView extends View {
         add(p2, BorderLayout.EAST);
         p2.setPreferredSize(new Dimension(300, 450));
         JTextArea txt = new JTextArea(
-                "·Selecciona las casillas con el raton\n" +
-                "·Pulsa 0 o delete para borrar numeros\n" +
-                "·Pulsa espacio para añadir una región con las casillas seleccionadas\n" +
-                "·Doble click en una región para editarla\n"
+                "·Selecciona las casillas con el ratón\n" +
+                        "·Pulsa 0 o delete para borrar números\n" +
+                        "·Pulsa espacio para añadir una región con las casillas seleccionadas\n" +
+                        "·Haz doble clic en una región para editarla\n"
         );
         txt.setAutoscrolls(true);
         txt.setEditable(false);
@@ -49,53 +55,44 @@ public class GameCreatorView extends View {
         southPanel.add(exit);
         p2.add(southPanel, BorderLayout.SOUTH);
 
-        // Add action listeners for buttons
-        play.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onPlayButtonClicked();
-            }
-        });
+        // Agrega action listeners para los botones
+        play.addActionListener(e -> onPlayButtonClicked());
 
-        save.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onSaveButtonClicked();
-            }
-        });
+        save.addActionListener(e -> onSaveButtonClicked());
 
-        exit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onExitButtonClicked();
-            }
-        });
+        exit.addActionListener(e -> onExitButtonClicked());
     }
 
+    /**
+     * Controla los eventos del botón "Jugar"
+     */
     private void onPlayButtonClicked() {
-        // Handle play button click
+        // Maneja el clic en el botón de jugar
         if (loadToCurrentGame()) {
             ctrlPresentation.gameCreatorViewToGameView();
         }
         else {
-            JOptionPane.showMessageDialog(null, "El kenken no tiene solución","Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El KenKen no tiene solución","Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
+    /**
+     * Controla los eventos del botón "Guardar"
+     */
     private void onSaveButtonClicked() {
-        // Handle save button click
-       if (loadToCurrentGame()) {
+        // Maneja el clic en el botón de guardar
+        if (loadToCurrentGame()) {
             String gameName = JOptionPane.showInputDialog(
                     null,
                     "Nombre de la partida guardada:",
                     "Guardar Partida",
                     JOptionPane.PLAIN_MESSAGE
             );
-            
+
             if (!gameName.trim().isEmpty()) {
                 int[] values = panel.getValCells();
                 if (ctrlPresentation.saveCurrentGame(gameName, values)){
-                    JOptionPane.showMessageDialog(this, "Juego guardado.", "Save", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Juego guardado.", "Guardar", JOptionPane.INFORMATION_MESSAGE);
                     ctrlPresentation.gameCreatorViewToPlayOptionView();
                 }
                 else {
@@ -106,12 +103,15 @@ public class GameCreatorView extends View {
             }
         }
         else {
-            JOptionPane.showMessageDialog(null, "El kenken no tiene solución", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El KenKen no tiene solución", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
+    /**
+     * Controla los eventos del botón "Salir"
+     */
     private void onExitButtonClicked() {
-        // Handle exit button click
+        // Maneja el clic en el botón de salir
         int response = JOptionPane.showConfirmDialog(
                 this,
                 "¿Quieres GUARDAR antes de salir?",
@@ -120,18 +120,21 @@ public class GameCreatorView extends View {
                 JOptionPane.QUESTION_MESSAGE
         );
 
-        // Handle the user's response
+        // Maneja la respuesta del usuario
         if (response == JOptionPane.OK_OPTION) {
-            // User chose to save
+            // El usuario eligió guardar
             onSaveButtonClicked();
         }
         else {
             remove(panel);
             ctrlPresentation.gameCreatorViewToPlayOptionView();
         }
-
     }
 
+    /**
+     * Inicializa la vista del creador de juego con un tamaño de rejilla dado.
+     * @param gridSize El tamaño de la rejilla del juego.
+     */
     public void initGameCreator(int gridSize) {
         if (panel != null) remove(panel);
 
@@ -141,8 +144,12 @@ public class GameCreatorView extends View {
         ctrlPresentation.initCurrentGame(gridSize);
     }
 
+    /**
+     *
+     * @return true si se ha cargado correctamente, false de lo contrario.
+     */
     private boolean loadToCurrentGame() {
-        ctrlPresentation.initCurrentGame(panel.getLenght());
+        ctrlPresentation.initCurrentGame(panel.getLength());
         for (int i = 0; i < panel.getNCages(); ++i) {
             Object[] cage = panel.getCage(i);
             ctrlPresentation.setCage((int[]) cage[0], (int[]) cage[1], (int) cage[2], (int) cage[3]);

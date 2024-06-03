@@ -9,7 +9,7 @@ import java.awt.Insets;
 import javax.swing.border.AbstractBorder;
 
 /**
- * This class is a modified Border to allow custom stroke sizes and colors
+ * Esta clase es un borde modificado que permite tamaños y colores de trazo personalizados.
  *
  * @author Romeu Esteve
  */
@@ -23,9 +23,21 @@ public class CustomBorder extends AbstractBorder {
     private final int bottomWidth;
     private final int rightWidth;
 
-    public CustomBorder(Color topColor, int topWidth, 
-                        Color leftColor, int leftWidth, 
-                        Color bottomColor, int bottomWidth, 
+    /**
+     * Construye un borde personalizado con colores y anchos de borde específicos.
+     *
+     * @param topColor     Color del borde superior.
+     * @param topWidth     Ancho del borde superior.
+     * @param leftColor    Color del borde izquierdo.
+     * @param leftWidth    Ancho del borde izquierdo.
+     * @param bottomColor  Color del borde inferior.
+     * @param bottomWidth  Ancho del borde inferior.
+     * @param rightColor   Color del borde derecho.
+     * @param rightWidth   Ancho del borde derecho.
+     */
+    public CustomBorder(Color topColor, int topWidth,
+                        Color leftColor, int leftWidth,
+                        Color bottomColor, int bottomWidth,
                         Color rightColor, int rightWidth) {
         this.topColor = topColor;
         this.topWidth = topWidth;
@@ -41,28 +53,28 @@ public class CustomBorder extends AbstractBorder {
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
         Graphics2D g2 = (Graphics2D) g;
 
-        // Draw top border
+        // Dibujar borde superior
         if (topColor != null) {
             g2.setColor(topColor);
             g2.setStroke(new BasicStroke(topWidth));
             g2.drawLine(x, y, x + width - 1, y);
         }
 
-        // Draw left border
+        // Dibujar borde izquierdo
         if (leftColor != null) {
             g2.setColor(leftColor);
             g2.setStroke(new BasicStroke(leftWidth));
             g2.drawLine(x, y, x, y + height - 1);
         }
 
-        // Draw bottom border
+        // Dibujar borde inferior
         if (bottomColor != null) {
             g2.setColor(bottomColor);
             g2.setStroke(new BasicStroke(bottomWidth));
             g2.drawLine(x, y + height - 1, x + width - 1, y + height - 1);
         }
 
-        // Draw right border
+        // Dibujar borde derecho
         if (rightColor != null) {
             g2.setColor(rightColor);
             g2.setStroke(new BasicStroke(rightWidth));

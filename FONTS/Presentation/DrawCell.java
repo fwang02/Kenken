@@ -10,32 +10,30 @@ import java.util.List;
 import javax.swing.*;
 
 /**
- * This class represents a cell on the Kenken
+ * Esta clase representa una celda en el juego Kenken.
+ * Se encarga de gestionar el comportamiento de las celdas, incluyendo la selección,
+ * la entrada de números, y la creación de regiones (cages).
  *
  * @author Romeu Esteve
  */
 public class DrawCell extends JPanel {
     private static boolean leftClickHeld = false;
-
     private static boolean playing;
     private boolean selected = false;
     private static final List<DrawCell> allCells = new ArrayList<>();
     private static final ArrayList<Cage> cages = new ArrayList<>();
-
     private static int size;
-    private final int x;      // X position in game.
-    private final int y;      // Y position in game.
+    private final int x; // Posición X en el juego
+    private final int y; // Posición Y en el juego
     private final JLabel mainLabel;
     private final JLabel smallLabel;
     private Cage cage;
 
-
-
     /**
-     * Constructs the label and sets x and y positions in game
+     * Construye la celda y establece las posiciones x e y en el juego.
      *
-     * @param x     X position in game
-     * @param y     Y position in game
+     * @param x Posición X en el juego.
+     * @param y Posición Y en el juego.
      */
     public DrawCell(int x, int y) {
         this.x = x;
@@ -73,7 +71,6 @@ public class DrawCell extends JPanel {
         gbc.insets = new Insets(2, 2, 0, 0);
         add(mainLabel, gbc);
 
-        // Add mouse listener
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -100,7 +97,6 @@ public class DrawCell extends JPanel {
 
                     if (!playing && hasCage() && e.getClickCount() == 2) {
                         leftClickHeld = false;
-                        // select all cells in cage
                         for (DrawCell c : cage.getCells()) {
                             c.setBackground(Color.YELLOW);
                             c.selected = true;
@@ -108,8 +104,6 @@ public class DrawCell extends JPanel {
                         cage.cageConfig();
                     }
                 }
-
-                // If the user is in another field and clicks the editor regains focus
                 requestFocus();
             }
 
@@ -121,21 +115,17 @@ public class DrawCell extends JPanel {
             }
         });
 
-        // Add key listener to handle number input
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {
                 char keyChar = e.getKeyChar();
                 if (Character.isDigit(keyChar) && keyChar - '0' <= size) {
                     setNumberInAllYellowCells(Character.getNumericValue(keyChar));
-                }
-                else if (keyChar == '\b') { //Backspace
+                } else if (keyChar == '\b') { //Backspace
                     setNumberInAllYellowCells(0); // set to blank
-                }
-                else if (!playing && keyChar == ' ') { //Spacebar
+                } else if (!playing && keyChar == ' ') { //Spacebar
                     createCage(' ', 0);
                 }
-
             }
         });
 
@@ -156,10 +146,10 @@ public class DrawCell extends JPanel {
     }
 
     /**
-     * Sets number and foreground color according to userInput
+     * Establece el número y el color del texto según la entrada del usuario.
      *
-     * @param number        Number to be set
-     * @param userInput     Boolean indicating number is user input or not
+     * @param number    Número a establecer.
+     * @param userInput Booleano que indica si el número es una entrada del usuario o no.
      */
     public void setNumber(int number, boolean userInput) {
         mainLabel.setForeground(userInput ? Color.BLUE : Color.BLACK);
@@ -168,8 +158,7 @@ public class DrawCell extends JPanel {
 
     public int getNumber() {
         String n = mainLabel.getText().trim();
-        if(n.isEmpty()) return 0;
-        else return Integer.valueOf(n);
+        return n.isEmpty() ? 0 : Integer.parseInt(n);
     }
 
     public void setOp(String op) {
@@ -177,44 +166,42 @@ public class DrawCell extends JPanel {
     }
 
     /**
-     * Sets the given number in all yellow cells.
+     * Establece el número dado en todas las celdas amarillas.
      *
-     * @param number Number to set in all yellow cells.
+     * @param number Número a establecer en todas las celdas amarillas.
      */
     private static void setNumberInAllYellowCells(int number) {
         for (DrawCell cell : allCells) {
             if (cell.selected) {
-                // Skip black cells if in playing mode
-                if (playing && cell.mainLabel.getForeground() == Color.BLACK && cell.mainLabel.getText() != "") continue;
+                if (playing && cell.mainLabel.getForeground() == Color.BLACK && !Objects.equals(cell.mainLabel.getText(), ""))
+                    continue;
                 cell.setNumber(number, playing);
             }
         }
     }
 
-
+    /**
+     * Establece la región para la celda.
+     * @param c La celda que se establece.
+     */
     public void setCage(Cage c) {
         cage = c;
     }
+
     /**
-     * Sets the borders of selected cells to create a cage.
+     * Establece los bordes de las celdas seleccionadas para crear una región (cage).
      */
     public static void createCage(char op, int res) {
-        // Check it's valid
         for (DrawCell cell : allCells) {
-
-            if (cell.selected) {
-                if (cell.hasCage()) {
-                    JOptionPane.showMessageDialog(null, "Esta casilla ya esta en una región");
-                    return;
-                }
+            if (cell.selected && cell.hasCage()) {
+                JOptionPane.showMessageDialog(null, "Esta casilla ya está en una región");
+                return;
             }
         }
-        //DFS to check the cells are connected
         if (!areYellowCellsConnected()) {
-            JOptionPane.showMessageDialog(null, "Las casillas no estan conectadas");
+            JOptionPane.showMessageDialog(null, "Las casillas no están conectadas");
             return;
         }
-        // Draw cage
         Cage cage = new Cage();
         cages.add(cage);
         cage.setOpCell(findTopLeftCell());
@@ -222,17 +209,20 @@ public class DrawCell extends JPanel {
         for (DrawCell cell : allCells) {
             if (cell.selected) {
                 cage.addCell(cell);
-
                 CustomBorder border = getCustomBorder(cell);
                 cell.setBorder(border);
             }
         }
         if (op == ' ') cage.cageConfig();
-        else {
-            cage.setCage(op, res);
-        }
+        else cage.setCage(op, res);
     }
 
+    /**
+     * Obtiene un borde personalizado para la celda dada.
+     *
+     * @param cell La celda para la que se está obteniendo el borde.
+     * @return Un borde personalizado para la celda.
+     */
     private static CustomBorder getCustomBorder(DrawCell cell) {
         boolean top = true;
         boolean bottom = true;
@@ -241,30 +231,26 @@ public class DrawCell extends JPanel {
 
         for (DrawCell neighbor : allCells) {
             if (neighbor.selected) {
-                if (neighbor.x == cell.x && neighbor.y == cell.y - 1) {
-                    left = false;
-                }
-                if (neighbor.x == cell.x && neighbor.y == cell.y + 1) {
-                    right = false;
-                }
-                if (neighbor.x == cell.x - 1 && neighbor.y == cell.y) {
-                    top = false;
-                }
-                if (neighbor.x == cell.x + 1 && neighbor.y == cell.y) {
-                    bottom = false;
-                }
+                if (neighbor.x == cell.x && neighbor.y == cell.y - 1) left = false;
+                if (neighbor.x == cell.x && neighbor.y == cell.y + 1) right = false;
+                if (neighbor.x == cell.x - 1 && neighbor.y == cell.y) top = false;
+                if (neighbor.x == cell.x + 1 && neighbor.y == cell.y) bottom = false;
             }
         }
 
-        return new CustomBorder( top ? Color.BLACK : Color.LIGHT_GRAY, top ? 3 : 0,
-                                                left ? Color.BLACK : Color.LIGHT_GRAY, left ? 3 : 0,
-                                                bottom ? Color.BLACK : Color.LIGHT_GRAY, bottom ? 3 : 0,
-                                                right ? Color.BLACK : Color.LIGHT_GRAY, right ? 3 : 0);
+        return new CustomBorder(top ? Color.BLACK : Color.LIGHT_GRAY, top ? 3 : 0,
+                left ? Color.BLACK : Color.LIGHT_GRAY, left ? 3 : 0,
+                bottom ? Color.BLACK : Color.LIGHT_GRAY, bottom ? 3 : 0,
+                right ? Color.BLACK : Color.LIGHT_GRAY, right ? 3 : 0);
     }
 
+    /**
+     * Encuentra la celda en la esquina superior izquierda entre las celdas seleccionadas.
+     *
+     * @return La celda en la esquina superior izquierda.
+     */
     private static DrawCell findTopLeftCell() {
         DrawCell topLeftCell = null;
-
         for (DrawCell cell : allCells) {
             if (cell.selected) {
                 if (topLeftCell == null) {
@@ -276,50 +262,34 @@ public class DrawCell extends JPanel {
                 }
             }
         }
-
         return topLeftCell;
     }
 
+    /**
+     * Establece el tamaño del tablero de juego.
+     *
+     * @param s El tamaño del tablero de juego.
+     */
     public static void setSize(int s) {
         size = s;
     }
 
     /**
-     * Returns x position in game
+     * Verifica si las celdas seleccionadas están conectadas.
      *
-     * @return  X position in game
+     * @return true si las celdas seleccionadas están conectadas, de lo contrario false.
      */
-    public int getPosX() {
-        return x;
-    }
-
-    /**
-     * Return y position in game
-     *
-     * @return  Y position in game
-     */
-    public int getPosY() {
-        return y;
-    }
-
     private static boolean areYellowCellsConnected() {
         Set<DrawCell> visited = new HashSet<>();
         DrawCell startCell = null;
-
-        // Find the starting cell (any yellow cell)
         for (DrawCell cell : allCells) {
             if (cell.selected) {
                 startCell = cell;
                 break;
             }
         }
+        if (startCell == null) return true;
 
-        if (startCell == null) {
-            // No yellow cells found
-            return true;
-        }
-
-        // Use a stack for DFS
         Stack<DrawCell> stack = new Stack<>();
         stack.push(startCell);
 
@@ -327,8 +297,6 @@ public class DrawCell extends JPanel {
             DrawCell current = stack.pop();
             if (!visited.contains(current)) {
                 visited.add(current);
-
-                // Check neighbors
                 for (DrawCell neighbor : getYellowNeighbors(current)) {
                     if (!visited.contains(neighbor)) {
                         stack.push(neighbor);
@@ -336,21 +304,22 @@ public class DrawCell extends JPanel {
                 }
             }
         }
-
-        // Check if all yellow cells are visited
         for (DrawCell cell : allCells) {
             if (cell.selected && !visited.contains(cell)) {
                 return false;
             }
         }
-
         return true;
     }
 
-    // Helper method to get yellow neighbors
+    /**
+     * Obtiene los vecinos amarillos (seleccionados) de una celda.
+     *
+     * @param cell La celda para la que se están obteniendo los vecinos.
+     * @return Una lista de celdas vecinas amarillas.
+     */
     private static List<DrawCell> getYellowNeighbors(DrawCell cell) {
         List<DrawCell> neighbors = new ArrayList<>();
-
         for (DrawCell neighbor : allCells) {
             if (neighbor.selected) {
                 if ((neighbor.x == cell.x && (neighbor.y == cell.y - 1 || neighbor.y == cell.y + 1)) ||
@@ -359,18 +328,32 @@ public class DrawCell extends JPanel {
                 }
             }
         }
-
         return neighbors;
     }
 
+    /**
+     * Verifica si la celda tiene una región (cage) asignada.
+     *
+     * @return true si la celda tiene una región, de lo contrario false.
+     */
     private boolean hasCage() {
         return cage != null;
     }
 
-     public static void setPlaying(boolean b) {
+    /**
+     * Establece si el juego está en modo de juego.
+     *
+     * @param b true si el juego está en modo de juego, de lo contrario false.
+     */
+    public static void setPlaying(boolean b) {
         playing = b;
     }
 
+    /**
+     * Selecciona un conjunto de celdas.
+     *
+     * @param cells Las celdas a seleccionar.
+     */
     public static void selectCells(DrawCell[] cells) {
         resetYellowCells();
         for (DrawCell c : cells) {
@@ -378,9 +361,21 @@ public class DrawCell extends JPanel {
         }
     }
 
+    /**
+     * Obtiene el número de regiones (cages) en el tablero.
+     *
+     * @return El número de regiones.
+     */
     public static int getNCages() {
         return cages.size();
     }
+
+    /**
+     * Obtiene las posiciones X de las celdas en una región específica.
+     *
+     * @param index El índice de la región.
+     * @return Un array con las posiciones X de las celdas.
+     */
     public static int[] getCageCellsX(int index) {
         List<DrawCell> cells = cages.get(index).getCells();
         int s = cells.size();
@@ -388,10 +383,15 @@ public class DrawCell extends JPanel {
         for (int i = 0; i < s; ++i) {
             cellsX[i] = cells.get(i).x;
         }
-
         return cellsX;
     }
 
+    /**
+     * Obtiene las posiciones Y de las celdas en una región específica.
+     *
+     * @param index El índice de la región.
+     * @return Un array con las posiciones Y de las celdas.
+     */
     public static int[] getCageCellsY(int index) {
         List<DrawCell> cells = cages.get(index).getCells();
         int s = cells.size();
@@ -399,18 +399,32 @@ public class DrawCell extends JPanel {
         for (int i = 0; i < s; ++i) {
             cellsY[i] = cells.get(i).y;
         }
-
         return cellsY;
     }
 
+    /**
+     * Obtiene el operador de una región específica.
+     *
+     * @param index El índice de la región.
+     * @return El operador de la región.
+     */
     public static int getCageOp(int index) {
         return cages.get(index).getOperatorAsNum();
     }
 
+    /**
+     * Obtiene el resultado de una región específica.
+     *
+     * @param index El índice de la región.
+     * @return El resultado de la región.
+     */
     public static int getCageRes(int index) {
         return cages.get(index).getResult();
     }
 
+    /**
+     * Reinicia todas las celdas y regiones.
+     */
     public static void resetDrawCells() {
         if (!allCells.isEmpty()) allCells.clear();
         if (!cages.isEmpty()) cages.clear();

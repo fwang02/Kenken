@@ -2,37 +2,35 @@ package Presentation;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * La clase {@code Cage} representa una región en un rompecabezas KenKen, que tiene un operador común y un resultado.
+ * @author Romeu Esteve
+ */
 public class Cage {
-    private List<DrawCell> cells;
+    private final List<DrawCell> cells;
     private DrawCell opCell;
     private String operator = "+";
     private int number = 0;
-
     private JRadioButton[] opButtons = new JRadioButton[6];
-    private ButtonGroup buttonGroup;
 
-    public Cage(char operator, int result) {
-        this.cells = new ArrayList<>();
-        this.operator = String.valueOf(operator);
-        this.number = result;
-
-        initButtons();
-    }
-
+    /**
+     * Construye una {@code Cage} con valores predeterminados.
+     */
     public Cage() {
         this.cells = new ArrayList<>();
         initButtons();
     }
 
+    /**
+     * Inicializa los botones de operador.
+     */
     private void initButtons() {
         String[] operators = {"+", "-", "x", "/", "%", "^"};
         opButtons = new JRadioButton[operators.length];
-        buttonGroup = new ButtonGroup();
+        ButtonGroup buttonGroup = new ButtonGroup();
 
         for (int i = 0; i < operators.length; i++) {
             opButtons[i] = new JRadioButton(operators[i]);
@@ -41,47 +39,46 @@ public class Cage {
         opButtons[0].setSelected(true);
     }
 
+    /**
+     * Configura la región mediante una interfaz gráfica.
+     */
     public void cageConfig() {
-        // Create the panel
+        // Crear el panel
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // Label for the number input
-        JLabel numberLabel = new JLabel("Indica un numero:");
+        // Etiqueta para la entrada de número
+        JLabel numberLabel = new JLabel("Indica un número:");
         gbc.gridx = 0;
         gbc.gridy = 0;
         panel.add(numberLabel, gbc);
 
-        // Text field for the number input
+        // Campo de texto para la entrada de número
         JTextField numberField = new JTextField(null, (number + ""), 10);
         gbc.gridx = 1;
         gbc.gridy = 0;
         panel.add(numberField, gbc);
 
-        // Panel for buttons
+        // Panel para los botones
         JPanel buttonsPanel = new JPanel();
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.gridwidth = 2;
-
-
-
-        buttonsPanel.setLayout(new GridLayout(0, 3, 5, 5)); // Adjust layout as needed
+        buttonsPanel.setLayout(new GridLayout(0, 3, 5, 5)); // Ajustar el diseño según sea necesario
 
         for (JRadioButton button : opButtons) {
             buttonsPanel.add(button);
         }
 
-        // deactivate operators that are not possible
+        // Desactivar operadores que no son posibles
         if (cells.size() > 2) {
-        opButtons[1].setEnabled(false);
-        opButtons[3].setEnabled(false);
-        opButtons[4].setEnabled(false);
-        opButtons[5].setEnabled(false);
-        }
-        else if (cells.size() == 1) {
+            opButtons[1].setEnabled(false);
+            opButtons[3].setEnabled(false);
+            opButtons[4].setEnabled(false);
+            opButtons[5].setEnabled(false);
+        } else if (cells.size() == 1) {
             opButtons[1].setEnabled(false);
             opButtons[2].setEnabled(false);
             opButtons[3].setEnabled(false);
@@ -91,20 +88,17 @@ public class Cage {
 
         panel.add(buttonsPanel, gbc);
 
-        // Action listener for the number field to generate buttons dynamically
-        numberField.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    number = Integer.parseInt(numberField.getText());
-                    opCell.setOp(operator + number + "");
-                } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(panel, "Indica un numero valido.", "Error", JOptionPane.ERROR_MESSAGE);
-                }
+        // Listener para el campo de número para generar botones dinámicamente
+        numberField.addActionListener(e -> {
+            try {
+                number = Integer.parseInt(numberField.getText());
+                opCell.setOp(operator + number);
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(panel, "Indica un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
 
-        // Show the custom JOptionPane with Accept and Cancel options
+        // Mostrar el JOptionPane personalizado con opciones de Aceptar y Cancelar
         int result = JOptionPane.showConfirmDialog(null, panel, "Editor de Región", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
         if (result == JOptionPane.OK_OPTION) {
@@ -115,27 +109,36 @@ public class Cage {
                     break;
                 }
             }
-
-            opCell.setOp(operator + number + "");
-
+            opCell.setOp(operator + number);
         } else {
             cageErase();
         }
     }
 
+    /**
+     * Agrega una celda a la región.
+     *
+     * @param cell la celda a agregar
+     */
     public void addCell(DrawCell cell) {
         cells.add(cell);
         cell.setCage(this);
     }
 
+    /**
+     * Obtiene la lista de celdas en la región.
+     *
+     * @return la lista de celdas
+     */
     public List<DrawCell> getCells() {
         return cells;
     }
 
-    public char getOperator() {
-        return operator.charAt(0);
-    }
-
+    /**
+     * Obtiene el operador de la región como un número.
+     *
+     * @return el número correspondiente al operador
+     */
     public int getOperatorAsNum() {
         switch (operator) {
             case "+":
@@ -154,11 +157,18 @@ public class Cage {
         return 0;
     }
 
-
+    /**
+     * Obtiene el resultado de la región.
+     *
+     * @return el resultado
+     */
     public int getResult() {
         return number;
     }
 
+    /**
+     * Borra la configuración de la región.
+     */
     public void cageErase() {
         for (DrawCell c : cells) {
             c.setCage(null);
@@ -168,16 +178,24 @@ public class Cage {
         opCell.setOp("");
     }
 
+    /**
+     * Establece la celda de operación para la región.
+     *
+     * @param opCell la celda de operación
+     */
     public void setOpCell(DrawCell opCell) {
         this.opCell = opCell;
     }
 
-    public int countCells() {return cells.size();}
-
+    /**
+     * Configura la región con un operador y un resultado especificados.
+     *
+     * @param op el operador
+     * @param res el resultado
+     */
     public void setCage(char op, int res) {
         operator = String.valueOf(op);
         number = res;
-
         opCell.setOp(operator + number);
     }
 }

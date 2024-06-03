@@ -19,43 +19,43 @@ import java.util.HashSet;
  */
 public class PlayOptionView extends View {
 
-    private CtrlPresentation ctrlPresentation;
+    private final CtrlPresentation ctrlPresentation;
     //Componentes de opciones para jugar
-    private JPanel playOptionPanel = new JPanel();
-    private JButton generateNewButton = new JButton("Kenken aleatorio");
-    private JButton openFileButton = new JButton("Importar Kenken");
-    private JButton playExistButton = new JButton("Kenkens predefinidos");
-    private JButton continueGameButton = new JButton("Continuar partida");
-    private JButton createButton = new JButton("Crear Kenken");
-    private JPanel textPanel = new JPanel();
-    private JLabel title = new JLabel("Opciones para jugar",SwingConstants.CENTER);
-    private JLabel loginWelcome = new JLabel();
-    private JButton logoutButton = new JButton("Cerrar sesión");
+    private final JPanel playOptionPanel = new JPanel();
+    private final JButton generateNewButton = new JButton("Kenken aleatorio");
+    private final JButton openFileButton = new JButton("Importar Kenken");
+    private final JButton playExistButton = new JButton("Kenkens predefinidos");
+    private final JButton continueGameButton = new JButton("Continuar partida");
+    private final JButton createButton = new JButton("Crear Kenken");
+    private final JPanel textPanel = new JPanel();
+    private final JLabel title = new JLabel("Opciones para jugar",SwingConstants.CENTER);
+    private final JLabel loginWelcome = new JLabel();
+    private final JButton logoutButton = new JButton("Cerrar sesión");
     
     //Componentes del ranking
-    private JButton rankingButton = new JButton("Ranking");
-    private JButton bExitRanking = new JButton("Volver");
+    private final JButton rankingButton = new JButton("Ranking");
+    private final JButton bExitRanking = new JButton("Volver");
     private RankingPanel rankingPanel;
-    private JPanel pExitRanking = new JPanel(new FlowLayout());
+    private final JPanel pExitRanking = new JPanel(new FlowLayout());
 
     //Componentes para la ventana de creación
-    private JPanel creationPanel = new JPanel();
-    private JPanel sizePanel = new JPanel();
-    private JSpinner sizeSpinner = new JSpinner(new SpinnerNumberModel(3, 3, 9, 1));
-    private JPanel operationPanel = new JPanel();
-    private JCheckBox[] operationSelect = new JCheckBox[6];
-    private JPanel difficultyPanel = new JPanel();
-    private JComboBox<String> difficultySelect = new JComboBox<>(new String[]{"Fácil","Medio","Difícil","Experto"});
-    private JPanel upPanel = new JPanel();
-    private JPanel buttonsPanel = new JPanel();
-    private JButton bConfirmCreation = new JButton("Confirmar");
-    private JButton exitButton = new JButton("Volver");
+    private final JPanel creationPanel = new JPanel();
+    private final JPanel sizePanel = new JPanel();
+    private final JSpinner sizeSpinner = new JSpinner(new SpinnerNumberModel(3, 3, 9, 1));
+    private final JPanel operationPanel = new JPanel();
+    private final JCheckBox[] operationSelect = new JCheckBox[6];
+    private final JPanel difficultyPanel = new JPanel();
+    private final JComboBox<String> difficultySelect = new JComboBox<>(new String[]{"Fácil","Medio","Difícil","Experto"});
+    private final JPanel upPanel = new JPanel();
+    private final JPanel buttonsPanel = new JPanel();
+    private final JButton bConfirmCreation = new JButton("Confirmar");
+    private final JButton exitButton = new JButton("Volver");
 
     //componentes para la vista de jugar juegos predefinidos
-    private JPanel defaultGamesPanel = new JPanel();
-    private JButton[] basicGamesB = new JButton[7];
-    private JButton[] specialGamesB = new JButton[2];
-    private JButton exitDef = new JButton("Volver");
+    private final JPanel defaultGamesPanel = new JPanel();
+    private final JButton[] basicGamesB = new JButton[7];
+    private final JButton[] specialGamesB = new JButton[2];
+    private final JButton exitDef = new JButton("Volver");
 
     public PlayOptionView(CtrlPresentation cp) {
         this.ctrlPresentation = cp;

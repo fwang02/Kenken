@@ -145,7 +145,7 @@ public class GameCreatorView extends View {
     }
 
     /**
-     *
+     * Carga como CurrentGame el estado en que se encuentra en el DrawLayout
      * @return true si se ha cargado correctamente, false de lo contrario.
      */
     private boolean loadToCurrentGame() {

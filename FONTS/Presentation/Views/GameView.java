@@ -147,7 +147,7 @@ public class GameView extends View {
             int[] values = panel.getValCells();
             if (ctrlPresentation.saveCurrentGame(gameName, values)) {
                 JOptionPane.showMessageDialog(this, "Partida guardada correctamente.", "Guardar", JOptionPane.INFORMATION_MESSAGE);
-                ctrlPresentation.gameCreatorViewToPlayOptionView();
+                ctrlPresentation.gameViewToPlayOptionView();
             } else {
                 JOptionPane.showMessageDialog(this, "Se ha producido un error al guardar.", "Error", JOptionPane.ERROR_MESSAGE);
             }

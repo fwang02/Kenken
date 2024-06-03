@@ -206,7 +206,7 @@ public class CtrlKenkenFile {
 		try {
 			Scanner scanner = new Scanner(file);
 			return loadKenkenGame(scanner);
-		} catch (FileNotFoundException e) {
+		} catch (Exception e) {
 			return null;
 		}
 	}

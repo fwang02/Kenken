@@ -387,7 +387,7 @@ public class PlayOptionView extends View {
             System.out.println("Has seleccionado la dificultad: " + diff);
 
             if(ctrlPresentation.createKenken(size,selectedOp, diff)) {
-                int result = JOptionPane.showConfirmDialog(null, "Ten en cuenta que un kenken puede tener diversas soluciones, el corrector funcionara con una de ellas",
+                int result = JOptionPane.showConfirmDialog(null, "Ten en cuenta que un kenken puede tener diversas soluciones,\nel corrector funcionara con una de ellas",
                         "Opción de jugar", JOptionPane.OK_CANCEL_OPTION);
                 if (result == JOptionPane.OK_OPTION) {
                     ctrlPresentation.playOptionViewToGameView();

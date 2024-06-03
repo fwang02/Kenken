@@ -169,7 +169,6 @@ public class GameView extends View {
             JOptionPane.showMessageDialog(this, "La partida está acabada.", "Acabado", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-        ctrlPresentation.solve();
         if (ctrlPresentation.check(values)) {
             int gamePoints = ctrlPresentation.getGamePoints();
             if (gamePoints == -1) {
@@ -273,13 +272,14 @@ public class GameView extends View {
         panel = new DrawLayout(size, true);
         loadKenken();
         add(panel, BorderLayout.CENTER);
+
+        ctrlPresentation.solve();
     }
 
     /**
      * Muestra la solución del juego.
      */
     private void showSolution() {
-        ctrlPresentation.solve(); // no hace falta comprobar si es valido porque el usuario solo puede jugar si ya lo es
         int[] cells = ctrlPresentation.getCells();
         int size = ctrlPresentation.getKenkenSize();
 

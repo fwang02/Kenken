@@ -9,17 +9,26 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
+ * Controlador de Dominio del Kenken. Gestiona el Kenken que se esta jugando actualmente en
+ * la varible currentGame
+ * 
  * @author Javier Parcerisas
  */
 public class CtrlDomainKenken {
 	private Kenken currentGame;
 	private final CtrlKenkenFile CKF;
 
+	/**
+     * Constructora de la clase CtrlDomainKenken
+     */
 	public CtrlDomainKenken() {
 		currentGame = null;
 		CKF = CtrlKenkenFile.getInstance();
 	}
 
+	/**
+     * Función que traduce de un número a su operación correspondiente
+     */
 	static Operation getOperation(int num) {
         switch (num) {
             case 1:
@@ -39,6 +48,14 @@ public class CtrlDomainKenken {
         }
     }
 
+	/**
+     * Función que crea un kenken y lo asigna como juego actual
+	 * 
+	 * @param size indica el tamaño del kenken
+	 * @param ops indica las operaciones del kenken
+	 * @param difficulty indica la dificultad del kenken
+	 * @return devuelve cierto si se genera el kenken correctamente
+     */
 	public boolean generateKenkenByDifficulty(int size, HashSet<Operation> ops, TypeDifficulty difficulty){
         Kenken kenken = new Kenken(size,ops,difficulty);
         KenkenConfig kenkenConfig = new KenkenConfig(kenken);
@@ -54,11 +71,22 @@ public class CtrlDomainKenken {
 		return true;
 	}
 
+	/**
+     * Función soluciona el kenken currentGame
+	 * 
+	 * @return devuelve cierto si el kenken tiene solución, falso si no tiene
+     */
     public boolean solveCurrentGame() {
     	KenkenConfig kenkenConfig = new KenkenConfig(currentGame);
         return kenkenConfig.solveKenken();
     }
 
+	/**
+     * Función que carga en currentGame un kenken desde un fichero
+	 * 
+	 * @param fileName nombre del fichero que contiene el kenken
+	 * @return devuelve cierto si el kenken tiene solución, falso si no tiene
+     */
     public boolean solveKenkenByFile(String fileName) {
     	Kenken kenken = CKF.readKenkenByFile(fileName);
 		if(kenken == null) return false;
@@ -72,6 +100,12 @@ public class CtrlDomainKenken {
     	}
     }
 
+	/**
+     * Función que carga en currentGame un kenken desde un fichero
+	 * 
+	 * @param file fichero que contiene el kenken
+	 * @return devuelve cierto si el kenken tiene solución, falso si no tiene
+     */
 	public boolean solveKenkenByFile(File file) {
 		Kenken kenken = CKF.readKenkenByFile(file);
 		if(kenken == null) return false;
@@ -85,6 +119,13 @@ public class CtrlDomainKenken {
 		}
 	}
 
+	/**
+     * Función que guarda el kenken de currentGame
+	 * 
+	 * @param gameName nombre del kenken guardado
+	 * @param values valor del tablero del jugador
+	 * @return devuelve cierto si se ha podido guardar correctamente, falso en caso contrario
+     */
 	public boolean saveCurrentGame(String gameName, int[] values) {
 		int s = currentGame.getSize();
 		int[][] auxboard = new int[s][s];
@@ -97,6 +138,13 @@ public class CtrlDomainKenken {
         return CKF.saveKenkenGame(currentGame, gameName);
 	}
 
+	/**
+     * Función que carga en currentGame un kenken desde un fichero y con un 
+	 * tablero de juego de usuario ya definido
+	 * 
+	 * @param file fichero que contiene el kenken
+	 * @return devuelve cierto si el kenken se ha podido cargar correctamente
+     */
 	public boolean continueKenken(File file) {
 		Kenken kenken = CKF.loadKenkenByFile(file);
 		if(kenken == null) return false;
@@ -106,6 +154,12 @@ public class CtrlDomainKenken {
 		}
 	}
 
+	/**
+     * Getter que nos permite obtener los valores del tablero de juego del usuario
+	 * del kenken actual
+	 * 
+	 * @return devuelve los valores del tablero de currentGame
+     */
     public int[] getCurrentGameBoard() {
 		int[][] auxboard = currentGame.getBoard();
 		int s = currentGame.getSize();
@@ -118,10 +172,22 @@ public class CtrlDomainKenken {
 		return values;
 	}
 
+	/**
+     * Getter que nos permite obtener las regiones del kenken actual
+	 * 
+	 * @return devuelve las regiones de currentGame
+     */
     public ArrayList<KenkenCage> getCages() {
 		return currentGame.getAllCages();
 	}
 
+	/**
+     * Getter que nos permite obtener las posiciones del eje x de las casillas de
+	 * una región del kenken actual
+	 * 
+	 * @param index posición de la región
+	 * @return devuelve las posiciones x de las casillas de currentGame
+     */
 	public int[] getCurrentCageCellsX(int index) {
 		KenkenCage cage = currentGame.getAllCages().get(index);
 
@@ -135,6 +201,13 @@ public class CtrlDomainKenken {
         return cellsX;
 	}
 
+	/**
+     * Getter que nos permite obtener las posiciones del eje x de las casillas de
+	 * una región del kenken actual
+	 * 
+	 * @param index posición de la región
+	 * @return devuelve las posiciones y de las casillas de currentGame
+     */
 	public int[] getCurrentCageCellsY(int index) {
         KenkenCage cage = currentGame.getAllCages().get(index);
 
@@ -148,6 +221,11 @@ public class CtrlDomainKenken {
         return cellsY;
     }
 
+	/**
+     * Getter que nos permite obtener las casillas del kenken actual
+	 * 
+	 * @return devuelve las casillas de currentGame
+     */	
 	public int[] getCurrentCells() {
 		KenkenCell[][] kCells = currentGame.getAllCells();
 
@@ -163,6 +241,12 @@ public class CtrlDomainKenken {
         return cells;
 	}
 
+	/**
+     * Función utilizada para conseguir pistas sobre el juego actual
+	 * 
+	 * @param values estado actual del tablero de juego del usuario
+	 * @return devuelve la posición de la casilla y el valor que le corresponde
+     */
 	public int[] hintCurrentGame(int[] values) {
 		int[] hint;
         int s = currentGame.getSize();
@@ -188,10 +272,20 @@ public class CtrlDomainKenken {
         return hint;
     }
 
+	/**
+     * Función que incrementa el número de pistas utilizadas para solucionar el kenken
+     */
 	public void incrHintsCurrGame() {
 		currentGame.incrHints();
 	}
 
+	/**
+     * Función que nos permite comprobar la respuesta del usuario mediante el tablero
+	 * de juego
+	 * 
+	 * @param values estado actual del tablero de juego del usuario
+	 * @return cierto si la respuesta es correcta o falso en caso contrario
+     */
     public boolean checkCurrentGame(int[] values) {
     	int s = currentGame.getSize();
 		int correctCount = 0;
@@ -208,28 +302,55 @@ public class CtrlDomainKenken {
         return true;
 	}
 
+	/**
+	 * Getter que nos permite obtener los puntos obtenidos al solucionar el kenken
+	 * 
+	 * @return cantidad de puntos obtenidos
+	 */
     public int getPoints() {
     	return currentGame.getPoints();
     }
 
+	/**
+	 * Función que nos permite comprobar si hay un currentGame cargado
+	 * 
+	 * @return cierto si hay un currentGame o falso si no hay
+	 */
 	public boolean hasCurrentGame() {
 		return currentGame != null;
 	}
 
+	/**
+	 * Getter que nos permite obtener el kenken acutal
+	 * 
+	 * @return currentGame
+	 */
 	public Kenken getCurrentGame() {
 		return currentGame;
 	}
 
+	/**
+	 * Getter que nos permite obtener el tamaño del kenken actual
+	 * 
+	 * @return tamaño del currentGame
+	 */
 	public int getCurrentGameSize() {
 		return currentGame != null ? currentGame.getSize() : 0;
 	}
 
+	/**
+	 * Setter que nos permite asignar un kenken actual
+	 * 
+	 * @param k kenken que asignara como currentGame
+	 */
 	public void setCurrentGame(Kenken k) {
 		currentGame = k;
 	}
 
 	/**
-	 * Obtiene las celdas que no cambian.
+	 * Getter que nos permite obtener las casillas estaticas
+	 * 
+	 * @return casillas estaticas con un valor fijo y visible
 	 */
 	public int[] getLockedCells() {
 		KenkenCell[][] kCells = currentGame.getAllCells();
@@ -247,7 +368,9 @@ public class CtrlDomainKenken {
 	}
 
 	/**
-	 * Asigna las celdas que no cambian.
+	 * Setter que nos permite asignar las casillas estaticas
+	 * 
+	 * @param valCells valor de las casillas estaticas
 	 */
 	public void setLockedCells(int[] valCells) {
 		KenkenCell[][] kCells = currentGame.getAllCells();

@@ -1,6 +1,8 @@
 package Domain;
 
 /**
+ * Esta clase se utiliza para guardar las posiciones de las casillas.
+ * 
  * @author Javier Parcerisas
  */
 public class Pos {
@@ -8,8 +10,7 @@ public class Pos {
     public int posY;
 
     /**
-	 * Constructora básica de la clase Pos. Se utiliza para guardar las
-     * posiciones de las casillas.
+	 * Constructora básica de la clase Pos. 
      * 
      * @param x posición x
      * @param y posición y

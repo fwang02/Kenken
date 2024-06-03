@@ -4,6 +4,8 @@ import Domain.Kenken;
 import Domain.KenkenCage;
 
 /**
+ * Esta clase indica el tipo de operación según el tipo de instancia de la clase
+ * 
  * @author Javier Parcerisas
  */
 public abstract class Operation {

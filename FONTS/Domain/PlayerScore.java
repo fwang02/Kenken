@@ -1,6 +1,7 @@
 package Domain;
 
 /**
+ * Es una clase tupla para el ranking.
  * @author Feiyang Wang
  */
 public class PlayerScore {

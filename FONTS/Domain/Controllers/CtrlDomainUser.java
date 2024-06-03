@@ -4,13 +4,12 @@ import Domain.PlayerScore;
 import Domain.User;
 import Persistence.CtrlUserFile;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 
 /**
+ * Esta clase es el controlador de dominio para los usuarios.
+ * Gestiona las operaciones relacionadas con los usuarios, como la autenticación y la gestión de puntuaciones.
+ *
  * @author Feiyang Wang
  */
 public class CtrlDomainUser {
@@ -19,6 +18,9 @@ public class CtrlDomainUser {
     private final PriorityQueue<PlayerScore> ranking;
     private String loggedUser;
 
+    /**
+     * Constructor de CtrlDomainUser. Inicializa el controlador de persistencia, el mapa de usuarios, el ranking y carga los datos de los usuarios.
+     */
     public CtrlDomainUser() {
         ctrlUserFile = CtrlUserFile.getInstance();
         users = new HashMap<>();
@@ -27,6 +29,9 @@ public class CtrlDomainUser {
         loadUserData();
     }
 
+    /**
+     * Carga los datos de los usuarios desde la persistencia.
+     */
     private void loadUserData() {
         ArrayList<String[]> usersList = ctrlUserFile.allUsers();
         for(String[] user : usersList) {
@@ -36,16 +41,26 @@ public class CtrlDomainUser {
         }
     }
 
-    private void writeToFile(String username) {
-
-    }
-
+    /**
+     * Añade un nuevo usuario.
+     *
+     * @param username El nombre de usuario del nuevo usuario.
+     * @param password La contraseña del nuevo usuario.
+     * @return true si el usuario se añadió con éxito, false en caso contrario.
+     */
     public boolean addUser(String username, String password) {
         users.put(username,new User(username,password));
         ranking.add(new PlayerScore(username,0));
         return ctrlUserFile.writeNewUserToFile(username, password);
     }
 
+    /**
+     * Comprueba si la contraseña proporcionada es correcta para el nombre de usuario proporcionado.
+     *
+     * @param username El nombre de usuario.
+     * @param password La contraseña a comprobar.
+     * @return true si la contraseña es correcta, false en caso contrario.
+     */
     public boolean isPasswordCorrect(String username, String password) {
         User u = users.get(username);
         if(u == null) {
@@ -55,34 +70,48 @@ public class CtrlDomainUser {
     }
 
     /**
+     * Inicia sesión de un usuario.
      *
-     * @param username Nombre usuario
+     * @param username El nombre de usuario que inicia sesión.
      */
     public void loginUser(String username) {
         loggedUser = username;
     }
 
+    /**
+     * Comprueba si un usuario existe.
+     *
+     * @param username El nombre de usuario a comprobar.
+     * @return true si el usuario existe, false en caso contrario.
+     */
     public boolean isUserExist(String username) {
         return users.containsKey(username);
     }
 
-    public User getUser(String username) {
-        return users.get(username);
-    }
-
+    /**
+     * Obtiene el nombre de usuario del usuario que ha iniciado sesión.
+     *
+     * @return El nombre de usuario del usuario que ha iniciado sesión.
+     */
     public String getLoggedUser() {
         return loggedUser;
     }
 
-    public HashMap<String,User> getAllUsers() {
-        return users;
-    }
-
-    //ranking methods
+    /**
+     * Obtiene el ranking de los usuarios.
+     *
+     * @return Una cola de prioridad con las puntuaciones máximas de los usuarios.
+     */
     public PriorityQueue<PlayerScore> getRanking() {
         return ranking;
     }
 
+    /**
+     * Actualiza la puntuación máxima del usuario que ha iniciado sesión.
+     *
+     * @param newMaxPoint La nueva puntuación máxima.
+     * @return true si la puntuación se actualizó con éxito, false en caso contrario.
+     */
     public boolean updateMaxPointCurrUser(int newMaxPoint) {
         if(users.get(loggedUser).getMaxPoint() > newMaxPoint) {
             return false;
@@ -95,6 +124,11 @@ public class CtrlDomainUser {
         return updateAllUsers();
     }
 
+    /**
+     * Actualiza los datos de todos los usuarios en la persistencia.
+     *
+     * @return true si los datos se actualizaron con éxito, false en caso contrario.
+     */
     private boolean updateAllUsers() {
         ArrayList<String[]> allUsersData = new ArrayList<>();
         for (User user : users.values()) {
@@ -107,35 +141,9 @@ public class CtrlDomainUser {
         return ctrlUserFile.updateDatas(allUsersData);
     }
 
-    public boolean deleteUser(String username) {
-        if (!users.containsKey(username)) {
-            return false;
-        }
-
-        // Remove user from memory
-        users.remove(username);
-        ranking.removeIf(playerScore -> playerScore.getName().equals(username));
-
-        String userFilePath = CtrlUserFile.getFilePath();
-        // Remove user from file
-        try {
-            Path path = Paths.get(userFilePath);
-            List<String> lines = Files.readAllLines(path);
-            Iterator<String> iterator = lines.iterator();
-            while (iterator.hasNext()) {
-                String line = iterator.next();
-                if (line.startsWith(username + ";")) {
-                    iterator.remove();
-                    break;
-                }
-            }
-            Files.write(path, lines);
-            return true;
-        } catch (IOException e) {
-            return false;
-        }
-    }
-
+    /**
+     * Cierra la sesión del usuario actual.
+     */
     public void logoutCurrentUser() {
         loggedUser = null;
     }

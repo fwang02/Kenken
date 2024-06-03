@@ -13,7 +13,7 @@ public class Cage {
     private String operator = "+";
     private int number = 0;
 
-    static private JRadioButton[] opButtons = new JRadioButton[6];
+    private JRadioButton[] opButtons = new JRadioButton[6];
     private ButtonGroup buttonGroup;
 
     public Cage(char operator, int result) {

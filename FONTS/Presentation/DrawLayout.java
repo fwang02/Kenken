@@ -53,8 +53,8 @@ public class DrawLayout extends JPanel {
      * @param y   coordenada y de la celda
      * @param num número a establecer en la celda
      */
-    public void setCell(int x, int y, int num) {
-        cells[x][y].setNumber(num, false);
+    public void setCell(int x, int y, int num, boolean userInput) {
+        cells[x][y].setNumber(num, userInput);
     }
 
     /**

@@ -20,6 +20,9 @@ public class Kenken {
     private int points;
     private boolean finished;
 
+    /**
+     * Constructora de la clase Kenken
+     */
     public Kenken() {
         this.size = 0;
         this.name = null;
@@ -33,8 +36,9 @@ public class Kenken {
     }
 
     /**
-	 * Constructora de la clase Kenken
-	 */
+     * Constructora de la clase Kenken. Crea un Kenken copiando los parámetros de otro Kenken dado.
+     * @param k Instancia de Kenken del cual copia sus parámetros.
+     */
     public Kenken(Kenken k) {
         this.size = k.getSize();
         this.name = k.getName();
@@ -44,6 +48,8 @@ public class Kenken {
         iniCells();
         this.board = new int[this.size][this.size];
         this.finished = false;
+        this.hints = k.hints;
+        this.points = k.points;
     }
 
 

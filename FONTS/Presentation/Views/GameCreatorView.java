@@ -90,7 +90,7 @@ public class GameCreatorView extends View {
             );
 
             if (!gameName.trim().isEmpty()) {
-                int[] values = panel.getValCells();
+                int[] values = new int[panel.getLength()*panel.getLength()];
                 if (ctrlPresentation.saveCurrentGame(gameName, values)){
                     JOptionPane.showMessageDialog(this, "Juego guardado.", "Guardar", JOptionPane.INFORMATION_MESSAGE);
                     ctrlPresentation.gameCreatorViewToPlayOptionView();
@@ -154,6 +154,7 @@ public class GameCreatorView extends View {
             Object[] cage = panel.getCage(i);
             ctrlPresentation.setCage((int[]) cage[0], (int[]) cage[1], (int) cage[2], (int) cage[3]);
         }
+        ctrlPresentation.setLockedCells(panel.getValCells());
         return ctrlPresentation.solve();
     }
 }

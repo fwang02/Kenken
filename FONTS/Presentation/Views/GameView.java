@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit;
  * Vista del juego de KenKen.
  * Proporciona la interfaz gráfica para interactuar con el juego, incluyendo temporizador, botones y área de juego.
  * Permite comprobar, guardar, recibir pistas y mostrar la solución del juego.
+ *
  * @author Romeu Esteve
  */
 public class GameView extends View {
@@ -173,13 +174,13 @@ public class GameView extends View {
             if (gamePoints == -1) {
                 JOptionPane.showMessageDialog(this, "Todas las casillas rellenadas son correctas", "Correcto", JOptionPane.INFORMATION_MESSAGE);
             } else {
+                timer.stop();
+                finished = true;
                 if (ctrlPresentation.updateMaxPoint(gamePoints)) {
                     JOptionPane.showMessageDialog(this, "¡Has solucionado todo correctamente!\n Puntos: " + gamePoints + ", puntos max actualizados.", "Acabado", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(this, "¡Has solucionado todo correctamente!\n Puntos: " + gamePoints + ", no ha superado a puntos max del usuario.", "Acabado", JOptionPane.INFORMATION_MESSAGE);
                 }
-                finished = true;
-                timer.stop();
             }
         } else {
             JOptionPane.showMessageDialog(this, "Algunas casillas no son correctas", "Incorrecta", JOptionPane.INFORMATION_MESSAGE);
@@ -197,10 +198,10 @@ public class GameView extends View {
         }
 
         showSolution();
-        JOptionPane.showMessageDialog(this, "Solución mostrada.", "Solución", JOptionPane.INFORMATION_MESSAGE);
         solutionShowed = true;
         finished = true;
         timer.stop();
+        JOptionPane.showMessageDialog(this, "Solución mostrada.", "Solución", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /**
@@ -236,6 +237,7 @@ public class GameView extends View {
             DrawLayout.setCage(cellsX, cellsY, op, res);
         }
         getBoard();
+        getLockedCells();
     }
 
     /**
@@ -248,7 +250,7 @@ public class GameView extends View {
         for (int i = 0; i < board.length; ++i) {
             int x = i / size;
             int y = i % size;
-            panel.setCell(x, y, board[i]);
+            panel.setCell(x, y, board[i], true);
         }
     }
 
@@ -276,13 +278,28 @@ public class GameView extends View {
      * Muestra la solución del juego.
      */
     private void showSolution() {
+        ctrlPresentation.solve(); // no hace falta comprobar si es valido porque el usuario solo puede jugar si ya lo es
         int[] cells = ctrlPresentation.getCells();
         int size = ctrlPresentation.getKenkenSize();
 
         for (int i = 0; i < cells.length; ++i) {
             int x = i / size;
             int y = i % size;
-            panel.setCell(x, y, cells[i]);
+            panel.setCell(x, y, cells[i], false);
+        }
+    }
+
+    /**
+     * Obtiene las celdas que no cambian.
+     */
+    private void getLockedCells() {
+        int[] cells = ctrlPresentation.getLockedCells();
+        int size = ctrlPresentation.getKenkenSize();
+
+        for (int i = 0; i < cells.length; ++i) {
+            int x = i / size;
+            int y = i % size;
+            if (cells[i] > 0) panel.setCell(x, y, cells[i], false);
         }
     }
 

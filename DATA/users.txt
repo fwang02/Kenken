@@ -8,3 +8,4 @@ test;test;580
 1234;1234;0
 javi;javi;9000
 user;user;0
+romeu;111;0

@@ -43,6 +43,13 @@ public class CtrlDomainKenken {
         Kenken kenken = new Kenken(size,ops,difficulty);
         KenkenConfig kenkenConfig = new KenkenConfig(kenken);
         kenkenConfig.generateKenkenV1();
+
+		for (KenkenCell[] row : kenken.getAllCells()) {
+			for (KenkenCell c : row) {
+				c.setUnlocked();
+			}
+		}
+
         currentGame = kenken;
 		return true;
 	}
@@ -219,5 +226,41 @@ public class CtrlDomainKenken {
 
 	public void setCurrentGame(Kenken k) {
 		currentGame = k;
+	}
+
+	/**
+	 * Obtiene las celdas que no cambian.
+	 */
+	public int[] getLockedCells() {
+		KenkenCell[][] kCells = currentGame.getAllCells();
+
+		int s = getCurrentGameSize();
+		int[] cells = new int[s*s];
+
+		for (int i = 0; i < s; i++) {
+			for (int j = 0; j < s; j++) {
+				cells[i * s + j] = kCells[i][j].isLocked() ? kCells[i][j].getValue() : 0;
+			}
+		}
+
+		return cells;
+	}
+
+	/**
+	 * Asigna las celdas que no cambian.
+	 */
+	public void setLockedCells(int[] valCells) {
+		KenkenCell[][] kCells = currentGame.getAllCells();
+
+		int s = getCurrentGameSize();
+
+		for (int i = 0; i < s; i++) {
+			for (int j = 0; j < s; j++) {
+				if (valCells[i*s + j] > 0) {
+					kCells[i][j].setValue(valCells[i*s+j]);
+					kCells[i][j].setLocked();
+				}
+			}
+		}
 	}
 }

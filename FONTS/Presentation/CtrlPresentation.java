@@ -181,4 +181,16 @@ public class CtrlPresentation {
     public boolean updateMaxPoint(int gamePoints) {
         return ctrlDomain.newMaxPoint(gamePoints);
     }
+
+    /**
+     * Obtiene las celdas que no cambian.
+     */
+    public int[] getLockedCells() { return ctrlDomain.getLockedCells();}
+
+    /**
+     * Asigna las celdas que no cambian.
+     */
+    public void setLockedCells(int[] valCells) {
+        ctrlDomain.setLockedCells(valCells);
+    }
 }

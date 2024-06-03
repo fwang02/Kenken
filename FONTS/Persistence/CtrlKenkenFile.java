@@ -10,20 +10,36 @@ import java.io.IOException;
 import java.util.*;
 
 /**
+ * Controlador de Dominio de los ficheros relacionados con los Kenken. Sus principales funciones son guardar un kenken en 
+ * fichero, leer un kenken desde fichero y continuar una partida de un kenken guardado en fichero
+ * 
  * @author Javier Parcerisas
  */
 public class CtrlKenkenFile {
     private static final CtrlKenkenFile CTRL_KENKEN_FILE = new CtrlKenkenFile();
-    private Kenken currentGame;
 
+	/**
+     * Constructora de la clase CtrlDomainKenken
+     */
     private CtrlKenkenFile() {
     }
 
+	/**
+     * Getter que nos permite obtener la instancia del controlador
+	 * 
+	 * @return instancia de CtrlKenkenFile
+     */
     public static CtrlKenkenFile getInstance() {
         return CTRL_KENKEN_FILE;
     }
 
-	// PARA JUGAR FICHEROS YA DEFINIDOS (PARTIDAS ESTANDAR)
+	
+	/**
+     * Función que llama a la lectura de kenkens desde un fichero
+	 * 
+	 * @param fileName nombre del fichero que contiene el kenken
+	 * @return kenken leido del fichero
+     */
     public Kenken readKenkenByFile(String fileName) {
 		try {
 			Scanner scanner = new Scanner(new File("../DATA/" + fileName + ".txt"));
@@ -33,6 +49,12 @@ public class CtrlKenkenFile {
 		}
 	}
 
+	/**
+     * Función que llama a la lectura de kenkens desde un fichero
+	 * 
+	 * @param file fichero que contiene el kenken
+	 * @return kenken leido del fichero
+     */
     public Kenken readKenkenByFile(File file) {
 		try {
 			Scanner scanner = new Scanner(file);
@@ -42,6 +64,13 @@ public class CtrlKenkenFile {
 		}
 	}
 
+	/**
+     * Función que lee un kenken en fichero. Únicamente lee el kenken y le asigna un tablero
+	 * vacio.
+	 * 
+	 * @param scanner apunta al fichero que contiene el kenken
+	 * @return kenken leido del fichero con un tablero nulo
+     */
 	private Kenken getKenkenByFile(Scanner scanner) {
 		int size;
 		KenkenCell[][] cells;
@@ -79,7 +108,6 @@ public class CtrlKenkenFile {
 					int posX = Integer.parseInt(numStr[offset + 2 * i]) - 1;
 					int posY = Integer.parseInt(numStr[offset + 1 + 2 * i]) - 1;
 
-					// cell with [number]
 					if ((offset + 2 + 2 * i < numStr.length) && numStr[offset + 2 + 2 * i].startsWith("[")) {
 						String str = numStr[offset + 2 + 2 * i];
 						int val = Integer.parseInt(str.substring(1, str.length() - 1));
@@ -104,7 +132,13 @@ public class CtrlKenkenFile {
 		return new Kenken(size, opSet, TypeDifficulty.CUSTOM, cages, cells);
 	}
 
-	// guardar partida
+	/**
+     * Función que guarda un kenken en ficheo
+	 * 
+	 * @param kenken kenken que queremos guardar en fichero
+	 * @param UserFileName nombre que tendra el fichero
+	 * @return cierto si se ha guardado correctamente, falso en caso contrario
+     */
 	public boolean saveKenkenGame(Kenken kenken, String  UserFileName) {
 		try {
 			File savedGame = new File("../DATA/savedGames/" + UserFileName + ".txt");
@@ -147,7 +181,12 @@ public class CtrlKenkenFile {
 		}
 	}
 
-	// PARA CONTINUAR UNA PARTIDA
+	/**
+     * Función que llama a la lectura de kenkens desde un fichero
+	 * 
+	 * @param fileName nombre del fichero que contiene el kenken
+	 * @return kenken leido del fichero
+     */
 	public Kenken loadKenkenByFile(String fileName) {
 		try {
 			Scanner scanner = new Scanner(new File("../DATA/" + fileName + ".txt"));
@@ -157,6 +196,12 @@ public class CtrlKenkenFile {
 		}
 	}
 
+	/**
+     * Función que llama a la lectura de kenkens desde un fichero
+	 * 
+	 * @param file fichero que contiene el kenken
+	 * @return kenken leido del fichero
+     */
     public Kenken loadKenkenByFile(File file) {
 		try {
 			Scanner scanner = new Scanner(file);
@@ -166,6 +211,13 @@ public class CtrlKenkenFile {
 		}
 	}
 
+	/**
+     * Función que lee un kenken en fichero. Lee el kenken de fichero y
+	 * seguidamente lee el valor del tablero guardado en el mismo fichero
+	 * 
+	 * @param scanner apunta al fichero que contiene el kenken
+	 * @return kenken leido del fichero con un tablero inicializado
+     */
 	private Kenken loadKenkenGame(Scanner scanner) {
 		int size = scanner.nextInt();
 		int numCage = scanner.nextInt();
@@ -220,6 +272,9 @@ public class CtrlKenkenFile {
 		return new Kenken(size, opSet, TypeDifficulty.CUSTOM, cages, cells, board);
 	}
 
+	/**
+	 * Función que nos permite obtener que operación representa cada número
+	 */
     static Operation getOperation(int num) {
         switch (num) {
             case 1:
@@ -239,6 +294,9 @@ public class CtrlKenkenFile {
         }
     }
 
+	/**
+	 * Función que nos permite obtener que número representa cada operación
+	 */
 	static int getOperationNumber(Operation o) {
         if (o instanceof ADD) return 1;
 		else if (o instanceof SUB) return 2;

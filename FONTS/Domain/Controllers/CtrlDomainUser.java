@@ -10,6 +10,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
+/**
+ * @author Feiyang Wang
+ */
 public class CtrlDomainUser {
     private final CtrlUserFile ctrlUserFile;
     private final HashMap<String, User> users;

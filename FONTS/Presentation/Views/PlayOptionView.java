@@ -7,8 +7,6 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -88,7 +86,9 @@ public class PlayOptionView extends View {
         initActionListener();
     }
 
-
+    /**
+     * Inicializa el panel del texto, contiene un botón para cerrar sesión y un mensaje de bienvenido.
+     */
     private void initTextPanel() {
         textPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
         textPanel.setLayout(new BorderLayout());
@@ -116,6 +116,9 @@ public class PlayOptionView extends View {
 
     }
 
+    /**
+     * Inicializa el panel para los botones de la ventana de creación.
+     */
     private void initButtonsPanel() {
         buttonsPanel.setLayout(new BoxLayout(buttonsPanel,BoxLayout.X_AXIS));
         exitCreationB.setForeground(Color.RED);
@@ -126,12 +129,18 @@ public class PlayOptionView extends View {
         buttonsPanel.add(Box.createHorizontalStrut(10));
     }
 
+    /**
+     * Inicializa el panel para selección de las dificultades de la ventana de creación.
+     */
     private void initDifficultyPanel() {
         Border titledBorder = BorderFactory.createTitledBorder("Dificultad");
         difficultyPanel.setBorder(titledBorder);
         difficultyPanel.add(difficultySelect,CENTER_ALIGNMENT);
     }
 
+    /**
+     * Inicializa el frame.
+     */
     private void initFrame() {
         setBounds(750, 450, 750, 450);
         setResizable(false);
@@ -140,6 +149,9 @@ public class PlayOptionView extends View {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
+    /**
+     * Inicializa el panel para selección de las operaciones de la ventana de creación.
+     */
     private void initOperationPanel() {
         operationPanel.setLayout(new GridLayout(2,3));
         Border titledBorder = BorderFactory.createTitledBorder("Operaciones");
@@ -151,6 +163,9 @@ public class PlayOptionView extends View {
         }
     }
 
+    /**
+     * Inicializa el panel para selección del tamaño de la ventana de creación.
+     */
     private void initSizePanel() {
         sizePanel.setLayout(new FlowLayout());
         ((JSpinner.DefaultEditor) sizeSpinner.getEditor()).getTextField().setEditable(false); //para no entrar valor por teclado al selector de tamaño
@@ -159,12 +174,18 @@ public class PlayOptionView extends View {
         sizePanel.add(sizeSpinner,CENTER_ALIGNMENT);
     }
 
+    /**
+     * Inicializa el panel para ajustar bien los componentes.
+     */
     private void initUpPanel() {
         upPanel.setLayout(new BoxLayout(upPanel,BoxLayout.X_AXIS));
         upPanel.add(sizePanel);
         upPanel.add(difficultyPanel);
     }
 
+    /**
+     * Añadir los componentes al panel.
+     */
     private void initCreationPanel() {
         creationPanel.setLayout(new BoxLayout(creationPanel,BoxLayout.Y_AXIS));
         creationPanel.add(upPanel);
@@ -172,6 +193,9 @@ public class PlayOptionView extends View {
         creationPanel.add(buttonsPanel);
     }
 
+    /**
+     * Añadir los componentes al panel.
+     */
     private void initPlayOptionPanel() {
         playOptionPanel.setLayout(new GridLayout(2,3,50,50));
         playOptionPanel.setBorder(new EmptyBorder(50, 50, 50, 50));
@@ -185,6 +209,9 @@ public class PlayOptionView extends View {
         add(playOptionPanel, BorderLayout.CENTER);
     }
 
+    /**
+     * Añadir los componentes al panel.
+     */
     private void initDefaultGamesPanel() {
         defaultGamesPanel.setLayout(new BorderLayout());
 
@@ -219,202 +246,161 @@ public class PlayOptionView extends View {
         defaultGamesPanel.add(exitPanel,BorderLayout.SOUTH);
     }
 
+    /**
+     * Inicializa los action listeners de los botones.
+     */
     private void initActionListener() {
-        generateNewButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Has clicado el botón "+ ((JButton) e.getSource()).getText());
-                toCreation();
-            }
+        generateNewButton.addActionListener(e -> {
+            System.out.println("Has clicado el botón "+ ((JButton) e.getSource()).getText());
+            toCreation();
         });
 
-        continueGameButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Has clicado el botón "+ ((JButton) e.getSource()).getText());
-                JFileChooser fileChooser = new JFileChooser("../DATA/savedGames");
-                fileChooser.setFileFilter(new FileNameExtensionFilter("TXT files", "txt"));
-                int returnValue = fileChooser.showOpenDialog(null);
-                if (returnValue == JFileChooser.APPROVE_OPTION) {
-                    File selectedFile = fileChooser.getSelectedFile();
-                    System.out.println("Selected file: " + selectedFile.getAbsolutePath());
-                    if(ctrlPresentation.continueGame(selectedFile)) {
-                        ctrlPresentation.playOptionViewToGameView();
-                    }
-                    else {
-                        JOptionPane.showMessageDialog(null,"El fichero seleccionado no es válido","Error de lectura de fichero",JOptionPane.ERROR_MESSAGE);
-                    }
-                }
-            }
-        });
-
-        openFileButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Has clicado el botón "+ ((JButton) e.getSource()).getText());
-                JFileChooser fileChooser = new JFileChooser("../DATA");
-                fileChooser.setFileFilter(new FileNameExtensionFilter("TXT files", "txt"));
-                int returnValue = fileChooser.showOpenDialog(null);
-                if (returnValue == JFileChooser.APPROVE_OPTION) {
-                    File selectedFile = fileChooser.getSelectedFile();
-                    System.out.println("Selected file: " + selectedFile.getAbsolutePath());
-                    if(ctrlPresentation.openKenkenByFile(selectedFile)) {
-                        ctrlPresentation.playOptionViewToGameView();
-                    }
-                    else {
-                        JOptionPane.showMessageDialog(null,"El fichero seleccionado no es válido","Error de lectura de fichero",JOptionPane.ERROR_MESSAGE);
-                    }
-                }
-            }
-        });
-
-        playExistButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Has clicado el botón "+ ((JButton) e.getSource()).getText());
-                toDefGames();
-            }
-        });
-
-        createButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Has clicado el botón 'Crear'");
-                Integer[] sizes = {3, 4, 5, 6, 7, 8, 9};
-                Integer selectedSize = (Integer) JOptionPane.showInputDialog(
-                        null,
-                        "Seleccione el tamaño del KenKen:",
-                        "Seleccionar Tamaño",
-                        JOptionPane.QUESTION_MESSAGE,
-                        null,
-                        sizes,
-                        sizes[0]
-                );
-
-                if (selectedSize != null) {
-                    System.out.println("Tamaño seleccionado: " + selectedSize);
-                    // Proceed with the selected size
-                    ctrlPresentation.setGameCreatorSize(selectedSize);
-                    ctrlPresentation.playOptionViewToGameCreatorView();
-                }
-            }
-        });
-
-        rankingButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                rankingPanel = new RankingPanel(ctrlPresentation);
-                remove(title);
-                remove(playOptionPanel);
-                remove(generateNewButton);
-                remove(openFileButton);
-                remove(playExistButton);
-                remove(createButton);
-                remove(textPanel);
-                remove(rankingButton);
-                remove(loginWelcome);
-                remove(logoutButton);
-                remove(textPanel);
-                pExitRanking.add(bExitRanking);
-                add(rankingPanel,BorderLayout.CENTER);
-                add(pExitRanking,BorderLayout.SOUTH);
-                revalidate();
-                repaint();
-            }
-        });
-        
-        bExitRanking.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                remove(rankingPanel);
-                remove(pExitRanking);
-                addCompPlayMenu();
-                revalidate();
-                repaint();
-            }
-        });
-
-        exitCreationB.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Has clicado el botón "+ ((JButton) e.getSource()).getText());
-                creationToPlayOption();
-            }
-        });
-
-        logoutButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Has clicado el botón "+ ((JButton) e.getSource()).getText());
-                ctrlPresentation.playOptionViewToMainMenuView();
-            }
-        });
-
-        bConfirmCreation.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Has clicado el botón "+ ((JButton) e.getSource()).getText());
-                HashSet<String> selectedOp = new HashSet<>();
-
-                System.out.println("Has seleccionado las siguientes operaciones: ");
-
-                for(JCheckBox op : operationSelect) {
-                    if(op.isSelected()) {
-                        System.out.println(op.getText());
-                        selectedOp.add(op.getText());
-                    }
-                }
-                System.out.println();
-
-                if(selectedOp.isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "No has seleccionado ninguna operación", "Error de creación", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-
-                int size = (int) sizeSpinner.getValue();
-                System.out.println("Has seleccionado el tamaño: "+size);
-
-                String nameDiff = (String) difficultySelect.getSelectedItem();
-                if (nameDiff == null) {
-                    JOptionPane.showMessageDialog(null, "No has seleccionado ninguna dificultad", "Error de creación", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-                String diff = "";
-                switch (nameDiff) {
-                    case "Fácil":
-                        diff = "EASY";
-                        break;
-                    case "Medio":
-                        diff = "MEDIUM";
-                        break;
-                    case "Difícil":
-                        diff = "HARD";
-                        break;
-                    case "Experto":
-                        diff = "EXPERT";
-                        break;
-                }
-                System.out.println("Has seleccionado la dificultad: " + diff);
-
-                if(ctrlPresentation.createKenken(size,selectedOp, diff)) {
-                    int result = JOptionPane.showConfirmDialog(null, "Ten en cuenta que un kenken puede tener diversas soluciones, el corrector funcionara con una de ellas",
-                            "Opción de jugar", JOptionPane.OK_CANCEL_OPTION);
-                    if (result == JOptionPane.OK_OPTION) {
-                        ctrlPresentation.playOptionViewToGameView();
-                    }
+        continueGameButton.addActionListener(e -> {
+            System.out.println("Has clicado el botón "+ ((JButton) e.getSource()).getText());
+            JFileChooser fileChooser = new JFileChooser("../DATA/savedGames");
+            fileChooser.setFileFilter(new FileNameExtensionFilter("TXT files", "txt"));
+            int returnValue = fileChooser.showOpenDialog(null);
+            if (returnValue == JFileChooser.APPROVE_OPTION) {
+                File selectedFile = fileChooser.getSelectedFile();
+                System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+                if(ctrlPresentation.continueGame(selectedFile)) {
+                    ctrlPresentation.playOptionViewToGameView();
                 }
                 else {
-                    JOptionPane.showMessageDialog(null, "Se ha producido algún error", "Error de creación", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null,"El fichero seleccionado no es válido","Error de lectura de fichero",JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
 
-        exitDef.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Has clicado el botón "+ ((JButton) e.getSource()).getText());
-                backToPlayOption();
+        openFileButton.addActionListener(e -> {
+            System.out.println("Has clicado el botón "+ ((JButton) e.getSource()).getText());
+            JFileChooser fileChooser = new JFileChooser("../DATA");
+            fileChooser.setFileFilter(new FileNameExtensionFilter("TXT files", "txt"));
+            int returnValue = fileChooser.showOpenDialog(null);
+            if (returnValue == JFileChooser.APPROVE_OPTION) {
+                File selectedFile = fileChooser.getSelectedFile();
+                System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+                if(ctrlPresentation.openKenkenByFile(selectedFile)) {
+                    ctrlPresentation.playOptionViewToGameView();
+                }
+                else {
+                    JOptionPane.showMessageDialog(null,"El fichero seleccionado no es válido","Error de lectura de fichero",JOptionPane.ERROR_MESSAGE);
+                }
             }
+        });
+
+        playExistButton.addActionListener(e -> {
+            System.out.println("Has clicado el botón "+ ((JButton) e.getSource()).getText());
+            toDefGames();
+        });
+
+        createButton.addActionListener(e -> {
+            System.out.println("Has clicado el botón 'Crear'");
+            Integer[] sizes = {3, 4, 5, 6, 7, 8, 9};
+            Integer selectedSize = (Integer) JOptionPane.showInputDialog(
+                    null,
+                    "Seleccione el tamaño del KenKen:",
+                    "Seleccionar Tamaño",
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    sizes,
+                    sizes[0]
+            );
+
+            if (selectedSize != null) {
+                System.out.println("Tamaño seleccionado: " + selectedSize);
+                // Proceed with the selected size
+                ctrlPresentation.setGameCreatorSize(selectedSize);
+                ctrlPresentation.playOptionViewToGameCreatorView();
+            }
+        });
+
+        rankingButton.addActionListener(e -> {
+            rankingPanel = new RankingPanel(ctrlPresentation);
+            getContentPane().removeAll();
+            pExitRanking.add(bExitRanking);
+            add(rankingPanel,BorderLayout.CENTER);
+            add(pExitRanking,BorderLayout.SOUTH);
+            revalidate();
+            repaint();
+        });
+        
+        bExitRanking.addActionListener(e -> {
+            getContentPane().removeAll();
+            addCompPlayMenu();
+            revalidate();
+            repaint();
+        });
+
+        exitCreationB.addActionListener(e -> {
+            System.out.println("Has clicado el botón "+ ((JButton) e.getSource()).getText());
+            creationToPlayOption();
+        });
+
+        logoutButton.addActionListener(e -> {
+            System.out.println("Has clicado el botón "+ ((JButton) e.getSource()).getText());
+            ctrlPresentation.playOptionViewToMainMenuView();
+        });
+
+        bConfirmCreation.addActionListener(e -> {
+            System.out.println("Has clicado el botón "+ ((JButton) e.getSource()).getText());
+            HashSet<String> selectedOp = new HashSet<>();
+
+            System.out.println("Has seleccionado las siguientes operaciones: ");
+
+            for(JCheckBox op : operationSelect) {
+                if(op.isSelected()) {
+                    System.out.println(op.getText());
+                    selectedOp.add(op.getText());
+                }
+            }
+            System.out.println();
+
+            if(selectedOp.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "No has seleccionado ninguna operación", "Error de creación", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            int size = (int) sizeSpinner.getValue();
+            System.out.println("Has seleccionado el tamaño: "+size);
+
+            String nameDiff = (String) difficultySelect.getSelectedItem();
+            if (nameDiff == null) {
+                JOptionPane.showMessageDialog(null, "No has seleccionado ninguna dificultad", "Error de creación", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            String diff = "";
+            switch (nameDiff) {
+                case "Fácil":
+                    diff = "EASY";
+                    break;
+                case "Medio":
+                    diff = "MEDIUM";
+                    break;
+                case "Difícil":
+                    diff = "HARD";
+                    break;
+                case "Experto":
+                    diff = "EXPERT";
+                    break;
+            }
+            System.out.println("Has seleccionado la dificultad: " + diff);
+
+            if(ctrlPresentation.createKenken(size,selectedOp, diff)) {
+                int result = JOptionPane.showConfirmDialog(null, "Ten en cuenta que un kenken puede tener diversas soluciones, el corrector funcionara con una de ellas",
+                        "Opción de jugar", JOptionPane.OK_CANCEL_OPTION);
+                if (result == JOptionPane.OK_OPTION) {
+                    ctrlPresentation.playOptionViewToGameView();
+                }
+            }
+            else {
+                JOptionPane.showMessageDialog(null, "Se ha producido algún error", "Error de creación", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        exitDef.addActionListener(e -> {
+            System.out.println("Has clicado el botón "+ ((JButton) e.getSource()).getText());
+            backToPlayOption();
         });
 
         //añadir actionListener para los botones de juegos básicos
@@ -449,12 +435,18 @@ public class PlayOptionView extends View {
         }
 
     }
-    
+
+    /**
+     * Añadir componentes al menú
+     */
     private void addCompPlayMenu() {
         add(textPanel,BorderLayout.NORTH);
         add(playOptionPanel,BorderLayout.CENTER);
     }
 
+    /**
+     * Cambiar a la ventana de creación.
+     */
     private void toCreation() {
         getContentPane().removeAll();
         add(creationPanel);
@@ -462,6 +454,9 @@ public class PlayOptionView extends View {
         repaint();
     }
 
+    /**
+     * Volver al menú.
+     */
     private void creationToPlayOption() {
         resetCreation();
         getContentPane().removeAll();
@@ -471,6 +466,9 @@ public class PlayOptionView extends View {
         repaint();
     }
 
+    /**
+     * Cambiar a la ventana de predefinidos.
+     */
     private void toDefGames() {
         getContentPane().removeAll();
         add(defaultGamesPanel);
@@ -478,6 +476,9 @@ public class PlayOptionView extends View {
         repaint();
     }
 
+    /**
+     * Volver al menú.
+     */
     public void backToPlayOption() {
         getContentPane().removeAll();
         add(textPanel,BorderLayout.NORTH);
@@ -487,6 +488,9 @@ public class PlayOptionView extends View {
 
     }
 
+    /**
+     * Restaurar todas las opciones seleccionadas.
+     */
     private void resetCreation() {
         sizeSpinner.setValue(3);
 
@@ -497,6 +501,9 @@ public class PlayOptionView extends View {
         difficultySelect.setSelectedIndex(0);
     }
 
+    /**
+     * Añadir mensaje de bienvenida para el usuario actual.
+     */
     public void addLoggedUser() {
         String welcomeInfo = "¡Bienvenido, " + ctrlPresentation.getLoggedUserName() + "!";
         loginWelcome.setText(welcomeInfo);

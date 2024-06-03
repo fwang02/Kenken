@@ -1,6 +1,3 @@
-/**
- * @author Javier Parcerisas Nisa
- */
 package Domain;
 
 import Domain.Operation.Operation;
@@ -8,7 +5,9 @@ import Domain.Operation.Operation;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-
+/**
+ * @author Javier Parcerisas
+ */
 public class Kenken {
     private final int size;
     private final String name;

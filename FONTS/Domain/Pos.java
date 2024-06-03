@@ -1,5 +1,8 @@
 package Domain;
 
+/**
+ * @author Javier Parcerisas
+ */
 public class Pos {
     public int posX;
     public int posY;

@@ -1,10 +1,10 @@
-/**
- * @author Javier Parcerisas Nisa
- */
 package Domain;
 
 import Domain.Operation.Operation;
 
+/**
+ * @author Javier Parcerisas
+ */
 public class KenkenCage {
     private final Pos[] posCells;
     private final int size;
@@ -26,7 +26,7 @@ public class KenkenCage {
 
     }
 
-    KenkenCage(Pos[] posCells) {
+    public KenkenCage(Pos[] posCells) {
         this.operation = null;
         this.result = -1;
         this.posCells = posCells;

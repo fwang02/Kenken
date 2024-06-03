@@ -1,6 +1,3 @@
-/**
- * @author Javier Parcerisas
- */
 package Persistence;
 
 import Domain.*;

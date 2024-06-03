@@ -1,6 +1,3 @@
-/**
- * @author Javier Parcerisas Nisa
- */
 package Domain;
 
 import Domain.Operation.*;
@@ -8,7 +5,9 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-
+/**
+ * @author Javier Parcerisas
+ */
 public class KenkenConfig  {
 
 	private final Kenken kenken;

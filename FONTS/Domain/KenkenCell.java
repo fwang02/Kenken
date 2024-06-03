@@ -6,7 +6,6 @@ public class KenkenCell {
     private int valor;
     private boolean locked;
 
-    //esta creadora para las casillas del tablero vacío.
     KenkenCell(int posX, int posY) {
         this.posX = posX;
         this.posY = posY;

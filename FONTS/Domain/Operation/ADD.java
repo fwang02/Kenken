@@ -1,13 +1,21 @@
-/**
- * @author Javier Parcerisas Nisa
- */
 package Domain.Operation;
 
 import Domain.Kenken;
 import Domain.KenkenCage;
+import Domain.Pos;
 
+/**
+ * @author Javier Parcerisas
+ */
 public class ADD extends Operation {
 
+    /**
+	 * Retorna el valor de las casillas operadas segun el tipo de operación de la región,
+	 * en este caso una operación de suma.
+	 * 
+	 * @param kk kenken al que pertenece la región
+	 * @param kkc región del kenken donde calculamos
+	 */
     @Override
 	public int checkResult(Kenken kk, KenkenCage kkc) {
 		int v = 0;

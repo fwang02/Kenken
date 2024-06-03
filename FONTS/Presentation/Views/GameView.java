@@ -169,6 +169,7 @@ public class GameView extends View {
             JOptionPane.showMessageDialog(this, "La partida está acabada.", "Acabado", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
+        ctrlPresentation.solve();
         if (ctrlPresentation.check(values)) {
             int gamePoints = ctrlPresentation.getGamePoints();
             if (gamePoints == -1) {

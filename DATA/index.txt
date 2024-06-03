@@ -1,2 +1,6 @@
-En este directorio podemos encontrar actual y provisionalmente
-los kenkens ya creados, la bd de usuarios etc
+En este directorio podemos encontrar los datos del proyecto en formato txt
+
+-uses.txt: base de datos de los usuarios
+-resource: imagenes utilizadas en la capa de presentacion
+-defaultGames: kenkens ya definidos
+-saveGames: partidas guardadas

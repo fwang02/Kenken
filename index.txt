@@ -3,4 +3,4 @@ Directorio root:
 - /DOCS: La documentación del proyecto
 - /FONTS: El código fuente del proyecto
 - /EXE: Los ejecutables y los tests
-- descripcio.txt: La información del nuestro equipo
+- descripcio.txt: La información de nuestro equipo

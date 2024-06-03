@@ -1,2 +1,1 @@
-En este directorio podemos encontrar la documentacion
-del proyecto junto con el diagrama de clases.
+En este directorio podemos encontrar la documentacion del proyecto

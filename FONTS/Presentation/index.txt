@@ -1,2 +1,1 @@
-Este directorio contiene de forma provisional los drivers y sus
-manifiestos para la compilacion
+Este directorio contiene las vistas del proyecto

@@ -15,6 +15,12 @@ import java.io.File;
 import java.util.HashSet;
 
 /**
+ * Esta clase representa la vista de las opciones de juego en la aplicación.
+ * Proporciona una interfaz gráfica para que el usuario pueda seleccionar diferentes opciones de juego,
+ * como generar un nuevo Kenken, abrir un Kenken desde un archivo, jugar a Kenkens predefinidos, continuar una partida guardada,
+ * crear un Kenken personalizado y ver el ranking de jugadores.
+ * Esta clase también maneja las interacciones del usuario con la interfaz gráfica, como los clics en los botones.
+ *
  * @author Feiyang Wang
  */
 public class PlayOptionView extends View {
@@ -49,7 +55,7 @@ public class PlayOptionView extends View {
     private final JPanel upPanel = new JPanel();
     private final JPanel buttonsPanel = new JPanel();
     private final JButton bConfirmCreation = new JButton("Confirmar");
-    private final JButton exitButton = new JButton("Volver");
+    private final JButton exitCreationB = new JButton("Volver");
 
     //componentes para la vista de jugar juegos predefinidos
     private final JPanel defaultGamesPanel = new JPanel();
@@ -57,6 +63,12 @@ public class PlayOptionView extends View {
     private final JButton[] specialGamesB = new JButton[2];
     private final JButton exitDef = new JButton("Volver");
 
+    /**
+     * Constructor de la clase PlayOptionView.
+     * Inicializa la vista con el controlador de presentación dado.
+     *
+     * @param cp El controlador de presentación.
+     */
     public PlayOptionView(CtrlPresentation cp) {
         this.ctrlPresentation = cp;
         // Ventana
@@ -75,6 +87,7 @@ public class PlayOptionView extends View {
 
         initActionListener();
     }
+
 
     private void initTextPanel() {
         textPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -105,11 +118,11 @@ public class PlayOptionView extends View {
 
     private void initButtonsPanel() {
         buttonsPanel.setLayout(new BoxLayout(buttonsPanel,BoxLayout.X_AXIS));
-        exitButton.setForeground(Color.RED);
+        exitCreationB.setForeground(Color.RED);
         buttonsPanel.add(Box.createHorizontalGlue());
         buttonsPanel.add(bConfirmCreation);
         buttonsPanel.add(Box.createHorizontalStrut(30));
-        buttonsPanel.add(exitButton);
+        buttonsPanel.add(exitCreationB);
         buttonsPanel.add(Box.createHorizontalStrut(10));
     }
 
@@ -211,7 +224,7 @@ public class PlayOptionView extends View {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Has clicado el botón "+ ((JButton) e.getSource()).getText());
-                playOptionToCreation();
+                toCreation();
             }
         });
 
@@ -259,7 +272,7 @@ public class PlayOptionView extends View {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Has clicado el botón "+ ((JButton) e.getSource()).getText());
-                playOptionToDefGames();
+                toDefGames();
             }
         });
 
@@ -321,7 +334,7 @@ public class PlayOptionView extends View {
             }
         });
 
-        exitButton.addActionListener(new ActionListener() {
+        exitCreationB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Has clicado el botón "+ ((JButton) e.getSource()).getText());
@@ -389,9 +402,6 @@ public class PlayOptionView extends View {
                     if (result == JOptionPane.OK_OPTION) {
                         ctrlPresentation.playOptionViewToGameView();
                     }
-                    else {
-                        // creationToPlayOption();
-                    }
                 }
                 else {
                     JOptionPane.showMessageDialog(null, "Se ha producido algún error", "Error de creación", JOptionPane.ERROR_MESSAGE);
@@ -403,7 +413,7 @@ public class PlayOptionView extends View {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Has clicado el botón "+ ((JButton) e.getSource()).getText());
-                defGamesToPlayOption();
+                backToPlayOption();
             }
         });
 
@@ -445,9 +455,8 @@ public class PlayOptionView extends View {
         add(playOptionPanel,BorderLayout.CENTER);
     }
 
-    private void playOptionToCreation() {
-        remove(playOptionPanel);
-        remove(textPanel);
+    private void toCreation() {
+        getContentPane().removeAll();
         add(creationPanel);
         revalidate();
         repaint();
@@ -455,23 +464,22 @@ public class PlayOptionView extends View {
 
     private void creationToPlayOption() {
         resetCreation();
-        remove(creationPanel);
+        getContentPane().removeAll();
         add(textPanel,BorderLayout.NORTH);
         add(playOptionPanel,BorderLayout.CENTER);
         revalidate();
         repaint();
     }
 
-    private void playOptionToDefGames() {
-        remove(playOptionPanel);
-        remove(textPanel);
+    private void toDefGames() {
+        getContentPane().removeAll();
         add(defaultGamesPanel);
         revalidate();
         repaint();
     }
 
-    private void defGamesToPlayOption() {
-        remove(defaultGamesPanel);
+    public void backToPlayOption() {
+        getContentPane().removeAll();
         add(textPanel,BorderLayout.NORTH);
         add(playOptionPanel,BorderLayout.CENTER);
         revalidate();

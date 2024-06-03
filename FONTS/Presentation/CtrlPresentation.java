@@ -62,6 +62,7 @@ public class CtrlPresentation {
 
     public void gameViewToPlayOptionView() {
         gameView.makeInvisible();
+        playOptionView.backToPlayOption();
         playOptionView.makeVisible();
     }
 

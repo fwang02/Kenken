@@ -52,6 +52,7 @@ public class DrawLayout extends JPanel {
      * @param x   coordenada x de la celda
      * @param y   coordenada y de la celda
      * @param num número a establecer en la celda
+     * @param userInput bool para saber si es un valor preestablecido.
      */
     public void setCell(int x, int y, int num, boolean userInput) {
         cells[x][y].setNumber(num, userInput);
@@ -122,7 +123,6 @@ public class DrawLayout extends JPanel {
             int y = i % s;
             values[i] = cells[x][y].getNumber();
         }
-
         return values;
     }
 

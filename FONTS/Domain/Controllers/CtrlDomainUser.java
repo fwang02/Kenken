@@ -40,7 +40,7 @@ public class CtrlDomainUser {
     public boolean addUser(String username, String password) {
         users.put(username,new User(username,password));
         ranking.add(new PlayerScore(username,0));
-        return ctrlUserFile.writeNewUserToFile(username,password);
+        return ctrlUserFile.writeNewUserToFile(username, password);
     }
 
     public boolean isPasswordCorrect(String username, String password) {

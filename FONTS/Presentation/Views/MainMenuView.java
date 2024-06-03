@@ -80,7 +80,7 @@ public class MainMenuView extends View {
                     ctrlPresentation.mainViewToPlayOptionView();
                 }
                 else {
-                    JOptionPane.showMessageDialog(null, "Contraseña incorrecta","Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrecta","Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         };
